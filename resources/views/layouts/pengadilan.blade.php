@@ -39,14 +39,24 @@
 	<!-- Theme JS files -->
 	<script src="{{asset('assets/js/jquery/jquery.min.js')}}"></script>
 	<script src="{{asset('assets/js/vendor/tables/datatables/datatables.min.js')}}"></script>
+	<script src="{{asset('assets/js/vendor/forms/wizards/steps.min.js')}}"></script>
+	<script src="{{asset('assets/js/vendor/forms/validation/validate.min.js')}}"></script>
+	<script src="{{asset('assets/js/app.js')}}"></script>
+	<script src="{{asset('assets/demo/pages/form_wizard.js')}}"></script>
+	<script src="{{asset('assets/js/vendor/uploaders/fileinput/fileinput.min.js')}}"></script>
+	<script src="{{asset('assets/js/vendor/uploaders/fileinput/plugins/sortable.min.js')}}"></script>
+	<script src="{{asset('assets/demo/pages/uploader_bootstrap.js')}}"></script>
 	<!-- /theme JS files -->
+
+	<!-- Generate Sendiri -->
+	<link href="{{asset('assets/style.css')}}" id="stylesheet" rel="stylesheet" type="text/css">
 
 </head>
 
 <body>
 
 	<!-- Main navbar -->
-	<div class="navbar navbar-dark navbar-expand-lg navbar-static border-bottom border-bottom-white border-opacity-10">
+	<div class="navbar navbar-dark navbar-expand-lg navbar-static border-bottom border-bottom-white border-opacity-10" style="background-color: #026802">
 		<div class="container-fluid">
 			<div class="d-flex d-lg-none me-2">
 				<button type="button" class="navbar-toggler sidebar-mobile-main-toggle rounded-pill">
@@ -54,376 +64,11 @@
 				</button>
 			</div>
 
-			<div class="navbar-brand flex-1 flex-lg-0">
-				<a href="index.html" class="d-inline-flex align-items-center">
-					<img src="{{asset('assets/images/logo_icon.svg')}}" alt="">
-					<img src="{{asset('assets/images/logo_text_light.svg')}}" class="d-none d-sm-inline-block h-16px ms-3" alt="">
+			<div class="navbar-brand flex-1 flex-lg-1">
+				<a href="{{route('home')}}" class="d-inline-flex align-items-center">
+					<img src="{{asset('assets/images/logo_pengadilan.png')}}" class="w-30px h-40px rounded-pill ms-4" alt="">
+					<img src="{{asset('assets/images/logo_text_pengadilan.png')}}" class="d-none d-sm-inline-block h-16px ms-2" alt="">
 				</a>
-			</div>
-
-			<ul class="nav flex-row">
-				<li class="nav-item d-lg-none">
-					<a href="#navbar_search" class="navbar-nav-link navbar-nav-link-icon rounded-pill" data-bs-toggle="collapse">
-						<i class="ph-magnifying-glass"></i>
-					</a>
-				</li>
-
-				<li class="nav-item nav-item-dropdown-lg dropdown">
-					<a href="#" class="navbar-nav-link navbar-nav-link-icon rounded-pill" data-bs-toggle="dropdown">
-						<i class="ph-squares-four"></i>
-					</a>
-
-					<div class="dropdown-menu dropdown-menu-scrollable-sm wmin-lg-600 p-0">
-						<div class="d-flex align-items-center border-bottom p-3">
-							<h6 class="mb-0">Browse apps</h6>
-							<a href="#" class="ms-auto">
-								View all
-								<i class="ph-arrow-circle-right ms-1"></i>
-							</a>
-						</div>
-
-						<div class="row row-cols-1 row-cols-sm-2 g-0">
-							<div class="col">
-								<button type="button" class="dropdown-item text-wrap h-100 align-items-start border-end-sm border-bottom p-3">
-									<div>
-										<img src="{{asset('assets/images/demo/logos/1.svg')}}" class="h-40px mb-2" alt="">
-										<div class="fw-semibold my-1">Customer data platform</div>
-										<div class="text-muted">Unify customer data from multiple sources</div>
-									</div>
-								</button>
-							</div>
-
-							<div class="col">
-								<button type="button" class="dropdown-item text-wrap h-100 align-items-start border-bottom p-3">
-									<div>
-										<img src="{{asset('assets/images/demo/logos/2.svg')}}" class="h-40px mb-2" alt="">
-										<div class="fw-semibold my-1">Data catalog</div>
-										<div class="text-muted">Discover, inventory, and organize data assets</div>
-									</div>
-								</button>
-							</div>
-
-							<div class="col">
-								<button type="button" class="dropdown-item text-wrap h-100 align-items-start border-end-sm border-bottom border-bottom-sm-0 rounded-bottom-start p-3">
-									<div>
-										<img src="{{asset('assets/images/demo/logos/3.svg')}}" class="h-40px mb-2" alt="">
-										<div class="fw-semibold my-1">Data governance</div>
-										<div class="text-muted">The collaboration hub and data marketplace</div>
-									</div>
-								</button>
-							</div>
-
-							<div class="col">
-								<button type="button" class="dropdown-item text-wrap h-100 align-items-start rounded-bottom-end p-3">
-									<div>
-										<img src="{{asset('assets/images/demo/logos/4.svg')}}" class="h-40px mb-2" alt="">
-										<div class="fw-semibold my-1">Data privacy</div>
-										<div class="text-muted">Automated provisioning of non-production datasets</div>
-									</div>
-								</button>
-							</div>
-						</div>
-					</div>
-				</li>
-
-				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
-					<a href="#" class="navbar-nav-link navbar-nav-link-icon rounded-pill" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-						<i class="ph-chats"></i>
-						<span class="badge bg-yellow text-black position-absolute top-0 end-0 translate-middle-top zindex-1 rounded-pill mt-1 me-1">8</span>
-					</a>
-
-					<div class="dropdown-menu wmin-lg-400 p-0">
-						<div class="d-flex align-items-center p-3">
-							<h6 class="mb-0">Messages</h6>
-							<div class="ms-auto">
-								<a href="#" class="text-body">
-									<i class="ph-plus-circle"></i>
-								</a>
-								<a href="#search_messages" class="collapsed text-body ms-2" data-bs-toggle="collapse">
-									<i class="ph-magnifying-glass"></i>
-								</a>
-							</div>
-						</div>
-
-						<div class="collapse" id="search_messages">
-							<div class="px-3 mb-2">
-								<div class="form-control-feedback form-control-feedback-start">
-									<input type="text" class="form-control" placeholder="Search messages">
-									<div class="form-control-feedback-icon">
-										<i class="ph-magnifying-glass"></i>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="dropdown-menu-scrollable pb-2">
-							<a href="#" class="dropdown-item align-items-start text-wrap py-2">
-								<div class="status-indicator-container me-3">
-									<img src="{{asset('assets/images/demo/users/face10.jpg')}}" class="w-40px h-40px rounded-pill" alt="">
-									<span class="status-indicator bg-warning"></span>
-								</div>
-
-								<div class="flex-1">
-									<span class="fw-semibold">James Alexander</span>
-									<span class="text-muted float-end fs-sm">04:58</span>
-									<div class="text-muted">who knows, maybe that would be the best thing for me...</div>
-								</div>
-							</a>
-
-							<a href="#" class="dropdown-item align-items-start text-wrap py-2">
-								<div class="status-indicator-container me-3">
-									<img src="{{asset('assets/images/demo/users/face3.jpg')}}" class="w-40px h-40px rounded-pill" alt="">
-									<span class="status-indicator bg-success"></span>
-								</div>
-
-								<div class="flex-1">
-									<span class="fw-semibold">Margo Baker</span>
-									<span class="text-muted float-end fs-sm">12:16</span>
-									<div class="text-muted">That was something he was unable to do because...</div>
-								</div>
-							</a>
-
-							<a href="#" class="dropdown-item align-items-start text-wrap py-2">
-								<div class="status-indicator-container me-3">
-									<img src="{{asset('assets/images/demo/users/face24.jpg')}}" class="w-40px h-40px rounded-pill" alt="">
-									<span class="status-indicator bg-success"></span>
-								</div>
-								<div class="flex-1">
-									<span class="fw-semibold">Jeremy Victorino</span>
-									<span class="text-muted float-end fs-sm">22:48</span>
-									<div class="text-muted">But that would be extremely strained and suspicious...</div>
-								</div>
-							</a>
-
-							<a href="#" class="dropdown-item align-items-start text-wrap py-2">
-								<div class="status-indicator-container me-3">
-									<img src="{{asset('assets/images/demo/users/face4.jpg')}}" class="w-40px h-40px rounded-pill" alt="">
-									<span class="status-indicator bg-grey"></span>
-								</div>
-								<div class="flex-1">
-									<span class="fw-semibold">Beatrix Diaz</span>
-									<span class="text-muted float-end fs-sm">Tue</span>
-									<div class="text-muted">What a strenuous career it is that I've chosen...</div>
-								</div>
-							</a>
-
-							<a href="#" class="dropdown-item align-items-start text-wrap py-2">
-								<div class="status-indicator-container me-3">
-									<img src="{{asset('assets/images/demo/users/face25.jpg')}}" class="w-40px h-40px rounded-pill" alt="">
-									<span class="status-indicator bg-danger"></span>
-								</div>
-								<div class="flex-1">
-									<span class="fw-semibold">Richard Vango</span>
-									<span class="text-muted float-end fs-sm">Mon</span>
-									<div class="text-muted">Other travelling salesmen live a life of luxury...</div>
-								</div>
-							</a>
-						</div>
-
-						<div class="d-flex border-top py-2 px-3">
-							<a href="#" class="text-body">
-								<i class="ph-checks me-1"></i>
-								Dismiss all
-							</a>
-							<a href="#" class="text-body ms-auto">
-								View all
-								<i class="ph-arrow-circle-right ms-1"></i>
-							</a>
-						</div>
-					</div>
-				</li>
-			</ul>
-
-			<div class="navbar-collapse justify-content-center flex-lg-1 order-2 order-lg-1 collapse" id="navbar_search">
-				<div class="navbar-search flex-fill position-relative mt-2 mt-lg-0 mx-lg-3">
-					<div class="form-control-feedback form-control-feedback-start flex-grow-1" data-color-theme="dark">
-						<input type="text" class="form-control bg-transparent rounded-pill" placeholder="Search" data-bs-toggle="dropdown">
-						<div class="form-control-feedback-icon">
-							<i class="ph-magnifying-glass"></i>
-						</div>
-						<div class="dropdown-menu w-100" data-color-theme="light">
-							<button type="button" class="dropdown-item">
-								<div class="text-center w-32px me-3">
-									<i class="ph-magnifying-glass"></i>
-								</div>
-								<span>Search <span class="fw-bold">"in"</span> everywhere</span>
-							</button>
-
-							<div class="dropdown-divider"></div>
-
-							<div class="dropdown-menu-scrollable-lg">
-								<div class="dropdown-header">
-									Contacts
-									<a href="#" class="float-end">
-										See all
-										<i class="ph-arrow-circle-right ms-1"></i>
-									</a>
-								</div>
-
-								<div class="dropdown-item cursor-pointer">
-									<div class="me-3">
-										<img src="../../../assets/images/demo/users/face3.jpg" class="w-32px h-32px rounded-pill" alt="">
-									</div>
-
-									<div class="d-flex flex-column flex-grow-1">
-										<div class="fw-semibold">Christ<mark>in</mark>e Johnson</div>
-										<span class="fs-sm text-muted">c.johnson@awesomecorp.com</span>
-									</div>
-
-									<div class="d-inline-flex">
-										<a href="#" class="text-body ms-2">
-											<i class="ph-user-circle"></i>
-										</a>
-									</div>
-								</div>
-
-								<div class="dropdown-item cursor-pointer">
-									<div class="me-3">
-										<img src="../../../assets/images/demo/users/face24.jpg" class="w-32px h-32px rounded-pill" alt="">
-									</div>
-
-									<div class="d-flex flex-column flex-grow-1">
-										<div class="fw-semibold">Cl<mark>in</mark>ton Sparks</div>
-										<span class="fs-sm text-muted">c.sparks@awesomecorp.com</span>
-									</div>
-
-									<div class="d-inline-flex">
-										<a href="#" class="text-body ms-2">
-											<i class="ph-user-circle"></i>
-										</a>
-									</div>
-								</div>
-
-								<div class="dropdown-divider"></div>
-
-								<div class="dropdown-header">
-									Clients
-									<a href="#" class="float-end">
-										See all
-										<i class="ph-arrow-circle-right ms-1"></i>
-									</a>
-								</div>
-
-								<div class="dropdown-item cursor-pointer">
-									<div class="me-3">
-										<img src="../../../assets/images/brands/adobe.svg" class="w-32px h-32px rounded-pill" alt="">
-									</div>
-
-									<div class="d-flex flex-column flex-grow-1">
-										<div class="fw-semibold">Adobe <mark>In</mark>c.</div>
-										<span class="fs-sm text-muted">Enterprise license</span>
-									</div>
-
-									<div class="d-inline-flex">
-										<a href="#" class="text-body ms-2">
-											<i class="ph-briefcase"></i>
-										</a>
-									</div>
-								</div>
-
-								<div class="dropdown-item cursor-pointer">
-									<div class="me-3">
-										<img src="../../../assets/images/brands/holiday-inn.svg" class="w-32px h-32px rounded-pill" alt="">
-									</div>
-
-									<div class="d-flex flex-column flex-grow-1">
-										<div class="fw-semibold">Holiday-<mark>In</mark>n</div>
-										<span class="fs-sm text-muted">On-premise license</span>
-									</div>
-
-									<div class="d-inline-flex">
-										<a href="#" class="text-body ms-2">
-											<i class="ph-briefcase"></i>
-										</a>
-									</div>
-								</div>
-
-								<div class="dropdown-item cursor-pointer">
-									<div class="me-3">
-										<img src="../../../assets/images/brands/ing.svg" class="w-32px h-32px rounded-pill" alt="">
-									</div>
-
-									<div class="d-flex flex-column flex-grow-1">
-										<div class="fw-semibold"><mark>IN</mark>G Group</div>
-										<span class="fs-sm text-muted">Perpetual license</span>
-									</div>
-
-									<div class="d-inline-flex">
-										<a href="#" class="text-body ms-2">
-											<i class="ph-briefcase"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<a href="#" class="navbar-nav-link align-items-center justify-content-center w-40px h-32px rounded-pill position-absolute end-0 top-50 translate-middle-y p-0 me-1" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-						<i class="ph-faders-horizontal"></i>
-					</a>
-
-					<div class="dropdown-menu w-100 p-3">
-						<div class="d-flex align-items-center mb-3">
-							<h6 class="mb-0">Search options</h6>
-							<a href="#" class="text-body rounded-pill ms-auto">
-								<i class="ph-clock-counter-clockwise"></i>
-							</a>
-						</div>
-
-						<div class="mb-3">
-							<label class="d-block form-label">Category</label>
-							<label class="form-check form-check-inline">
-								<input type="checkbox" class="form-check-input" checked>
-								<span class="form-check-label">Invoices</span>
-							</label>
-							<label class="form-check form-check-inline">
-								<input type="checkbox" class="form-check-input">
-								<span class="form-check-label">Files</span>
-							</label>
-							<label class="form-check form-check-inline">
-								<input type="checkbox" class="form-check-input">
-								<span class="form-check-label">Users</span>
-							</label>
-						</div>
-
-						<div class="mb-3">
-							<label class="form-label">Addition</label>
-							<div class="input-group">
-								<select class="form-select w-auto flex-grow-0">
-									<option value="1" selected>has</option>
-									<option value="2">has not</option>
-								</select>
-								<input type="text" class="form-control" placeholder="Enter the word(s)">
-							</div>
-						</div>
-
-						<div class="mb-3">
-							<label class="form-label">Status</label>
-							<div class="input-group">
-								<select class="form-select w-auto flex-grow-0">
-									<option value="1" selected>is</option>
-									<option value="2">is not</option>
-								</select>
-								<select class="form-select">
-									<option value="1" selected>Active</option>
-									<option value="2">Inactive</option>
-									<option value="3">New</option>
-									<option value="4">Expired</option>
-									<option value="5">Pending</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="d-flex">
-							<button type="button" class="btn btn-light">Reset</button>
-
-							<div class="ms-auto">
-								<button type="button" class="btn btn-light">Cancel</button>
-								<button type="button" class="btn btn-primary ms-2">Apply</button>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
 
 			<ul class="nav flex-row justify-content-end order-1 order-lg-2">
@@ -437,29 +82,16 @@
 				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
 					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
 						<div class="status-indicator-container">
-							<img src="../../../assets/images/demo/users/face11.jpg" class="w-32px h-32px rounded-pill" alt="">
+							<img src="{{asset('assets/images/demo/users/face11.jpg')}}" class="w-32px h-32px rounded-pill" alt="">
 							<span class="status-indicator bg-success"></span>
 						</div>
-						<span class="d-none d-lg-inline-block mx-lg-2">Victoria</span>
+						<span class="d-none d-lg-inline-block mx-lg-2">{{ Auth::user()->name }}</span>
 					</a>
 
 					<div class="dropdown-menu dropdown-menu-end">
 						<a href="#" class="dropdown-item">
 							<i class="ph-user-circle me-2"></i>
 							My profile
-						</a>
-						<a href="#" class="dropdown-item">
-							<i class="ph-currency-circle-dollar me-2"></i>
-							My subscription
-						</a>
-						<a href="#" class="dropdown-item">
-							<i class="ph-shopping-cart me-2"></i>
-							My orders
-						</a>
-						<a href="#" class="dropdown-item">
-							<i class="ph-envelope-open me-2"></i>
-							My inbox
-							<span class="badge bg-primary rounded-pill ms-auto">26</span>
 						</a>
 						<div class="dropdown-divider"></div>
 						<a href="#" class="dropdown-item">
@@ -488,7 +120,7 @@
 	<div class="page-content">
 
 		<!-- Main sidebar -->
-		<div class="sidebar sidebar-dark sidebar-main sidebar-expand-lg">
+		<div class="sidebar sidebar-dark sidebar-main sidebar-expand-lg" style="background-color: #089101">
 
 			<!-- Sidebar content -->
 			<div class="sidebar-content">
@@ -517,28 +149,90 @@
 					<ul class="nav nav-sidebar" data-nav-type="accordion">
 
 						<!-- Main -->
-						<li class="nav-item-header pt-0">
-							<div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Main</div>
-							<i class="ph-dots-three sidebar-resize-show"></i>
-						</li>
+						<div class="line"></div>
 						<li class="nav-item">
-							<a href="{{route('home')}}" class="nav-link active">
+							<a href="{{route('home')}}" class="nav-link">
 								<i class="ph-house"></i>
 								<span>
 									Dashboard
+								</span>
+							</a>
+						</li>
+						@if (auth()->user()->role==3)
+						<li class="nav-item">
+							<a href="{{route('pertanahan')}}" class="nav-link">
+								<i class="ph-house"></i>
+								<span>
+									Badan Pertanahan Nasional
 									<span class="d-block fw-normal opacity-50">No pending orders</span>
 								</span>
 							</a>
 						</li>
-						@if (auth()->user()->role==2)
-						<li class="nav-item">
-							<a href="{{route('pengadilan')}}" class="nav-link">
-								<i class="ph-house"></i>
-								<span>
-									Pengadilan
-									<span class="d-block fw-normal opacity-50">No pending orders</span>
-								</span>
+						<li class="nav-item nav-item-submenu">
+							<a href="" class="nav-link">
+								<i class="ph-handshake"></i>
+								<span>Kasus Pertanahan</span>
 							</a>
+							<ul class="nav-group-sub collapse">
+								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Kasus Terja</a></li>
+								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
+								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
+								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
+								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
+							</ul>
+						</li>
+						@endif
+						@if (auth()->user()->role==2)
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link">
+								<i class="ph-folder-simple-user"></i>
+								<span>Eksekusi Perkara</span>
+							</a>
+							<ul class="nav-group-sub collapse">
+								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Autocomplete</a></li>
+								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
+								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
+								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
+								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link">
+								<i class="ph-newspaper-clipping"></i>
+								<span>Sertifikat Tanah</span>
+							</a>
+							<ul class="nav-group-sub collapse">
+								<li class="nav-item"><a href="{{route('pengadilan')}}" class="nav-link">Data Kasus</a></li>
+								<li class="nav-item"><a href="{{route('addSertifikatPengadilan')}}" class="nav-link">Tambah Kasus</a></li>
+								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
+								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link">
+								<i class="ph-user-square"></i>
+								<span>Peristiwa Penting</span>
+							</a>
+							<ul class="nav-group-sub collapse">
+								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Autocomplete</a></li>
+								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
+								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
+								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
+								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
+							</ul>
+						</li>
+						<li class="nav-item nav-item-submenu">
+							<a href="#" class="nav-link">
+								<i class="ph-user-plus"></i>
+								<span>Daftar Akun</span>
+							</a>
+							<ul class="nav-group-sub collapse">
+								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Autocomplete</a></li>
+								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
+								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
+								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
+								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
+							</ul>
 						</li>
 						@endif
 						@if (auth()->user()->role==1)
@@ -553,237 +247,20 @@
 						</li>
 						@endif
 						@if (auth()->user()->role==0)
-						<li class="nav-item">
-							<a href="{{route('user')}}" class="nav-link">
-								<i class="ph-house"></i>
-								<span>
-									User
-									<span class="d-block fw-normal opacity-50">No pending orders</span>
-								</span>
-							</a>
-						</li>
-						@endif
 						<li class="nav-item nav-item-submenu">
 							<a href="#" class="nav-link">
-								<i class="ph-users"></i>
-								<span>Users</span>
+								<i class="ph-handshake"></i>
+								<span>User</span>
 							</a>
 							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="index.html" class="nav-link active">Users</a></li>
-								<li class="nav-item"><a href="../../layout_2/full/index.html" class="nav-link">Layout 2</a></li>
-								<li class="nav-item"><a href="../../layout_3/full/index.html" class="nav-link">Layout 3</a></li>
-								<li class="nav-item"><a href="../../layout_4/full/index.html" class="nav-link">Layout 4</a></li>
-								<li class="nav-item"><a href="../../layout_5/full/index.html" class="nav-link">Layout 5</a></li>
-								<li class="nav-item"><a href="../../layout_6/full/index.html" class="nav-link">Layout 6</a></li>
-								<li class="nav-item"><a href="../../layout_7/full/index.html" class="nav-link disabled">Layout 7 <span class="badge align-self-center ms-auto">Coming soon</span></a></li>
-							</ul>
-						</li>
-
-						<!-- Forms -->
-						<li class="nav-item-header">
-							<div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Forms</div>
-							<i class="ph-dots-three sidebar-resize-show"></i>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-note-pencil"></i>
-								<span>Form components</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Autocomplete</a></li>
+								<li class="nav-item"><a href="{{route('addSertifikat')}}" class="nav-link">Ajukan sertifikat</a></li>
 								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
 								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
 								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
 								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
 							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-browser"></i>
-								<span>Form layouts</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="form_layout_horizontal.html" class="nav-link">Horizontal form</a></li>
-								<li class="nav-item"><a href="form_layout_vertical.html" class="nav-link">Vertical form</a></li>
-								<li class="nav-item-divider"></li>
-								<li class="nav-item"><a href="form_layout_grid.html" class="nav-link">Input grid</a></li>
-							</ul>
-						</li>
-						<!-- /forms -->
-
-						<!-- Components -->
-						<li class="nav-item-header">
-							<div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Components</div>
-							<i class="ph-dots-three sidebar-resize-show"></i>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-spinner spinner"></i>
-								<span>Animations</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="animations_css3.html" class="nav-link">CSS3 animations</a></li>
-								<li class="nav-item nav-item-submenu">
-									<a href="#" class="nav-link">Velocity animations</a>
-									<ul class="nav-group-sub collapse">
-										<li class="nav-item"><a href="animations_velocity_basic.html" class="nav-link">Basic usage</a></li>
-										<li class="nav-item"><a href="animations_velocity_ui.html" class="nav-link">UI pack effects</a></li>
-										<li class="nav-item"><a href="animations_velocity_examples.html" class="nav-link">Advanced examples</a></li>
-									</ul>
-								</li>
-							</ul>
-						</li>
-						<!-- /components -->
-
-						<!-- Data visualization -->
-						<li class="nav-item-header">
-							<div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Data visualization</div>
-							<i class="ph-dots-three sidebar-resize-show"></i>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-chart-line"></i>
-								<span>Echarts library</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="echarts_lines.html" class="nav-link">Line charts</a></li>
-								<li class="nav-item"><a href="echarts_areas.html" class="nav-link">Area charts</a></li>
-								<li class="nav-item"><a href="echarts_columns_waterfalls.html" class="nav-link">Columns and waterfalls</a></li>
-								<li class="nav-item"><a href="echarts_bars_tornados.html" class="nav-link">Bars and tornados</a></li>
-								<li class="nav-item"><a href="echarts_scatter.html" class="nav-link">Scatter charts</a></li>
-								<li class="nav-item"><a href="echarts_pies_donuts.html" class="nav-link">Pies and donuts</a></li>
-								<li class="nav-item"><a href="echarts_funnels_calendars.html" class="nav-link">Funnels and calendars</a></li>
-								<li class="nav-item"><a href="echarts_candlesticks_others.html" class="nav-link">Candlesticks and others</a></li>
-							</ul>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-chart-bar"></i>
-								<span>D3 library</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="d3_lines_basic.html" class="nav-link">Simple lines</a></li>
-								<li class="nav-item"><a href="d3_lines_advanced.html" class="nav-link">Advanced lines</a></li>
-								<li class="nav-item"><a href="d3_bars_basic.html" class="nav-link">Simple bars</a></li>
-								<li class="nav-item"><a href="d3_bars_advanced.html" class="nav-link">Advanced bars</a></li>
-								<li class="nav-item"><a href="d3_pies.html" class="nav-link">Pie charts</a></li>
-								<li class="nav-item"><a href="d3_circle_diagrams.html" class="nav-link">Circle diagrams</a></li>
-								<li class="nav-item"><a href="d3_tree.html" class="nav-link">Tree layout</a></li>
-								<li class="nav-item"><a href="d3_other.html" class="nav-link">Other charts</a></li>
-							</ul>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-chart-pie-slice"></i>
-								<span>C3 library</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="c3_lines_areas.html" class="nav-link">Lines and areas</a></li>
-								<li class="nav-item"><a href="c3_bars_pies.html" class="nav-link">Bars and pies</a></li>
-								<li class="nav-item"><a href="c3_advanced.html" class="nav-link">Advanced examples</a></li>
-								<li class="nav-item"><a href="c3_axis.html" class="nav-link">Chart axis</a></li>
-								<li class="nav-item"><a href="c3_grid.html" class="nav-link">Grid options</a></li>
-							</ul>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-google-logo"></i>
-								<span>Google charts</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="google_lines.html" class="nav-link">Line charts</a></li>
-								<li class="nav-item"><a href="google_bars.html" class="nav-link">Bar charts</a></li>
-								<li class="nav-item"><a href="google_pies.html" class="nav-link">Pie charts</a></li>
-								<li class="nav-item"><a href="google_scatter_bubble.html" class="nav-link">Bubble &amp; scatter charts</a></li>
-								<li class="nav-item"><a href="google_other.html" class="nav-link">Other charts</a></li>
-							</ul>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-map-pin"></i>
-								<span>Maps integration</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="maps_leaflet.html" class="nav-link">Leaflet maps</a></li>
-								<li class="nav-item"><a href="maps_echarts.html" class="nav-link">ECharts maps</a></li>
-								<li class="nav-item"><a href="maps_vector.html" class="nav-link disabled">D3.js maps <span class="badge bg-transparent align-self-center ms-auto">Coming soon</span></a></li>
-							</ul>
-						</li>
-						<!-- /data visualization -->
-
-						<!-- Tables -->
-						<li class="nav-item-header">
-							<div class="text-uppercase fs-sm lh-sm opacity-50 sidebar-resize-hide">Tables</div>
-							<i class="ph-dots-three sidebar-resize-show"></i>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-table"></i>
-								<span>Basic tables</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="table_basic.html" class="nav-link">Basic examples</a></li>
-								<li class="nav-item"><a href="table_sizing.html" class="nav-link">Table sizing</a></li>
-								<li class="nav-item"><a href="table_borders.html" class="nav-link">Table borders</a></li>
-								<li class="nav-item"><a href="table_styling.html" class="nav-link">Table styling</a></li>
-								<li class="nav-item"><a href="table_elements.html" class="nav-link">Table elements</a></li>
-							</ul>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-square-half-bottom"></i>
-								<span>Grid.js tables</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="gridjs_basic.html" class="nav-link">Basic</a></li>
-								<li class="nav-item"><a href="gridjs_data_source.html" class="nav-link">Data source</a></li>
-								<li class="nav-item"><a href="gridjs_server_side.html" class="nav-link">Server side</a></li>
-								<li class="nav-item"><a href="gridjs_customizing.html" class="nav-link">Customizing</a></li>
-								<li class="nav-item"><a href="gridjs_advanced.html" class="nav-link">Advanced</a></li>
-							</ul>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-square-half"></i>
-								<span>Data tables</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="datatable_basic.html" class="nav-link">Basic initialization</a></li>
-								<li class="nav-item"><a href="datatable_styling.html" class="nav-link">Basic styling</a></li>
-								<li class="nav-item"><a href="datatable_advanced.html" class="nav-link">Advanced examples</a></li>
-								<li class="nav-item"><a href="datatable_sorting.html" class="nav-link">Sorting options</a></li>
-								<li class="nav-item"><a href="datatable_api.html" class="nav-link">Using API</a></li>
-								<li class="nav-item"><a href="datatable_data_sources.html" class="nav-link">Data sources</a></li>
-							</ul>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
-								<i class="ph-puzzle-piece"></i>
-								<span>Data tables extensions</span>
-							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="datatable_extension_reorder.html" class="nav-link">Columns reorder</a></li>
-								<li class="nav-item"><a href="datatable_extension_row_reorder.html" class="nav-link">Row reorder</a></li>
-								<li class="nav-item"><a href="datatable_extension_fixed_columns.html" class="nav-link">Fixed columns</a></li>
-								<li class="nav-item"><a href="datatable_extension_autofill.html" class="nav-link">Auto fill</a></li>
-								<li class="nav-item"><a href="datatable_extension_key_table.html" class="nav-link">Key table</a></li>
-								<li class="nav-item"><a href="datatable_extension_scroller.html" class="nav-link">Scroller</a></li>
-								<li class="nav-item"><a href="datatable_extension_select.html" class="nav-link">Select</a></li>
-								<li class="nav-item"><a href="datatable_extension_responsive.html" class="nav-link">Responsive</a></li>
-								<li class="nav-item nav-item-submenu">
-									<a href="#" class="nav-link">Buttons</a>
-									<ul class="nav-group-sub collapse">
-										<li class="nav-item"><a href="datatable_extension_buttons_init.html" class="nav-link">Initialization</a></li>
-										<li class="nav-item"><a href="datatable_extension_buttons_pdf.html" class="nav-link">PDF buttons</a></li>
-										<li class="nav-item"><a href="datatable_extension_buttons_excel.html" class="nav-link">Excel buttons</a></li>
-										<li class="nav-item"><a href="datatable_extension_buttons_print.html" class="nav-link">Print buttons</a></li>
-										<li class="nav-item"><a href="datatable_extension_buttons_html5.html" class="nav-link">HTML5 buttons</a></li>
-									</ul>
-								</li>
-								<li class="nav-item"><a href="datatable_extension_colvis.html" class="nav-link">Columns visibility</a></li>
-							</ul>
-						</li>
-						<!-- /tables -->
+						@endif
 					</ul>
 				</div>
 				<!-- /main navigation -->
@@ -800,37 +277,6 @@
 
 			<!-- Inner content -->
 			<div class="content-inner">
-
-				<!-- Page header -->
-				<div class="page-header page-header-light shadow">
-					<div class="page-header-content d-lg-flex">
-						<div class="d-flex">
-							<h4 class="page-title mb-0">
-								Home - <span class="fw-normal">Dashboard</span>
-							</h4>
-
-							<a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
-								<i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-							</a>
-						</div>
-					</div>
-
-					<div class="page-header-content d-lg-flex border-top">
-						<div class="d-flex">
-							<div class="breadcrumb py-2">
-								<a href="index.html" class="breadcrumb-item"><i class="ph-house"></i></a>
-								<a href="#" class="breadcrumb-item">Home</a>
-								<span class="breadcrumb-item active">Dashboard</span>
-							</div>
-
-							<a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
-								<i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-							</a>
-						</div>
-					</div>
-				</div>
-				<!-- /page header -->
-
 
 				<!-- Content area -->
                 @yield('content')
@@ -1099,63 +545,6 @@
 					</div>
 				</label>
 			</div>
-
-			<div class="fw-semibold mb-2">Direction</div>
-			<div class="list-group mb-3">
-				<label class="list-group-item list-group-item-action form-check border-width-1 rounded mb-0">
-					<div class="d-flex flex-fill my-1">
-						<div class="form-check-label d-flex me-2">
-							<i class="ph-translate ph-lg me-3"></i>
-							<div>
-								<span class="fw-bold">RTL direction</span>
-								<div class="text-muted">Toggle between LTR and RTL</div>
-							</div>
-						</div>
-						<input type="checkbox" name="layout-direction" value="rtl" class="form-check-input cursor-pointer m-0 ms-auto">
-					</div>
-				</label>
-			</div>
-
-			<div class="fw-semibold mb-2">Layouts</div>
-			<div class="row">
-				<div class="col-12">
-					<a href="index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_1.png" class="img-fluid img-thumbnail bg-primary bg-opacity-20 border-primary" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_2/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_2.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_3/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_3.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_4/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_4.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_5/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_5.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_6/full/index.html" class="d-block">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_6.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="border-top text-center py-2 px-3">
-			<a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="btn btn-yellow fw-semibold w-100 my-1" target="_blank">
-				<i class="ph-shopping-cart me-2"></i>
-				Purchase Limitless
-			</a>
 		</div>
 	</div>
 	<!-- /demo config -->

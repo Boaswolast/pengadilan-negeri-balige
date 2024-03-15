@@ -30,5 +30,5 @@
     </div>
 </div>
 <!-- /page header -->
-<p>dukcapil</p>
+<p>user</p>
 @endsection
