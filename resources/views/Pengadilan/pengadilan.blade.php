@@ -130,7 +130,10 @@
     </script>
     <!-- Main charts -->
     <div class="row">
-        <div class="card">
+        <div class="addGugatan mt-1">
+            <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-success">Tambah Pihak</a>
+        </div>
+        <div class="card mt-3">
             <div class="card-header">
                 <h5 class="mb-0">Tabel User</h5>
             </div>
@@ -163,19 +166,20 @@
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info">
+                                            <a href="{{route('detailAllSertifikat')}}" class="dropdown-item text-info">
+                                            {{-- <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info"> --}}
                                                 <i class="ph-eye me-2"></i>
                                                 Detail
                                             </a>
-                                            <a href="{{route('editSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-secondary">
+                                            {{-- <a href="{{route('editSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-secondary">
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
-                                            </a>
+                                            </a> --}}
                                             <form action="{{route('deletedSertifikat', ['id' => $sertifikat->id])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                 <i class="ph-trash me-2"></i>
                                                 @csrf
                                                 @method('delete')
-                                                <button class="dropdown-item text-danger" type="submit">Hapus</button>
+                                                <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
                                             </form>
                                         </div>
                                     </div>

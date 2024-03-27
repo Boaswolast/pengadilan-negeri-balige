@@ -18,3 +18,11 @@
 .kartu{
     width: 400px;
 }
+.addKasus{
+    text-align: right;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.addGugatan{
+    text-align: right;
+}

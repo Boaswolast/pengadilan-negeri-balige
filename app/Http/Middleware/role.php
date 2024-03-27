@@ -15,7 +15,7 @@ class role
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if (in_array($request->user()->role,$roles)){
+        if (in_array($request->user()->role_id,$roles)){
             return $next($request);
         }
         return redirect('/home');
