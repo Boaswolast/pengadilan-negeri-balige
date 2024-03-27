@@ -253,7 +253,7 @@
 								<span>User</span>
 							</a>
 							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="{{route('addSertifikat')}}" class="nav-link">Ajukan sertifikat</a></li>
+								<li class="nav-item"><a href="{{route('addSertifikatPengadilan')}}" class="nav-link">Ajukan sertifikat</a></li>
 								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
 								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
 								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>

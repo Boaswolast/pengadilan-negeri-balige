@@ -12,6 +12,7 @@ class PengadilanController extends Controller
      */
         public function index()
         {
+            
             $data = DB::table('sertifikat_tanah')->get();
             return view('Pengadilan/pengadilan',['data' => $data]);
         }
