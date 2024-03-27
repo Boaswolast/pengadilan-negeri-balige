@@ -21,22 +21,29 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => ['auth','role:0']], function(){
+Route::group(['middleware' => ['auth','role_id:0']], function(){
     Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
     Route::get('/addSertifikatTanahUser', [App\Http\Controllers\AddSertifikatTanahUserController::class, 'index'])->name('addSertifikatUser');
 });
 
-Route::group(['middleware' => ['auth','role:1']], function(){
+Route::group(['middleware' => ['auth','role_id:1']], function(){
     Route::get('/dukcapil', [App\Http\Controllers\DukcapilController::class, 'index'])->name('dukcapil');
 });
 
-Route::group(['middleware' => ['auth','role:2']], function(){
+Route::group(['middleware' => ['auth','role_id:2']], function(){
+    //data sementara
+    Route::get('/addDataDiriSertifikat', [App\Http\Controllers\PengadilanController::class, 'addDataDiri'])->name('addDataDiriSertifikat');
+    Route::post('/addTemporarySertifikat', [App\Http\Controllers\PengadilanController::class, 'addTemporarySertifikat'])->name('addTemporarySertifikat');
+    Route::get('/showTemporarySertifikat', [App\Http\Controllers\PengadilanController::class, 'showTemporarySertifikat'])->name('showTemporarySertifikat');
+    //--end data sementara
+
     Route::get('/pengadilan', [App\Http\Controllers\PengadilanController::class, 'index'])->name('pengadilan');
     Route::get('/addSertifikat', [App\Http\Controllers\PengadilanController::class, 'addSertifikat'])->name('addSertifikatPengadilan');
     Route::post('/storeSertifikat', [App\Http\Controllers\PengadilanController::class, 'storeSertifikat'])->name('storeSertifikat');
     Route::put('/updateSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'update'])->name('updateSertifikat');
     Route::get('/editSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'edit'])->name('editSertifikat');
     Route::get('/detailSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'show'])->name('detailSertifikat');
+    Route::get('/detailAllSertifikat', [App\Http\Controllers\PengadilanController::class, 'showDataAll'])->name('detailAllSertifikat');
     Route::delete('/deletedSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'destroy'])->name('deletedSertifikat');
 
     //coba coba
@@ -46,7 +53,7 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::post('/saveTemporaryData', [App\Http\Controllers\PengadilanController::class, 'saveData'])->name('saveTemporaryData');
 });
 
-Route::group(['middleware' => ['auth','role:3']], function(){
+Route::group(['middleware' => ['auth','role_id:3']], function(){
     Route::get('/pertanahan', [App\Http\Controllers\PertanahanController::class, 'index'])->name('pertanahan');
     Route::get('/kasusPertanahan', [App\Http\Controllers\KasusPertanahanController::class, 'index'])->name('kasusPertanahan');
 });

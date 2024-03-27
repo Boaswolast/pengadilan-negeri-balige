@@ -48,6 +48,16 @@
 	<script src="{{asset('assets/demo/pages/uploader_bootstrap.js')}}"></script>
 	<!-- /theme JS files -->
 
+	<!-- quill -->
+	<script src="{{asset('assets/js/vendor/editors/quill/quill.min.js')}}"></script>
+	<script src="{{asset('assets/demo/pages/editor_quill.js')}}"></script>
+	<!-- /quill -->
+
+	<!-- alert -->
+	<script src="{{asset('assets/js/vendor/notifications/sweet_alert.min.js')}}"></script>
+	<script src="{{asset('assets/demo/pages/extra_sweetalert.js')}}"></script>
+	<!-- //alert -->
+
 	<!-- Generate Sendiri -->
 	<link href="{{asset('assets/style.css')}}" id="stylesheet" rel="stylesheet" type="text/css">
 
@@ -158,7 +168,7 @@
 								</span>
 							</a>
 						</li>
-						@if (auth()->user()->role==3)
+						@if (auth()->user()->role_id==3)
 						<li class="nav-item">
 							<a href="{{route('pertanahan')}}" class="nav-link">
 								<i class="ph-house"></i>
@@ -182,7 +192,7 @@
 							</ul>
 						</li>
 						@endif
-						@if (auth()->user()->role==2)
+						@if (auth()->user()->role_id==2)
 						<li class="nav-item nav-item-submenu">
 							<a href="#" class="nav-link">
 								<i class="ph-folder-simple-user"></i>
@@ -235,7 +245,7 @@
 							</ul>
 						</li>
 						@endif
-						@if (auth()->user()->role==1)
+						@if (auth()->user()->role_id==1)
 						<li class="nav-item">
 							<a href="{{route('dukcapil')}}" class="nav-link">
 								<i class="ph-house"></i>
@@ -246,7 +256,7 @@
 							</a>
 						</li>
 						@endif
-						@if (auth()->user()->role==0)
+						@if (auth()->user()->role_id==0)
 						<li class="nav-item nav-item-submenu">
 							<a href="#" class="nav-link">
 								<i class="ph-handshake"></i>
@@ -280,6 +290,7 @@
 
 				<!-- Content area -->
                 @yield('content')
+				@include('sweetalert::alert')
 				<!-- /content area -->
 
 
