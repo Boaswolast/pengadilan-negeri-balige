@@ -60,7 +60,7 @@
                     columnDefs: [{
                         orderable: false,
                         width: 100,
-                        targets: [4]
+                        targets: [5]
                     }],
                     dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
                     language: {
@@ -129,6 +129,9 @@
     </script>
     <!-- Main charts -->
     <div class="row">
+        <div class="addGugatan mb-3">
+            <a href="{{route('addPeristiwa')}}" type="button" class="btn btn-success">Tambah Catatan</a>
+        </div>
         <div class="card">
             {{-- <div class="card-header">
                 <h5 class="mb-0">Tabel User</h5>
@@ -138,10 +141,10 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Penggugat</th>
-                        <th>Tanggal Gugatan</th>
+                        <th>Penggugat/Pemohon</th>
                         <th>Tergugat</th>
-                        {{-- <th>Status Permohonan</th> --}}
+                        <th>Tanggal Permohonan</th>
+                        <th>Status Permohonan</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -151,33 +154,33 @@
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{!! nl2br(e($d->penggugat)) !!}</td>
-                            {{-- <td>{!! nl2br(e($d->penggugat)) !!}</td> --}}
-                            <td>{{$d->created_at}}</td>
                             <td>{!! nl2br(e($d->tergugat)) !!}</td>
-                            {{-- <td>{{$sertifikat->alamat}}</td>
-                            <td>{{$sertifikat->status}}</td> --}}
+                            <td>{{\Carbon\Carbon::parse($d->tanggal_permohonan)->format('d F Y')}}</td>
+                            <td>{{$d->status_permohonan}}</td>
+                            {{--<td>{{$sertifikat->status}}</td> --}}
                             <td class="text-center">
                                 <div class="d-inline-flex">
                                     <div class="dropdown">
                                         <a href="#" class="text-body" data-bs-toggle="dropdown">
                                             <i class="ph-list"></i>
                                         </a>
-
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="" class="dropdown-item text-info">
-                                                <i class="ph-eye me-2"></i>
-                                                Detail
-                                            </a>
-                                            <a href="" class="dropdown-item text-secondary">
-                                                <i class="ph-pencil me-2"></i>
-                                                Edit
-                                            </a>
-                                            <form action="" type="button" method="POST" class="dropdown-item text-danger">
-                                                <i class="ph-trash me-2"></i>
-                                                @csrf
-                                                @method('delete')
-                                                <button class="dropdown-item text-danger" type="submit">Hapus</button>
-                                            </form>
+                                                <a href="{{route('detailPeristiwa',['id'=>$d->id_peristiwa_penting])}}" class="dropdown-item text-info">
+                                                {{-- <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info"> --}}
+                                                    <i class="ph-eye me-2"></i>
+                                                    Detail
+                                                </a>
+                                                {{-- <a href="{{route('editSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-secondary">
+                                                    <i class="ph-pencil me-2"></i>
+                                                    Edit
+                                                </a> --}}
+                                                <form action="{{route('deletedPeristiwa', ['id' => $d->id_peristiwa_penting])}}" type="button" method="POST" class="dropdown-item text-danger">
+                                                    <i class="ph-trash me-2"></i>
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

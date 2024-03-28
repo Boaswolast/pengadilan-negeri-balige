@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PeristiwaController extends Controller
 {
@@ -33,12 +34,31 @@ class PeristiwaController extends Controller
         //
     }
 
+    public function createPihak()
+    {
+        //
+    }
+
+    public function storePihak()
+    {
+        //
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $data = DB::select('CALL viewAll_peristiwaPenting_dataDiri(?)', array($id));
+        $data = collect($data);
+        return view('Peristiwa/detail',['data' => $data]);
+    }
+
+    public function showPihak(string $id)
+    {
+        $data = DB::select('CALL view_peristiwaPenting_dataDiri(?)', array($id));
+        $data = collect($data);
+        return view('Peristiwa/detailPihak',['data' => $data]);
     }
 
     /**
