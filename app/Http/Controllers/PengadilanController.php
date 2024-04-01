@@ -11,11 +11,12 @@ class PengadilanController extends Controller
     /**
      * Display a listing of the resource.
      */
-        public function index()
-        {
-            $data = DB::table('pemblokiran_sertifikat')->get();
-            return view('Pengadilan/pengadilan',['data' => $data]);
-        }
+    public function index()
+    {
+        $data = DB::select('CALL viewAll_sertifikatTanah()');
+        $data = collect($data);
+        return view('Pengadilan/pengadilan',['data' => $data]);
+    }
 
     public function editSertifikat()
     {
@@ -36,7 +37,14 @@ class PengadilanController extends Controller
     //Data Sementara
     public function addDataDiri()
     {
-        return view('Pengadilan/addDataDiriSertifikat');
+        $provinsi = DB::table('provinces')->get();
+        $kabupaten = DB::table('cities')->get();
+        $kecamatan = DB::table('districts')->get();
+        return view('Pengadilan/addDataDiriSertifikat', [
+            'provinsi' => $provinsi,
+            'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+        ]);
     }
 
      public function addTemporarySertifikat(Request $request)
@@ -58,6 +66,8 @@ class PengadilanController extends Controller
          $status_kawin = $request->input('status_kawin');
          $pendidikan = $request->input('pendidikan');
          $email = $request->input('email');
+         $no_telp = $request->input('no_telp');
+         $nik = $request->input('nik');
  
          $temporarySertifikat = [
              'status_pihak' => $status_pihak,
@@ -77,6 +87,8 @@ class PengadilanController extends Controller
              'status_kawin' => $status_kawin,
              'pendidikan' => $pendidikan,
              'email' => $email,
+             'no_telp' => $no_telp,
+             'nik' => $nik,
          ];
          // Simpan data dalam session atau variabel sementara
          session()->push('temporary_sertifikat', $temporarySertifikat);
@@ -106,7 +118,7 @@ class PengadilanController extends Controller
     public function storeSertifikat(Request $request){
         $request->validate([
             'petitum' => 'required',
-            'permohonan' => 'required',
+            'dokumen_gugatan' => 'required|mimes:pdf,doc,docx',
         ]);
 
         $temporarySertifikat = session('temporary_sertifikat', []);
@@ -117,10 +129,15 @@ class PengadilanController extends Controller
             // Buat UUID untuk sertifikat
             $dokumenUuid = Str::uuid();
 
-            DB::table('dokumen_tanah')->insert([
+            $dokumen = $request->file('dokumen_gugatan');
+            $dokumenName = $dokumen->getClientOriginalName();
+            $mimeType = $dokumen->getClientMimeType();
+            $dokumenPath = $dokumen->storeAs('public/dokumen', $dokumenName);
+
+            DB::table('pemblokiran_sertifikat')->insert([
                 'kode_unik' => $dokumenUuid,
                 'petitum' => $request->petitum,
-                'dokumen_gugatan' => $request->dokumen_gugatan,
+                'dokumen_gugatan' => $dokumenPath,
             ]);
 
             foreach ($temporarySertifikat as $sertifikat) {
@@ -143,6 +160,8 @@ class PengadilanController extends Controller
                     'status_kawin' => $sertifikat['status_kawin']?? null,
                     'pendidikan' => $sertifikat['pendidikan']?? null,
                     'email' => $sertifikat['email']?? null,
+                    'no_telp' => $sertifikat['no_telp']?? null,
+                    'nik' => $sertifikat['nik']?? null,
                     // Anda dapat menambahkan kolom lainnya sesuai kebutuhan
                 ]);
             }
@@ -157,7 +176,8 @@ class PengadilanController extends Controller
             DB::rollback();
             // dd($e->getMessage()); 
             // Tangani kesalahan jika terjadi
-            return redirect()->route('pengadilan')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            return redirect()->route('addSertifikatPengadilan')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            // dd($e->getMessage());
         }
     }
     // public function storeSertifikat(Request $request)
@@ -220,9 +240,19 @@ class PengadilanController extends Controller
      * Display the specified resource.
      */
     // detail sertifikat
-    public function showDataAll()
+    public function showDataAll(string $id)
     {
-        return view('Pengadilan.DetailSertifikat.detailDataSertifikat');
+        $dataDiriAll = DB::select('CALL viewAll_sertifikatTanah_dataDiri(?)', array($id));
+        $dataGugatan = DB::select('CALL view_sertifikatTanah_gugatan(?)', array($id));
+        $dataPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
+        $dataDiriAll = collect($dataDiriAll);
+        $dataGugatan = collect($dataGugatan);
+        $dataPetitum = collect($dataPetitum);
+        return view('Pengadilan.DetailSertifikat.detailDataSertifikat', [
+            'dataDiriAll' => $dataDiriAll,
+            'dataGugatan' => $dataGugatan,
+            'dataPetitum' => $dataPetitum,
+        ]);
     }
 
     public function show(string $id)
@@ -276,10 +306,26 @@ class PengadilanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $kode_unik)
     {
-        $sertifikat = DB::table('sertifikat_tanah')->where('id', $id)->delete();
-        return redirect()->route('pengadilan', ['sertifikat_tanah' => $sertifikat]);
+        DB::beginTransaction();
+        try {
+            $sertifikat = DB::table('pemblokiran_sertifikat')->where('kode_unik', $kode_unik)->first();
+    
+            DB::table('data_diri_pihak')->where('kode_unik', $kode_unik)->delete();
+            DB::table('pemblokiran_sertifikat')->where('kode_unik', $kode_unik)->delete();
+    
+            DB::commit();
+    
+            return redirect()->route('pengadilan', ['pemblokiran_sertifikat' => $sertifikat])->with('success', 'Data berhasil dihapus');
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan, rollback transaksi
+            DB::rollback();
+    
+            // Tampilkan pesan error atau lakukan penanganan lain sesuai kebutuhan
+            return redirect()->route('pengadilan')->with('error', 'Gagal menghapus data');
+        }
+        // $sertifikat = DB::table('sertifikat_tanah')->where('id', $id)->delete();
     }
 
     //coba coba

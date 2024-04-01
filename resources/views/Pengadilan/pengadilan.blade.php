@@ -143,8 +143,8 @@
                     <tr>
                         <th>No</th>
                         <th>Penggugat</th>
-                        <th>Tanggal Gugatan</th>
                         <th>Tergugat</th>
+                        <th>Tanggal Gugatan</th>
                         <th>Status Permohonan</th>
                         <th class="text-center">Aksi</th>
                     </tr>
@@ -154,10 +154,10 @@
                         @foreach ($data as $sertifikat)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$sertifikat->nama}}</td>
-                            <td>{{$sertifikat->created_at}}</td>
-                            <td>{{$sertifikat->alamat}}</td>
-                            <td>{{$sertifikat->status}}</td>
+                            <td>{{$sertifikat->penggugat}}</td>
+                            <td>{{$sertifikat->tergugat}}</td>
+                            <td>{{$sertifikat->tanggal_gugatan}}</td>
+                            <td>{{$sertifikat->status_permohonan}}</td>
                             <td class="text-center">
                                 <div class="d-inline-flex">
                                     <div class="dropdown">
@@ -166,7 +166,7 @@
                                         </a>
 
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="{{route('detailAllSertifikat')}}" class="dropdown-item text-info">
+                                            <a href="{{route('detailAllSertifikat', ['id' => $sertifikat->id_pemblokiran])}}" class="dropdown-item text-info">
                                             {{-- <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info"> --}}
                                                 <i class="ph-eye me-2"></i>
                                                 Detail
@@ -175,7 +175,7 @@
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a> --}}
-                                            <form action="{{route('deletedSertifikat', ['id' => $sertifikat->id])}}" type="button" method="POST" class="dropdown-item text-danger">
+                                            <form action="{{route('deletedSertifikat', ['kode_unik' => $sertifikat->kode_unik])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                 <i class="ph-trash me-2"></i>
                                                 @csrf
                                                 @method('delete')

@@ -54,13 +54,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @if(!@empty())
-                        @foreach() --}}
+                        @if(!@empty($dataDiriAll))
+                        @foreach($dataDiriAll as $data)
                         <tr>
-                            <td>2</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>3</td>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$data->nama}}</td>
+                            <td>{{$data->status_pihak}}</td>
+                            <td>{{$data->email}}</td>
                             <td class="text-center">
                                 <div class="d-inline-flex">
                                     <div class="dropdown">
@@ -88,18 +88,19 @@
                                 </div>
                             </td>
                         </tr>
-                        {{-- @endforeach
+                        @endforeach
                         @else
                         <tr>
                             <td colspan="4" style="text-align: center">Tidak ada data yang tersedia.</td>
                         </tr>
-                        @endif --}}
+                        @endif
                     </tbody>
                 </table>
             </div>
             <div id="petitum" class="tab-content">
-                <h3>Petitum Content</h3>
-                <p>Content for Petitum tab goes here.</p>
+                @foreach($dataPetitum as $data)
+                    <div class="mt-4">{!! $data->petitum !!}</div>
+                @endforeach
             </div>
             <div id="gugatan" class="tab-content">
                 <h3>Gugatan Content</h3>

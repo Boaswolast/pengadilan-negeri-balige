@@ -168,7 +168,7 @@
 								</span>
 							</a>
 						</li>
-						@if (auth()->user()->role_id==3)
+						@if (auth()->user()->role==3)
 						<li class="nav-item">
 							<a href="{{route('pertanahan')}}" class="nav-link">
 								<i class="ph-house"></i>
@@ -192,7 +192,7 @@
 							</ul>
 						</li>
 						@endif
-						@if (auth()->user()->role_id==2)
+						@if (auth()->user()->role==2)
 						<li class="nav-item nav-item-submenu">
 							<a href="#" class="nav-link">
 								<i class="ph-folder-simple-user"></i>
@@ -245,7 +245,7 @@
 							</ul>
 						</li>
 						@endif
-						@if (auth()->user()->role_id==1)
+						@if (auth()->user()->role==1)
 						<li class="nav-item">
 							<a href="{{route('dukcapil')}}" class="nav-link">
 								<i class="ph-house"></i>
@@ -256,7 +256,7 @@
 							</a>
 						</li>
 						@endif
-						@if (auth()->user()->role_id==0)
+						@if (auth()->user()->role==0)
 						<li class="nav-item nav-item-submenu">
 							<a href="#" class="nav-link">
 								<i class="ph-handshake"></i>

@@ -45,14 +45,11 @@
                             <label class="col-lg-4 col-form-label">Status Pihak:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="status_pihak">
-                                    <option value="opt1">Pilih Status Pihak</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="#">Pilih Status Pihak</option>
+                                    <option value="Penggugat">Penggugat</option>
+                                    <option value="Tergugat">Tergugat</option>
+                                    <option value="Intervensi">Intervensi</option>
+                                    <option value="Turut Tergugat">Turut Tergugat</option>
                                 </select>
                             </div>
                         </div>
@@ -61,14 +58,10 @@
                             <label class="col-lg-4 col-form-label">Jenis Pihak:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="jenis_pihak">
-                                    <option value="opt1">Pilih Pihak</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="#">Pilih Pihak</option>
+                                    <option value="Perorangan">Perorangan</option>
+                                    <option value="Pemerintah">Pemerintah</option>
+                                    <option value="Badan Hukum">Badan Hukum</option>
                                 </select>
                             </div>
                         </div>
@@ -108,14 +101,9 @@
                             <label class="col-lg-4 col-form-label">Jenis Kelamin:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="jenis_kelamin">
-                                    <option value="opt1">Pilih Jenis Kelamin</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="#">Pilih Jenis Kelamin</option>
+                                    <option value="Laki Laki">Laki-Laki</option>
+                                    <option value="Perempuan">Perempuan</option>
                                 </select>
                             </div>
                         </div>
@@ -138,14 +126,10 @@
                             <label class="col-lg-4 col-form-label">Provinsi:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="provinsi">
-                                    <option value="opt1">Pilih Provinsi</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="#">Pilih Provinsi</option>
+                                    @foreach($provinsi as $item)
+                                        <option value="{{$item->prov_name}}">{{$item->prov_name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -154,14 +138,10 @@
                             <label class="col-lg-4 col-form-label">Kabupaten:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="kabupaten">
-                                    <option value="opt1">Pilih Kabupaten</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="#">Pilih Kabupaten</option>
+                                    @foreach($kabupaten as $item)
+                                        <option value="{{$item->city_name}}">{{$item->city_name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -170,14 +150,10 @@
                             <label class="col-lg-4 col-form-label">Kecamatan:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="kecamatan">
-                                    <option value="opt1">Pilih kecamatan</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="#">Pilih kecamatan</option>
+                                    @foreach($kecamatan as $item)
+                                        <option value="{{$item->dis_name}}">{{$item->dis_name}}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -201,13 +177,8 @@
                             <div class="col-lg-8">
                                 <select class="form-select" name="status_kawin">
                                     <option value="opt1">Pilih Status Kawin</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="Kawin">Kawin</option>
+                                    <option value="Belum Kawin">Belum Kawin</option>
                                 </select>
                             </div>
                         </div>
@@ -216,14 +187,13 @@
                             <label class="col-lg-4 col-form-label">Pendidikan:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="pendidikan">
-                                    <option value="opt1">Pilih Pendidikan</option>
-                                    <option value="opt2">Option 2</option>
-                                    <option value="opt3">Option 3</option>
-                                    <option value="opt4">Option 4</option>
-                                    <option value="opt5">Option 5</option>
-                                    <option value="opt6">Option 6</option>
-                                    <option value="opt7">Option 7</option>
-                                    <option value="opt8">Option 8</option>
+                                    <option value="">Pilih Pendidikan</option>
+                                    <option value="SD">Sekolah Dasar (SD)</option>
+                                    <option value="SMP">OSekolah Menengah Pertama (SMP)</option>
+                                    <option value="SMA">Sekolah Menengah Atas (SMA)</option>
+                                    <option value="Sarjana">Sarjana (S1)</option>
+                                    <option value="Magister">Magister (S2)</option>
+                                    <option value="Doktoral">Doktoral (S3)</option>
                                 </select>
                             </div>
                         </div>
@@ -234,6 +204,21 @@
                                 <input type="email" name="email" class="form-control" placeholder="Email">
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <label class="col-lg-4 col-form-label">No Telepon:</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="no_telp" class="form-control" placeholder="No Telepon">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-lg-4 col-form-label">NIK:</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="nik" class="form-control" placeholder="NIK">
+                            </div>
+                        </div>
+
                         <div class="text-end mt-4">
                             <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
                             <button type="submit" class="btn btn-success">Tambah <i class="ph-paper-plane-tilt ms-2"></i></button>

@@ -1,6 +1,7 @@
 @extends('layouts.pengadilan')
 @section('content')
 
+
     <!-- Page header -->
     <div class="page-header page-header-light shadow">
         <div class="page-header-content d-lg-flex">
@@ -41,7 +42,7 @@
             <div class="card-body border-top">
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1">
-                        <form class="wizard-form steps-basic" action="{{route('storeSertifikat')}}" method="POST">
+                        <form class="wizard-form steps-basic" action="{{route('storeSertifikat')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <h6>Data Diri</h6>
                             <fieldset>
@@ -91,17 +92,17 @@
                             <fieldset>
                                 <div class="card">
                                     <div class="border-top">
-                                        <div class="quill-placeholder" data-name="petitum" id="petitum-input" data-name="petitum"></div>
-                                        <input type="hidden" name="petitum" id="petitum-input">
+                                        <div class="quill-basic" id="quill-editor" name="petitum"></div>
                                     </div>
                                 </div>
+                                <input type="hidden" name="petitum" id="petitum-input">
                             </fieldset>
 
                             <h6>Permohonan</h6>
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="permohonan" class="file-input">
+                                        <input type="file" name="dokumen_gugatan" class="file-input">
                                     </div>
                                 </div>
                             </fieldset>
