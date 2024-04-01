@@ -51,6 +51,23 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::get('/showTemporaryData', [App\Http\Controllers\PengadilanController::class, 'showTemporaryData'])->name('showTemporaryData');
     Route::post('/addTemporaryData', [App\Http\Controllers\PengadilanController::class, 'addTemporaryData'])->name('addTemporaryData');
     Route::post('/saveTemporaryData', [App\Http\Controllers\PengadilanController::class, 'saveData'])->name('saveTemporaryData');
+
+    // peristiwa penting
+    Route::get('/peristiwa', [App\Http\Controllers\PeristiwaController::class, 'index'])->name('peristiwa');
+    Route::get('/addPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'create'])->name('addPeristiwa');
+    Route::post('/storePeristiwa', [App\Http\Controllers\PeristiwaController::class, 'store'])->name('storePeristiwa');
+    Route::put('/updatePeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'update'])->name('updatePeristiwa');
+    Route::get('/editPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'edit'])->name('editPeristiwa');
+    Route::get('/detailPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'show'])->name('detailPeristiwa');
+    Route::get('/detailAllPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'showDataAll'])->name('detailAllPeristiwa');
+    Route::delete('/deletedPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'destroy'])->name('deletedPeristiwa');
+    // pihak peristiwa
+    Route::get('/addPihakPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'createPihak'])->name('addPihakPeristiwa');
+    Route::post('/storePihakPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'storePihak'])->name('storePihakPeristiwa');
+    Route::get('/editPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
+    Route::put('/updatePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
+    Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa');
+    
 });
 
 Route::group(['middleware' => ['auth','role:3']], function(){
