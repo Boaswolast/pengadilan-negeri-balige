@@ -79,4 +79,7 @@ Route::group(['middleware' => ['auth','role:2']], function(){
 Route::group(['middleware' => ['auth','role:3']], function(){
     Route::get('/pertanahan', [App\Http\Controllers\PertanahanController::class, 'index'])->name('pertanahan');
     Route::get('/kasusPertanahan', [App\Http\Controllers\KasusPertanahanController::class, 'index'])->name('kasusPertanahan');
+    Route::get('/daftarKasusPertanahan', [App\Http\Controllers\daftarKasusPertanahanController::class, 'index'])->name('daftarKasusPertanahan');
+    Route::get('/detailPermohonanPemblokiran', [App\Http\Controllers\detailPermohonanPemblokiranController::class, 'index'])->name('detailPermohonanPemblokiran');
+    Route::get('/addSKBPN', [App\Http\Controllers\addSKBPNController::class, 'index'])->name('addSKBPN');
 });
