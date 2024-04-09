@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class PengadilanController extends Controller
 {
@@ -132,7 +135,7 @@ class PengadilanController extends Controller
             $dokumen = $request->file('dokumen_gugatan');
             $dokumenName = $dokumen->getClientOriginalName();
             $mimeType = $dokumen->getClientMimeType();
-            $dokumenPath = $dokumen->storeAs('public/dokumen', $dokumenName);
+            $dokumenPath = $dokumen->storeAs($dokumenName);
 
             DB::table('pemblokiran_sertifikat')->insert([
                 'kode_unik' => $dokumenUuid,
@@ -245,20 +248,56 @@ class PengadilanController extends Controller
         $dataDiriAll = DB::select('CALL viewAll_sertifikatTanah_dataDiri(?)', array($id));
         $dataGugatan = DB::select('CALL view_sertifikatTanah_gugatan(?)', array($id));
         $dataPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
+        $dataStatus = DB::select('CALL view_sertifikatTanah_status(?)', array($id));
         $dataDiriAll = collect($dataDiriAll);
         $dataGugatan = collect($dataGugatan);
         $dataPetitum = collect($dataPetitum);
+        $dataStatus = collect($dataStatus);
         return view('Pengadilan.DetailSertifikat.detailDataSertifikat', [
             'dataDiriAll' => $dataDiriAll,
             'dataGugatan' => $dataGugatan,
             'dataPetitum' => $dataPetitum,
+            'dataStatus' => $dataStatus,
         ]);
+    }
+
+    public function download(Request $request, $file)
+    {
+        $filePath = storage_path('app/public/dokumen/' .$file);
+
+        return response()->download($filePath);
+    }
+
+    public function print(Request $request, $file)
+    {
+        $path = storage_path('app/public/dokumen/' . $file);
+
+        // Periksa apakah file ada
+        if (!file_exists($path)) {
+            return response()->json(['error' => 'File tidak ditemukan'], 404);
+        }
+
+        // Tentukan tipe konten berdasarkan ekstensi file
+        $contentType = mime_content_type($path);
+
+        // Baca isi file
+        $fileContent = file_get_contents($path);
+
+        // Kembalikan response dengan tipe konten yang sesuai
+        return response($fileContent, 200)->header('Content-Type', $contentType);
     }
 
     public function show(string $id)
     {
-        $sertifikat = DB::table('sertifikat_tanah')->where('id', $id)->first();
-        return view('Pengadilan.DetailSertifikat.detailPihakSertifikat', ['sertifikat_tanah' => $sertifikat]);
+        $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
+        $sertifikat = collect($sertifikat);
+        return view('Pengadilan.DetailSertifikat.detailPihakSertifikat', ['sertifikat' => $sertifikat]);
+    }
+
+    public function showDeleted(string $id)
+    {
+        $sertifikatDeleted = DB::table('data_diri_pihak')->where('id_data_diri', $id)->delete();
+        return redirect()->route('pengadilan')->with('success', 'Data berhasil dihapus');
     }
 
     /**
@@ -266,17 +305,27 @@ class PengadilanController extends Controller
      */
     public function edit(string $id)
     {
-        $sertifikat = DB::table('sertifikat_tanah')->where('id', $id)->first();
-        return view('Pengadilan.editSertifikatTanah', ['sertifikat_tanah' => $sertifikat]);
+        $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
+        $sertifikat = collect($sertifikat);
+        $provinsi = DB::table('provinces')->get();
+        $kabupaten = DB::table('cities')->get();
+        $kecamatan = DB::table('districts')->get();
+        return view('Pengadilan.editSertifikatTanah', [
+            'sertifikat_tanah' => $sertifikat,
+            'provinsi' => $provinsi,
+            'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        DB::table('sertifikat_tanah')
-            ->where('id', $id)
+        DB::table('data_diri_pihak')
+            ->where('id_data_diri', $id)
             ->update([
                 'status_pihak' => $request->status_pihak,
                 'jenis_pihak' => $request->jenis_pihak,
@@ -294,13 +343,38 @@ class PengadilanController extends Controller
                 'pekerjaan' => $request->pekerjaan,
                 'status_kawin' => $request->status_kawin,
                 'pendidikan' => $request->pendidikan,
-                'petitum' => $request->petitum,
-                'dokumen_gugatan' => $request->dokumen_gugatan,
+                'nik' => $request->nik,
+                'email' => $request->email,
+                'no_telp' => $request->no_telp,
             ]);
 
-        $sertifikat = DB::table('sertifikat_tanah')->find($id);
+        $sertifikat = DB::table('data_diri_pihak');
 
-        return redirect()->route('pengadilan', ['sertifikat_tanah' => $sertifikat])->with('success', 'Data Berhasil di Tambahkan');
+        return redirect()->route('detailSertifikat', ['id' => $id])->with('success', 'Data Berhasil di Ubah');
+    }
+
+
+    public function editPetitum(string $id)
+    {
+        $editPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
+        $editPetitum = collect($editPetitum);
+        return view('Pengadilan.editPetitumSertifikat', [
+            'editPetitum' => $editPetitum,
+        ]);
+    }
+
+    public function updatePetitum(Request $request, string $id)
+    {
+        // dd($request->all());
+        DB::table('pemblokiran_sertifikat')
+            ->where('id_pemblokiran', $id)    
+            ->update([
+                'petitum' => $request->petitum,
+            ]);
+
+        $petitumSertifikat = DB::table('pemblokiran_sertifikat');
+
+        return redirect()->route('pengadilan')->with('success', 'Data Berhasil di Ubah');
     }
 
     /**

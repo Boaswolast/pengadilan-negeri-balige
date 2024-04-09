@@ -26,3 +26,14 @@
 .addGugatan{
     text-align: right;
 }
+.garisDataDiri{
+    border: 1px solid black;
+    margin-top: 40px;
+}
+.invalid-input {
+    border: 2px solid red;
+}
+.textTambahan{
+    margin-top: 30px;
+    margin-left: 13px;
+}

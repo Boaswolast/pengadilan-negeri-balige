@@ -40,17 +40,23 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::get('/pengadilan', [App\Http\Controllers\PengadilanController::class, 'index'])->name('pengadilan');
     Route::get('/addSertifikat', [App\Http\Controllers\PengadilanController::class, 'addSertifikat'])->name('addSertifikatPengadilan');
     Route::post('/storeSertifikat', [App\Http\Controllers\PengadilanController::class, 'storeSertifikat'])->name('storeSertifikat');
-    Route::put('/updateSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'update'])->name('updateSertifikat');
     Route::get('/editSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'edit'])->name('editSertifikat');
+    Route::put('/updateSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'update'])->name('updateSertifikat');
+    Route::get('/editSertifikatPetitum/{id}', [App\Http\Controllers\PengadilanController::class, 'editPetitum'])->name('editSertifikatPetitum');
+    Route::put('/updateSertifikatPetitum/{id}', [App\Http\Controllers\PengadilanController::class, 'updatePetitum'])->name('updateSertifikatPetitum');
+
     Route::get('/detailSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'show'])->name('detailSertifikat');
     Route::get('/detailAllSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'showDataAll'])->name('detailAllSertifikat');
+    Route::get('/download/{file}', [App\Http\Controllers\PengadilanController::class, 'download'])->name('downloadFile');
+    Route::get('/print/{file}', [App\Http\Controllers\PengadilanController::class, 'print'])->name('printFile');
     Route::delete('/deletedSertifikat/{kode_unik}', [App\Http\Controllers\PengadilanController::class, 'destroy'])->name('deletedSertifikat');
+    Route::delete('/showDeleted/{id}', [App\Http\Controllers\PengadilanController::class, 'showDeleted'])->name('showDeleted');
 
     //coba coba
-    Route::get('/temporaryData', [App\Http\Controllers\PengadilanController::class, 'temporary'])->name('temporaryData');
-    Route::get('/showTemporaryData', [App\Http\Controllers\PengadilanController::class, 'showTemporaryData'])->name('showTemporaryData');
-    Route::post('/addTemporaryData', [App\Http\Controllers\PengadilanController::class, 'addTemporaryData'])->name('addTemporaryData');
-    Route::post('/saveTemporaryData', [App\Http\Controllers\PengadilanController::class, 'saveData'])->name('saveTemporaryData');
+    // Route::get('/temporaryData', [App\Http\Controllers\PengadilanController::class, 'temporary'])->name('temporaryData');
+    // Route::get('/showTemporaryData', [App\Http\Controllers\PengadilanController::class, 'showTemporaryData'])->name('showTemporaryData');
+    // Route::post('/addTemporaryData', [App\Http\Controllers\PengadilanController::class, 'addTemporaryData'])->name('addTemporaryData');
+    // Route::post('/saveTemporaryData', [App\Http\Controllers\PengadilanController::class, 'saveData'])->name('saveTemporaryData');
 
     // peristiwa penting
     Route::get('/peristiwa', [App\Http\Controllers\PeristiwaController::class, 'index'])->name('peristiwa');
