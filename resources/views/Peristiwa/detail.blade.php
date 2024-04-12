@@ -138,7 +138,7 @@
 
             <div id="pihak" class="tab-content active">
                 <div class="addGugatan mt-4">
-                    <a href="{{route('addPihakPeristiwa')}}" type="button" class="btn btn-success">Tambah Pihak</a>
+                    <a href="{{route('addPihakPeristiwa',$id)}}" type="button" class="btn btn-success">Tambah Pihak</a>
                 </div>
                 <table class="table datatable-basic table-bordered mt-3">
                     <thead>

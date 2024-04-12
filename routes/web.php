@@ -62,8 +62,11 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::get('/detailAllPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'showDataAll'])->name('detailAllPeristiwa');
     Route::delete('/deletedPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'destroy'])->name('deletedPeristiwa');
     // pihak peristiwa
-    Route::get('/addPihakPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'createPihak'])->name('addPihakPeristiwa');
-    Route::post('/storePihakPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'storePihak'])->name('storePihakPeristiwa');
+    Route::get('/get-cities/{provinsiId}', [App\Http\Controllers\PeristiwaController::class, 'getCities'])->name('getCities');
+    Route::get('/get-districts/{kabupatenId}', [App\Http\Controllers\PeristiwaController::class, 'getDistricts'])->name('getDistricts');
+    Route::get('/get-subdistricts/{kecamatanId}', [App\Http\Controllers\PeristiwaController::class, 'getSubDistricts'])->name('getSubDistricts');
+    Route::get('/addPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'createPihak'])->name('addPihakPeristiwa');
+    Route::post('/storePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'storePihak'])->name('storePihakPeristiwa');
     Route::get('/editPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
     Route::put('/updatePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
     Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa');
