@@ -40,16 +40,13 @@
             </ul>
 
             <div id="pihak" class="tab-content active">
-                <div class="addGugatan mt-4">
-                    <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-success">Tambah Pihak</a>
-                </div>
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama Pihak</th>
                             <th>Status Pihak</th>
-                            <th>Alamat</th>
+                            <th>Email</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -69,19 +66,19 @@
                                         </a>
         
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item text-info">
+                                            <a href="{{route('detailSertifikat', ['id' => $data->id_data_diri])}}" class="dropdown-item text-info">
                                                 <i class="ph-eye me-2"></i>
                                                 Detail
                                             </a>
-                                            <a href="#" class="dropdown-item text-secondary">
+                                            <a href="{{route('editSertifikat', ['id' => $data->id_data_diri])}}" class="dropdown-item text-secondary">
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a>
-                                            <form action="#" type="button" method="POST" class="dropdown-item text-danger">
+                                            <form action="{{route('showDeleted', ['id' => $data->id_data_diri])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                 <i class="ph-trash me-2"></i>
                                                 @csrf
                                                 @method('delete')
-                                                <button class="dropdown-item text-danger" type="submit">Hapus</button>
+                                                <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
                                             </form>
                                         </div>
                                     </div>
@@ -99,32 +96,40 @@
             </div>
             <div id="petitum" class="tab-content">
                 @foreach($dataPetitum as $data)
-                    <div class="mt-4">{!! $data->petitum !!}</div>
+                <div class="addGugatan mt-4">
+                    <a href="{{route('editSertifikatPetitum', ['id' => $data->id_pemblokiran])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                </div>
+                    <div class="mt-2">{!! $data->petitum !!}</div>
                 @endforeach
             </div>
             <div id="gugatan" class="tab-content">
                 <h3>Gugatan Content</h3>
-                <p>Content for Gugatan tab goes here.</p>
+                @foreach($dataGugatan as $data)
+                    <a href="{{url('/download', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
+                    <a href="{{url('/print', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a>
+                @endforeach
             </div>
             <div id="status" class="tab-content">
                 <div class="table-responsive mt-4">
                     <table class="table">
                         <tbody>
+                            @foreach($dataStatus as $data)
                             <tr class="table-success">
                                 <td style="width: 300px">Tanggal Permohonan</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>{{$data->created_at}}</td>
                             </tr>
                             <tr>
                                 <td>Tanggal Diproses</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>{{$data->tgl_diproses}}</td>
                             </tr>
                             <tr class="table-success">
                                 <td>Tanggal selesai</td>
                                 <td>:</td>
-                                <td></td>
+                                <td>{{$data->tgl_selesai}}</td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

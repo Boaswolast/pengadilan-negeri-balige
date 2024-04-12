@@ -95,14 +95,14 @@
                                         <div class="quill-basic" id="quill-editor" name="petitum"></div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="petitum" id="petitum-input">
+                                <input type="hidden" name="petitum" id="petitum-input" required>
                             </fieldset>
 
                             <h6>Permohonan</h6>
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="dokumen_gugatan" class="file-input">
+                                        <input type="file" name="dokumen_gugatan" class="file-input" required>
                                     </div>
                                 </div>
                             </fieldset>

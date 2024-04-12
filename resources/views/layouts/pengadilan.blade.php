@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Home Admin</title>
+	<title>Daftar Kasus Pertanahan</title>
 
 	<!-- Global stylesheets -->
 	<link href="{{asset('assets/fonts/inter/inter.css')}}" rel="stylesheet" type="text/css">
@@ -185,10 +185,12 @@
 							</a>
 							<ul class="nav-group-sub collapse">
 								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Kasus Terja</a></li>
-								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
+								<li class="nav-item"><a href="daftarKasusPertanahan" class="nav-link">Daftar Kasus Pertanahan</a></li>
+								<li class="nav-item"><a href="detailPermohonanPemblokiran" class="nav-link">Permohonan Pemblokiran Sertifikat Tanah</a></li>
+								<!-- <li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
 								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
 								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
-								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
+								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li> -->
 							</ul>
 						</li>
 						@endif
@@ -297,7 +299,7 @@
 				<!-- Footer -->
 				<div class="navbar navbar-sm navbar-footer border-top">
 					<div class="container-fluid">
-						<span>&copy; 2022 <a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328">Limitless Web App Kit</a></span>
+						<span>Copyright &copy; 2024 PA-III 01. All rights reserved</span>
 					</div>
 				</div>
 				<!-- /footer -->
