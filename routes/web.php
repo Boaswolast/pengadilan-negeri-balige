@@ -59,6 +59,12 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     // Route::post('/saveTemporaryData', [App\Http\Controllers\PengadilanController::class, 'saveData'])->name('saveTemporaryData');
 
     // peristiwa penting
+    //data sementara
+    Route::get('/addDataDiriPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'addDataDiri'])->name('addDataDiriPeristiwa');
+    Route::post('/addTemporaryPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'addTemporaryPeristiwa'])->name('addTemporaryPeristiwa');
+    Route::get('/showTemporaryPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'showTemporaryPeristiwa'])->name('showTemporaryPeristiwa');
+    //--end data sementara
+
     Route::get('/peristiwa', [App\Http\Controllers\PeristiwaController::class, 'index'])->name('peristiwa');
     Route::get('/addPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'create'])->name('addPeristiwa');
     Route::post('/storePeristiwa', [App\Http\Controllers\PeristiwaController::class, 'store'])->name('storePeristiwa');
@@ -66,16 +72,17 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::get('/editPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'edit'])->name('editPeristiwa');
     Route::get('/detailPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'show'])->name('detailPeristiwa');
     Route::get('/detailAllPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'showDataAll'])->name('detailAllPeristiwa');
-    Route::delete('/deletedPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'destroy'])->name('deletedPeristiwa');
+    Route::delete('/peristiwa/delete/{id}', [App\Http\Controllers\PeristiwaController::class, 'destroy'])->name('deletedPeristiwa');
     // pihak peristiwa
     Route::get('/get-cities/{provinsiId}', [App\Http\Controllers\PeristiwaController::class, 'getCities'])->name('getCities');
     Route::get('/get-districts/{kabupatenId}', [App\Http\Controllers\PeristiwaController::class, 'getDistricts'])->name('getDistricts');
     Route::get('/get-subdistricts/{kecamatanId}', [App\Http\Controllers\PeristiwaController::class, 'getSubDistricts'])->name('getSubDistricts');
     Route::get('/addPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'createPihak'])->name('addPihakPeristiwa');
     Route::post('/storePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'storePihak'])->name('storePihakPeristiwa');
-    Route::get('/editPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
-    Route::put('/updatePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
+    Route::get('/editPihakPeristiwa/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
+    Route::put('/updatePihakPeristiwa/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
     Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa');
+    Route::put('/peristiwa/pihak/delete/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'deletePihak'])->name('deletePihakPeristiwa');
     
 });
 

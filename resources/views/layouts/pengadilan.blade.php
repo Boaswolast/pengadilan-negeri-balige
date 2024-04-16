@@ -5,7 +5,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>Daftar Kasus Pertanahan</title>
+	<link rel="icon" href="{{ asset('assets/images/logo_pengadilan.png') }}">
+	<title>Pengadilan Negeri Balige</title>
 
 	<!-- Global stylesheets -->
 	<link href="{{asset('assets/fonts/inter/inter.css')}}" rel="stylesheet" type="text/css">
@@ -37,6 +38,7 @@
 	<!-- /theme JS files -->
 
 	<!-- Theme JS files -->
+	<script src="{{ asset('assets_layout/js/app.js') }}"></script>
 	<script src="{{asset('assets/js/jquery/jquery.min.js')}}"></script>
 	<script src="{{asset('assets/js/vendor/tables/datatables/datatables.min.js')}}"></script>
 	<script src="{{asset('assets/js/vendor/forms/wizards/steps.min.js')}}"></script>
@@ -46,6 +48,10 @@
 	<script src="{{asset('assets/js/vendor/uploaders/fileinput/fileinput.min.js')}}"></script>
 	<script src="{{asset('assets/js/vendor/uploaders/fileinput/plugins/sortable.min.js')}}"></script>
 	<script src="{{asset('assets/demo/pages/uploader_bootstrap.js')}}"></script>
+	<script src="{{ asset('assets/js/delete_alert.js') }}"></script>
+	<script src="{{ asset('assets/js/vendor/forms/selects/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/forms/selects/bootstrap_multiselect.js') }}"></script>
+    <script src="{{ asset('assets/demo/pages/form_select2.js') }}"></script>
 	<!-- /theme JS files -->
 
 	<!-- quill -->
