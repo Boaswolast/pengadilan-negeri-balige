@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+	<title>Login</title>
 	<link href="{{asset('assets/fonts/inter/inter.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/icons/phosphor/styles.min.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('layout/assets/css/ltr/all.min.css')}}" id="stylesheet" rel="stylesheet" type="text/css">
@@ -101,7 +102,7 @@
 				<!-- Footer -->
 				<div class="navbar navbar-sm navbar-footer border-top">
 					<div class="container-fluid">
-						<span>&copy; 2022 <a>Pengadilan Negeri Balige</a></span>
+						<span>Copyright &copy; 2024 PA-III 01. All rights reserved</span>
 					</div>
 				</div>
 				<!-- /footer -->
