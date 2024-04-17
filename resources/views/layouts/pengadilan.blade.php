@@ -184,9 +184,9 @@
 								<span>Kasus Pertanahan</span>
 							</a>
 							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Kasus Terja</a></li>
-								<li class="nav-item"><a href="daftarKasusPertanahan" class="nav-link">Daftar Kasus Pertanahan</a></li>
-								<li class="nav-item"><a href="detailPermohonanPemblokiran" class="nav-link">Permohonan Pemblokiran Sertifikat Tanah</a></li>
+								<li class="nav-item"><a href="{{route('pertanahan')}}" class="nav-link">Kasus Terjadi</a></li>
+								<li class="nav-item"><a href="{{route('pertanahan')}}" class="nav-link">Daftar Kasus Pertanahan</a></li>
+								<li class="nav-item"><a href="{{route('pertanahan')}}" class="nav-link">Permohonan Pemblokiran Sertifikat Tanah</a></li>
 								<!-- <li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
 								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
 								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>

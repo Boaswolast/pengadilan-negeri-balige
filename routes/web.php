@@ -72,14 +72,13 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::post('/storePihakPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'storePihak'])->name('storePihakPeristiwa');
     Route::get('/editPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
     Route::put('/updatePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
-    Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa');
-    
+    Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa'); 
 });
 
 Route::group(['middleware' => ['auth','role:3']], function(){
     Route::get('/pertanahan', [App\Http\Controllers\PertanahanController::class, 'index'])->name('pertanahan');
-    Route::get('/kasusPertanahan', [App\Http\Controllers\KasusPertanahanController::class, 'index'])->name('kasusPertanahan');
-    Route::get('/daftarKasusPertanahan', [App\Http\Controllers\daftarKasusPertanahanController::class, 'index'])->name('daftarKasusPertanahan');
-    Route::get('/detailPermohonanPemblokiran', [App\Http\Controllers\detailPermohonanPemblokiranController::class, 'index'])->name('detailPermohonanPemblokiran');
-    Route::get('/addSKBPN', [App\Http\Controllers\addSKBPNController::class, 'index'])->name('addSKBPN');
+    Route::get('/detailAllSertifikatPertanahan/{id}', [App\Http\Controllers\PertanahanController::class, 'showDataAll'])->name('detailAllSertifikatPertanahan');
+    Route::get('/detailSertifikatPertanahan/{id}', [App\Http\Controllers\PertanahanController::class, 'show'])->name('detailSertifikatPertanahan');
+    Route::get('/uploadBuktiPemblokiran', [App\Http\Controllers\PertanahanController::class, 'buktiBlokir'])->name('uploadBuktiPemblokiran');
+    Route::post('/submitBuktiPemblokiran/{id}', [App\Http\Controllers\PertanahanController::class, 'uploadBuktiBlokir'])->name('submitBuktiPemblokiran');
 });
