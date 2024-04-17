@@ -74,13 +74,6 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::get('/detailAllPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'showDataAll'])->name('detailAllPeristiwa');
     Route::delete('/peristiwa/delete/{id}', [App\Http\Controllers\PeristiwaController::class, 'destroy'])->name('deletedPeristiwa');
     // pihak peristiwa
-<<<<<<< HEAD
-    Route::get('/addPihakPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'createPihak'])->name('addPihakPeristiwa');
-    Route::post('/storePihakPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'storePihak'])->name('storePihakPeristiwa');
-    Route::get('/editPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
-    Route::put('/updatePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
-    Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa'); 
-=======
     Route::get('/get-cities/{provinsiId}', [App\Http\Controllers\PeristiwaController::class, 'getCities'])->name('getCities');
     Route::get('/get-districts/{kabupatenId}', [App\Http\Controllers\PeristiwaController::class, 'getDistricts'])->name('getDistricts');
     Route::get('/get-subdistricts/{kecamatanId}', [App\Http\Controllers\PeristiwaController::class, 'getSubDistricts'])->name('getSubDistricts');
@@ -91,7 +84,6 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa');
     Route::put('/peristiwa/pihak/delete/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'deletePihak'])->name('deletePihakPeristiwa');
     
->>>>>>> 65857eaf1c16b899ad117f31e95a511cb10cd49e
 });
 
 Route::group(['middleware' => ['auth','role:3']], function(){
@@ -100,4 +92,6 @@ Route::group(['middleware' => ['auth','role:3']], function(){
     Route::get('/detailSertifikatPertanahan/{id}', [App\Http\Controllers\PertanahanController::class, 'show'])->name('detailSertifikatPertanahan');
     Route::get('/uploadBuktiPemblokiran', [App\Http\Controllers\PertanahanController::class, 'buktiBlokir'])->name('uploadBuktiPemblokiran');
     Route::post('/submitBuktiPemblokiran/{id}', [App\Http\Controllers\PertanahanController::class, 'uploadBuktiBlokir'])->name('submitBuktiPemblokiran');
+    Route::get('/downloadBPN/{file}', [App\Http\Controllers\PertanahanController::class, 'download'])->name('downloadFileBPN');
+    Route::get('/printBPN/{file}', [App\Http\Controllers\PertanahanController::class, 'print'])->name('printFileBPN');
 });

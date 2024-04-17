@@ -135,7 +135,9 @@ class PengadilanController extends Controller
             $dokumen = $request->file('dokumen_gugatan');
             $dokumenName = $dokumen->getClientOriginalName();
             $mimeType = $dokumen->getClientMimeType();
-            $dokumenPath = $dokumen->storeAs($dokumenName);
+            $dokumenPath = $dokumen->storeAs('public/dokumen', $dokumenName);
+
+            $dokumenPath = basename($dokumenPath);
 
             DB::table('pemblokiran_sertifikat')->insert([
                 'kode_unik' => $dokumenUuid,
@@ -263,14 +265,14 @@ class PengadilanController extends Controller
 
     public function download(Request $request, $file)
     {
-        $filePath = storage_path('app/public/dokumen/' .$file);
+        $filePath = public_path('storage/dokumen/' . $file);
 
         return response()->download($filePath);
     }
 
     public function print(Request $request, $file)
     {
-        $path = storage_path('app/public/dokumen/' . $file);
+        $path = public_path('storage/dokumen/' . $file);
 
         // Periksa apakah file ada
         if (!file_exists($path)) {

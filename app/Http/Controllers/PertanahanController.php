@@ -53,26 +53,68 @@ class PertanahanController extends Controller
 
     public function uploadBuktiBlokir(Request $request, $id)
     {
-        if($request->hasFile('pdf')){
-            // Simpan file PDF
-            $dokumen = $request->file('pdf');
-            $dokumenPath = $dokumen->storeAs('dokumen', $dokumen->getClientOriginalName());
-    
-            // Cari data berdasarkan ID
-            $data = DB::table('pemblokiran_sertifikat')->where('id', $id)->whereNull('surat_pemblokiran_bpn')->first();
-    
-            if($data){
-                // Update kolom surat_pemblokiran_bpn dengan path file PDF yang disimpan
-                DB::table('pemblokiran_sertifikat')->where('id', $id)->update(['surat_pemblokiran_bpn'=> $dokumenPath]);
-                return "File PDF berhasil diunggah dan disimpan pada baris data dengan ID: $id.";
-            }else{
-                return "Data dengan ID: $id tidak ditemukan atau kolom surat_pemblokiran_bpn sudah diisi.";
+        $request->validate([
+            'surat_pemblokiran_bpn' => 'required|mimes:pdf,doc,docx',
+        ]);
+        
+        $post = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->first();
+
+        // Debug: Cetak nilai $post untuk memeriksa hasil query
+        // dd($post);
+        // Periksa apakah post ditemukan
+        if ($post) {
+            // Periksa apakah ada file yang diunggah
+            if ($request->hasFile('surat_pemblokiran_bpn')) {
+                // Simpan file dokumen
+                $document = $request->file('surat_pemblokiran_bpn');
+                $documentName = $document->getClientOriginalName();
+                $mimeType = $document->getClientMimeType();
+                $documentPath = $document->storeAs('public/dokumen', $documentName);
+
+                $documentPath = basename($documentPath);
+
+                // Update status dan tambahkan path dokumen
+                DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update([
+                    'status_id' => 3,
+                    'surat_pemblokiran_bpn' => $documentPath
+                ]);
+
+                return "Status post berhasil diubah dan dokumen berhasil diunggah.";
+            } else {
+                // Jika tidak ada file yang diunggah, hanya ubah status
+                DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update(['status_id' => 3]);
+
+                return "Status post berhasil diubah.";
             }
-        }else{
-            // In case no file is uploaded, redirect or display appropriate message
-            // For now, assuming you want to redirect to a view where the user can upload a PDF file
-            return redirect()->back()->with('error', 'Mohon unggah file PDF.');
+        } else {
+            return "Post tidak ditemukan.";
         }
+    }
+    
+    public function download(Request $request, $file)
+    {
+        $filePath = public_path('storage/dokumen/' . $file);
+
+        return response()->download($filePath);
+    }
+
+    public function print(Request $request, $file)
+    {
+        $path = public_path('storage/dokumen/' . $file);
+
+        // Periksa apakah file ada
+        if (!file_exists($path)) {
+            return response()->json(['error' => 'File tidak ditemukan'], 404);
+        }
+
+        // Tentukan tipe konten berdasarkan ekstensi file
+        $contentType = mime_content_type($path);
+
+        // Baca isi file
+        $fileContent = file_get_contents($path);
+
+        // Kembalikan response dengan tipe konten yang sesuai
+        return response($fileContent, 200)->header('Content-Type', $contentType);
     }
 
     /**

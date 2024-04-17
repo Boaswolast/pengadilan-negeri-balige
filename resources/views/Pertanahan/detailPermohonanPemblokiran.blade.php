@@ -36,7 +36,6 @@
                 <li class="nav-item"><a href="#pihak" class="nav-link active">Pihak</a></li>
                 <li class="nav-item"><a href="#petitum" class="nav-link">Petitum</a></li>
                 <li class="nav-item"><a href="#gugatan" class="nav-link">Gugatan</a></li>
-                <li class="nav-item"><a href="#keputusan" class="nav-link">Unggah Surat Keputusan</a></li>
                 <li class="nav-item"><a href="#status" class="nav-link">Status</a></li>
             </ul>
 
@@ -103,35 +102,9 @@
             <div id="gugatan" class="tab-content">
                 <h3>Gugatan Content</h3>
                 @foreach($dataGugatan as $data)
-                    <a href="{{url('/download', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
-                    <a href="{{url('/print', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a>
+                    <a href="{{url('/downloadBPN', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
+                    <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a>
                 @endforeach
-            </div>
-            <div id="keputusan" class="tab-content">
-                <div class="card mt-4">
-                    <div class="card-header" style="background-color: green">
-                        <h6 class="mb-0" style="color: white">Unggah Surat Keputusan Pemblokiran Tanah</h6>
-                    </div>
-        
-                    <div class="card-body border-top">
-                        <div class="row">
-                            <div class="col-lg-10 offset-lg-1">
-                                <form action="{{url('/submitBuktiPemblokiran/{id}')}}" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <input type="file" name="dokumen_gugatan" class="file-input">
-                                        </div>
-                                    </div>
-                                    <div class="text-end mt-4">
-                                        <a href="{{route('uploadBuktiPemblokiran')}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
-                                        <button type="submit" class="btn btn-success">Upload <i class="ph-paper-plane-tilt ms-2"></i></button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div id="status" class="tab-content">
                 <div class="table-responsive mt-4">
@@ -157,7 +130,39 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="addKasus mt-4">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_default">Konfirmasi Kasus</button>
+                </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_default" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @foreach($dataPetitum as $id)
+            <form action="{{route('submitBuktiPemblokiran', ['id' => $id->id_pemblokiran])}}" method="POST" enctype="multipart/form-data">
+            @csrf
+                <div class="modal-header" style="background-color: green">
+                    <h5 class="modal-title" style="color: white">Unggah Surat Keputusan Pemblokiran Tanah</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <input type="file" name="surat_pemblokiran_bpn" class="file-input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+            @endforeach
         </div>
     </div>
 </div>
