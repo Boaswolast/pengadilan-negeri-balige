@@ -138,7 +138,7 @@
 
             <div id="pihak" class="tab-content active">
                 <div class="addGugatan mt-4">
-                    <a href="{{route('addPihakPeristiwa')}}" type="button" class="btn btn-success">Tambah Pihak</a>
+                    <a href="{{route('addPihakPeristiwa',$id)}}" type="button" class="btn btn-success">Tambah Pihak</a>
                 </div>
                 <table class="table datatable-basic table-bordered mt-3">
                     <thead>
@@ -170,16 +170,20 @@
                                                 <i class="ph-eye me-2"></i>
                                                 Detail
                                             </a>
-                                            <a href="{{route('editPihakPeristiwa', ['id' => $d->id_data_diri])}}" class="dropdown-item text-secondary">
+                                            <a href="{{route('editPihakPeristiwa', ['idDiri' => $d->id_data_diri, $id])}}" class="dropdown-item text-secondary">
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a>
-                                            <form action="#" type="button" method="POST" class="dropdown-item text-danger">
+                                            <a href="" class="dropdown-item text-danger" onclick="confirmDeletePihak('{{ $d->id_data_diri }}', '{{ $id }}')">
+                                                <i class="ph-trash me-2"></i>
+                                                Hapus
+                                            </a>
+                                            {{-- <form action="{{route('deletePihakPeristiwa',['idDiri' => $d->id_data_diri, $id])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                     <i class="ph-trash me-2"></i>
                                                     @csrf
-                                                    @method('delete')
+                                                    @method('put')
                                                     <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
-                                                </form>
+                                                </form> --}}
                                         </div>
 
                                         </div>
@@ -193,39 +197,6 @@
                             <td class="text-center" colspan="6">Data Kosong</td>
                         </tr>
                     @endif 
-                        
-                        {{-- <tr>
-                            <td>2</td>
-                            <td>p</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td class="text-center">
-                                <div class="d-inline-flex">
-                                    <div class="dropdown">
-                                        <a href="#" class="text-body" data-bs-toggle="dropdown">
-                                            <i class="ph-list"></i>
-                                        </a>
-        
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="#" class="dropdown-item text-info">
-                                                <i class="ph-eye me-2"></i>
-                                                Detail
-                                            </a>
-                                            <a href="#" class="dropdown-item text-secondary">
-                                                <i class="ph-pencil me-2"></i>
-                                                Edit
-                                            </a>
-                                            <form action="#" type="button" method="POST" class="dropdown-item text-danger">
-                                                <i class="ph-trash me-2"></i>
-                                                @csrf
-                                                @method('delete')
-                                                <button class="dropdown-item text-danger" type="submit">Hapus</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr> --}}
                        
                     </tbody>
                 </table>
@@ -266,7 +237,33 @@
 </div>
 
 <script>
+    function confirmDeletePihak(idPihak, id) {
+        const url = '/peristiwa/pihak/delete/' + idPihak + '/' + id;
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        ajaxDelete(url, csrfToken);
+    }
+
+    // function confirmDeletePihak(idPihak, id) {
+    //     Swal.fire({
+    //         title: 'Apakah anda yakin ingin menghapus pihak ini?',
+    //         showCancelButton: true,
+    //         cancelButtonText: `Batal`,
+    //         confirmButtonText: `Hapus`,
+    //         icon: 'warning'
+    //     }).then((result) => {
+    //         /* Read more about isConfirmed, isDenied below */
+    //         if (result.isConfirmed) {
+    //             window.location.href = '/peristiwa/pihak/delete/' + idPihak + '/' + id;
+    //         } else if (result.isDenied) {
+    //             Swal.fire('Penghapusan pihak dibatalkan', '', 'info')
+    //         }
+    //     })
+    // }
+    
     document.addEventListener("DOMContentLoaded", function() {
+
+        
+
         var tabs = document.querySelectorAll('.nav-tabs a');
         
         // Function to show content based on selected tab
