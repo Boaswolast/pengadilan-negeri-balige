@@ -201,33 +201,96 @@
                     </tbody>
                 </table>
             </div>
-            <div id="petitum" class="tab-content">
-                <h3>Petitum Content</h3>
-                <p>Content for Petitum tab goes here.</p>
+            {{-- Amar Putusan --}}
+            <div id="amarPutusan" class="tab-content">
+                @foreach($dataAmar as $d)
+                <div class="addGugatan mt-4">
+                    <a href="{{route('editAmarPutusan', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                </div>
+                    <div class="mt-2">{!! $d->amar_putusan !!}</div>
+                @endforeach
             </div>
-            <div id="gugatan" class="tab-content">
-                <h3>Gugatan Content</h3>
-                <p>Content for Gugatan tab goes here.</p>
+            {{-- Surat Putusan --}}
+            <div id="surat" class="tab-content">
+                @foreach($dataPutusan as $d)
+                    <div class="addGugatan mt-4">
+                        <a href="{{route('editSuratPutusan', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                    </div>
+                    <div class="mt-2">
+                        <h6>Putusan PN</h6>
+                        @if($d->putusan_pn!=null)
+                            <div>
+                                <iframe src="{{ asset('files/putusanPN/'.$d->putusan_pn) }}" width="100%" height="400px"></iframe>
+                            </div>
+                        @else
+                            <p>Tidak Ada Data</p>
+                        @endif
+                    </div>
+
+                    <div class="mt-4">
+                        <h6>Putusan PT</h6>
+                        @if($d->putusan_pt!=null)
+                            <div>
+                                <iframe src="{{ asset('files/putusanPT/'.$d->putusan_pt) }}" width="100%" height="400px"></iframe>
+                            </div>
+                        @else
+                            <p>Tidak Ada Data</p>
+                        @endif
+                    </div>
+
+                    <div class="mt-4">
+                        <h6>Putusan MA</h6>
+                        @if($d->putusan_ma!=null)
+                            <div>
+                                <iframe src="{{ asset('files/putusanMA/'.$d->putusan_ma) }}" width="100%" height="400px"></iframe>
+                            </div>
+                        @else
+                            <p>Tidak Ada Data</p>
+                        @endif
+                    </div>
+                @endforeach
             </div>
+            {{-- Surat Pengantar --}}
+            <div id="suratPengantar" class="tab-content">
+                @foreach($dataPengantar as $d)
+                <div class="addGugatan mt-4">
+                    <a href="{{route('editSuratPengantar', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                </div>
+                <div class="mt-2">
+                    <iframe src="{{ asset('files/surat-pengantar/'.$d->surat_pengantar) }}" width="100%" height="600px"></iframe>
+                </div>
+                @endforeach
+            </div>
+            {{-- Status --}}
             <div id="status" class="tab-content">
                 <div class="table-responsive mt-4">
                     <table class="table">
                         <tbody>
+                            @foreach($dataStatus as $data)
                             <tr class="table-success">
-                                <td style="width: 300px">Tanggal Permohonan</td>
-                                <td>:</td>
-                                <td></td>
+                                <td style="width: 200px">Tanggal Permohonan</td>
+                                <td style="width: 30px;">:</td>
+                                <td>{{ \Carbon\Carbon::parse($data->created_at)->translatedFormat('l, d F Y') }}</td>
                             </tr>
                             <tr>
                                 <td>Tanggal Diproses</td>
                                 <td>:</td>
-                                <td></td>
+                                @if($data->tgl_diproses != null)
+                                    <td>{{ \Carbon\Carbon::parse($data->tgl_diproses)->translatedFormat('l, d F Y') }}</td>
+                                @else
+                                    <td>-</td>
+                                @endif
                             </tr>
                             <tr class="table-success">
                                 <td>Tanggal selesai</td>
                                 <td>:</td>
-                                <td></td>
+                                @if($data->tgl_selesai != null)
+                                    <td>{{ \Carbon\Carbon::parse($data->tgl_selesai)->translatedFormat('l, d F Y') }}</td>
+                                @else
+                                    <td>-</td>
+                                @endif
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

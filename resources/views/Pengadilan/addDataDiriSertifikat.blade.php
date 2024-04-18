@@ -145,23 +145,20 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Provinsi:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="provinsi" required>
-                                    <option value="">Pilih Provinsi</option>
+                                <select class="form-select" name="provinsi" id="provinsi">
+                                    <option value="#" disabled selected>Pilih Provinsi</option>
                                     @foreach($provinsi as $item)
-                                        <option value="{{$item->prov_name}}">{{$item->prov_name}}</option>
+                                        <option value="{{$item->prov_id}}">{{$item->prov_name}}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     
                         <div class="row mb-3">
-                            <label class="col-lg-4 col-form-label">Kabupaten:</label>
+                            <label class="col-lg-4 col-form-label">Kabupaten/Kota:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="kabupaten" required>
-                                    <option value="">Pilih Kabupaten</option>
-                                    @foreach($kabupaten as $item)
-                                        <option value="{{$item->city_name}}">{{$item->city_name}}</option>
-                                    @endforeach
+                                <select class="form-select" name="kabupaten" id= "kabupaten">
+                                    <option value="#" disabled selected>Pilih Kabupaten/Kota</option>
                                 </select>
                             </div>
                         </div>
@@ -169,19 +166,21 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Kecamatan:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="kecamatan" required>
-                                    <option value="">Pilih kecamatan</option>
-                                    @foreach($kecamatan as $item)
-                                        <option value="{{$item->dis_name}}">{{$item->dis_name}}</option>
-                                    @endforeach
+                                <select class="form-select" name="kecamatan" id= "kecamatan">
+                                    <option value="#" disabled selected>Pilih Kecamatan</option>
                                 </select>
                             </div>
                         </div>
-                    
+
                         <div class="row mb-3">
-                            <label class="col-lg-4 col-form-label">Kelurahan/Desa:</label>
+                            <label class="col-lg-4 col-form-label">Kelurahan:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="kelurahan" class="form-control" placeholder="Kelurahan / Desa" required>
+                                <select class="form-select" name="kelurahan" id= "kelurahan">
+                                    <option value="#" disabled selected>Pilih Kelurahan</option>
+                                    {{-- @foreach($kelurahan as $item)
+                                        <option value="{{$item->id}}">{{$item->subdis_name}}</option>
+                                    @endforeach --}}
+                                </select>
                             </div>
                         </div>
                     
@@ -252,4 +251,84 @@
         </div>
     </div>
     <!-- /centered card -->
+    <script>
+    $(document).ready(function() {
+        // Event listener untuk perubahan nilai pada form provinsi
+        $('#provinsi').change(function() {
+            var provinsiId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
+
+            // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
+            $.ajax({
+                url: '/get-cities/' + provinsiId,
+                method: 'GET',
+                success: function(response) {
+                    // Menghapus semua opsi kota sebelum menambahkan yang baru
+                    $('#kabupaten').empty();
+                    $('#kabupaten').append('<option value="#" disabled selected>Pilih Kabupaten/Kota</option>');
+
+                    // Menambahkan opsi kota berdasarkan respons dari server
+                    $.each(response.cities, function(key, city) {
+                        $('#kabupaten').append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
+                    });
+                },
+                error: function(xhr) {
+                    // Menangani kesalahan jika terjadi
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        $('#kabupaten').change(function() {
+            var kabupatenId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
+
+            // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
+            $.ajax({
+                url: '/get-districts/' + kabupatenId,
+                method: 'GET',
+                success: function(response) {
+                    // Menghapus semua opsi kota sebelum menambahkan yang baru
+                    $('#kecamatan').empty();
+                    $('#kecamatan').append('<option value="#" disabled selected>Pilih Kecamatan</option>');
+
+                    // Menambahkan opsi kota berdasarkan respons dari server
+                    $.each(response.districts, function(key, district) {
+                        $('#kecamatan').append('<option value="' + district.dis_id + '">' + district.dis_name + '</option>');
+                    });
+                },
+                error: function(xhr) {
+                    // Menangani kesalahan jika terjadi
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        $('#kecamatan').change(function() {
+            var kecamatanId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
+
+            // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
+            $.ajax({
+                url: '/get-subdistricts/' + kecamatanId,
+                method: 'GET',
+                success: function(response) {
+                    // Menghapus semua opsi kota sebelum menambahkan yang baru
+                    $('#kelurahan').empty();
+                    $('#kelurahan').append('<option value="#" disabled selected>Pilih Kelurahan</option>');
+
+                    // Menambahkan opsi kota berdasarkan respons dari server
+                    $.each(response.subDistricts, function(key, subdistrict) {
+                        $('#kelurahan').append('<option value="' + subdistrict.subdis_id + '">' + subdistrict.subdis_name + '</option>');
+                    });
+
+                    // $('#pilih').disable();
+                },
+                error: function(xhr) {
+                    // Menangani kesalahan jika terjadi
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+    });
+
+    
+</script>
 @endsection

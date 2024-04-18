@@ -64,7 +64,6 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::post('/addTemporaryPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'addTemporaryPeristiwa'])->name('addTemporaryPeristiwa');
     Route::get('/showTemporaryPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'showTemporaryPeristiwa'])->name('showTemporaryPeristiwa');
     //--end data sementara
-
     Route::get('/peristiwa', [App\Http\Controllers\PeristiwaController::class, 'index'])->name('peristiwa');
     Route::get('/addPeristiwa', [App\Http\Controllers\PeristiwaController::class, 'create'])->name('addPeristiwa');
     Route::post('/storePeristiwa', [App\Http\Controllers\PeristiwaController::class, 'store'])->name('storePeristiwa');
@@ -83,7 +82,15 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::put('/updatePihakPeristiwa/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
     Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa');
     Route::put('/peristiwa/pihak/delete/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'deletePihak'])->name('deletePihakPeristiwa');
-    
+    // amar putusan
+    Route::get('/peristiwa/amar-putusan/edit/{id}', [App\Http\Controllers\PeristiwaController::class, 'editAmarPutusan'])->name('editAmarPutusan');
+    Route::put('/peristiwa/amar-putusan/update/{id}', [App\Http\Controllers\PeristiwaController::class, 'updateAmarPutusan'])->name('updateAmarPutusan');
+    // surat putusan
+    Route::get('/peristiwa/surat-putusan/edit/{id}', [App\Http\Controllers\PeristiwaController::class, 'editSuratPutusan'])->name('editSuratPutusan');
+    Route::put('/peristiwa/surat-putusan/update/{id}', [App\Http\Controllers\PeristiwaController::class, 'updateSuratPutusan'])->name('updateSuratPutusan');
+    // surat pengantar editSuratPengantar
+    Route::get('/peristiwa/surat-pengantar/edit/{id}', [App\Http\Controllers\PeristiwaController::class, 'editSuratPengantar'])->name('editSuratPengantar');
+    Route::put('/peristiwa/surat-pengantar/update/{id}', [App\Http\Controllers\PeristiwaController::class, 'updateSuratPengantar'])->name('updateSuratPengantar');
 });
 
 Route::group(['middleware' => ['auth','role:3']], function(){

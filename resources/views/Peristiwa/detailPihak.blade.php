@@ -79,7 +79,7 @@
                                     <tr class="table-success">
 			                            <td>Tanggal Lahir</td>
 			                            <td>:</td>
-			                            <td>{{ $d->tanggal_lahir }}</td>
+			                            <td>{{ \Carbon\Carbon::parse($d->tanggal_lahir)->translatedFormat('d F Y') }}</td>
 			                        </tr>
 			                        <tr>
 			                            <td>Umur</td>
