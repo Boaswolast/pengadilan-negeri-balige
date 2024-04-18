@@ -155,6 +155,27 @@
 									</div>
 								</div>
 
+                                <div class="mb-3">
+									<label class="form-label">Role</label>
+									<div class="form-control-feedback form-control-feedback-start">
+                                        <select id="role" class="form-control @error('role') is-invalid @enderror" name="role" required>
+                                            <option value="">Pilih Role</option>
+                                            <option value="1">Masyarakat</option>
+                                            <option value="2">Pengadilan Negeri Balige</option>
+                                            <option value="3">Badan Pertanahan Nasional</option>
+                                            <option value="4">Dukcapil</option>
+                                        </select>
+                                        @error('role')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                        <div class="form-control-feedback-icon">
+											<i class="ph-user-circle text-muted"></i>
+										</div>
+									</div>
+								</div>
+
 								<div class="mb-3">
 									<label class="form-label">Password</label>
 									<div class="form-control-feedback form-control-feedback-start">
