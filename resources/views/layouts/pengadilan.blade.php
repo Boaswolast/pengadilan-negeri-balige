@@ -64,6 +64,10 @@
 	<script src="{{asset('assets/demo/pages/extra_sweetalert.js')}}"></script>
 	<!-- //alert -->
 
+	<!-- modal -->
+	<script src="{{asset('assets/js/vendor/notifications/bootbox.min.js')}}"></script>
+	<script src="{{asset('assets/demo/pages/components_modals.js')}}"></script>
+
 	<!-- Generate Sendiri -->
 	<link href="{{asset('assets/style.css')}}" id="stylesheet" rel="stylesheet" type="text/css">
 
@@ -177,80 +181,35 @@
 						@if (auth()->user()->role==3)
 						<li class="nav-item">
 							<a href="{{route('pertanahan')}}" class="nav-link">
-								<i class="ph-house"></i>
-								<span>
-									Badan Pertanahan Nasional
-									<span class="d-block fw-normal opacity-50">No pending orders</span>
-								</span>
-							</a>
-						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="" class="nav-link">
 								<i class="ph-handshake"></i>
 								<span>Kasus Pertanahan</span>
 							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Kasus Terja</a></li>
-								<li class="nav-item"><a href="daftarKasusPertanahan" class="nav-link">Daftar Kasus Pertanahan</a></li>
-								<li class="nav-item"><a href="detailPermohonanPemblokiran" class="nav-link">Permohonan Pemblokiran Sertifikat Tanah</a></li>
-								<!-- <li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
-								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
-								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
-								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li> -->
-							</ul>
 						</li>
 						@endif
 						@if (auth()->user()->role==2)
-						<li class="nav-item nav-item-submenu">
+						<li class="nav-item">
 							<a href="#" class="nav-link">
 								<i class="ph-folder-simple-user"></i>
 								<span>Eksekusi Perkara</span>
 							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Autocomplete</a></li>
-								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
-								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
-								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
-								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
-							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu">
-							<a href="#" class="nav-link">
+						<li class="nav-item">
+							<a href="{{route('pengadilan')}}" class="nav-link">
 								<i class="ph-newspaper-clipping"></i>
 								<span>Sertifikat Tanah</span>
 							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="{{route('pengadilan')}}" class="nav-link">Data Kasus</a></li>
-								<li class="nav-item"><a href="{{route('addSertifikatPengadilan')}}" class="nav-link">Tambah Kasus</a></li>
-								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
-								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
-							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu">
+						<li class="nav-item">
 							<a href="#" class="nav-link">
 								<i class="ph-user-square"></i>
 								<span>Peristiwa Penting</span>
 							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Autocomplete</a></li>
-								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
-								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
-								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
-								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
-							</ul>
 						</li>
-						<li class="nav-item nav-item-submenu">
+						<li class="nav-item">
 							<a href="#" class="nav-link">
 								<i class="ph-user-plus"></i>
 								<span>Daftar Akun</span>
 							</a>
-							<ul class="nav-group-sub collapse">
-								<li class="nav-item"><a href="form_autocomplete.html" class="nav-link">Autocomplete</a></li>
-								<li class="nav-item"><a href="form_checkboxes_radios.html" class="nav-link">Checkboxes &amp; radios</a></li>
-								<li class="nav-item"><a href="form_dual_listboxes.html" class="nav-link">Dual Listboxes</a></li>
-								<li class="nav-item"><a href="form_controls_extended.html" class="nav-link">Extended controls</a></li>
-								<li class="nav-item"><a href="form_floating_labels.html" class="nav-link">Floating labels</a></li>
-							</ul>
 						</li>
 						@endif
 						@if (auth()->user()->role==1)

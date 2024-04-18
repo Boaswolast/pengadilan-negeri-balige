@@ -130,9 +130,6 @@
     </script>
     <!-- Main charts -->
     <div class="row">
-        <div class="addGugatan mt-1">
-            <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-success">Tambah Gugatan</a>
-        </div>
         <div class="card mt-3">
             <div class="card-header">
                 <h5 class="mb-0">Tabel User</h5>
@@ -150,7 +147,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    @if ($data->count() > 0)
+                        @foreach ($data as $sertifikat)
+                        <tr>
+                            <td>{{$loop->iteration}}</td>
+                            <td>{{$sertifikat->penggugat}}</td>
+                            <td>{{$sertifikat->tergugat}}</td>
+                            <td>{{$sertifikat->tanggal_gugatan}}</td>
+                            <td>{{$sertifikat->status_permohonan}}</td>
                             <td class="text-center">
                                 <div class="d-inline-flex">
                                     <div class="dropdown">
@@ -158,18 +162,23 @@
                                             <i class="ph-list"></i>
                                         </a>
 
-                                            </form>
+                                        <div class="dropdown-menu dropdown-menu-end">
+                                            <a href="{{route('detailAllSertifikatPertanahan', ['id' => $sertifikat->id_pemblokiran])}}" class="dropdown-item text-info">
+                                            {{-- <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info"> --}}
+                                                <i class="ph-eye me-2"></i>
+                                                Detail
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                  
-                    
+                        @endforeach 
+                    @else
                         <tr>
                             <td class="text-center" colspan="6">Data Kosong</td>
                         </tr>
-                 
+                    @endif 
                 </tbody>
             </table>
         </div>

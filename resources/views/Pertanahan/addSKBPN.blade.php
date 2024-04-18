@@ -35,26 +35,24 @@
     <!-- Basic setup -->
     <div class="content">
         <div class="card">
-            <div class="card-header">
-                <h6 class="mb-0">Unggah Surat Keputusan Pemblokiran Tanah</h6>
+            <div class="card-header" style="background-color: green">
+                <h6 class="mb-0" style="color: white">Unggah Surat Keputusan Pemblokiran Tanah</h6>
             </div>
 
             <div class="card-body border-top">
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1">
-                        <form class="wizard-form steps-basic" action="{{route('storeSertifikat')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('submitBuktiPemblokiran')}}" method="POST" enctype="multipart/form-data">
                             @csrf
-                           
-
-
-                            <h6></h6>
-                            <fieldset>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <input type="file" name="dokumen_gugatan" class="file-input">
-                                    </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <input type="file" name="dokumen_gugatan" class="file-input">
                                 </div>
-                            </fieldset>
+                            </div>
+                            <div class="text-end mt-4">
+                                <a href="{{route('uploadBuktiPemblokiran')}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
+                                <button type="submit" class="btn btn-success">Upload <i class="ph-paper-plane-tilt ms-2"></i></button>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -6,7 +6,7 @@
     <div class="page-header-content d-lg-flex">
         <div class="d-flex">
             <h4 class="page-title mb-0">
-                Home - <span class="fw-normal">Dashboard</span>
+                Sertifikat Tanah - <span class="fw-normal">Data Kasus</span>
             </h4>
 
             <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -19,8 +19,8 @@
         <div class="d-flex">
             <div class="breadcrumb py-2">
                 <a href="index.html" class="breadcrumb-item"><i class="ph-house"></i></a>
-                <a href="#" class="breadcrumb-item">Home</a>
-                <span class="breadcrumb-item active">Dashboard</span>
+                <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
+                <span class="breadcrumb-item active">Data Kasus</span>
             </div>
 
             <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -131,7 +131,7 @@
     <!-- Main charts -->
     <div class="row">
         <div class="addGugatan mt-1">
-            <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-success">Tambah Pihak</a>
+            <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-success">Tambah Kasus</a>
         </div>
         <div class="card mt-3">
             <div class="card-header">
