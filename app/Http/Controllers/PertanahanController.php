@@ -12,15 +12,24 @@ class PertanahanController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function countNotif($notif)
+     {
+         $count = DB::table('pemblokiran_sertifikat')->where('status_notif', $notif)->count();
+         return $count;
+     }
+
     public function index()
     {
+        $statusCount = $this->countNotif('0');
         $data = DB::select('CALL viewAll_sertifikatTanah()');
         $data = collect($data);
-        return view('Pertanahan/daftarKasusPertanahan',['data' => $data]);
+        return view('Pertanahan/daftarKasusPertanahan',['data' => $data, 'statusNotif' => $statusCount]);
     }
 
     public function showDataAll(string $id)
     {
+        $statusCount = $this->countNotif('0');
         $dataDiriAll = DB::select('CALL viewAll_sertifikatTanah_dataDiri(?)', array($id));
         $dataGugatan = DB::select('CALL view_sertifikatTanah_gugatan(?)', array($id));
         $dataPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
@@ -34,18 +43,21 @@ class PertanahanController extends Controller
             'dataGugatan' => $dataGugatan,
             'dataPetitum' => $dataPetitum,
             'dataStatus' => $dataStatus,
+            'statusNotif' => $statusCount,
         ]);
     }
 
     public function show(string $id)
     {
+        $statusCount = $this->countNotif('0');
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
-        return view('Pertanahan.detailPihakPermohonanPemblokiran', ['sertifikat' => $sertifikat]);
+        return view('Pertanahan.detailPihakPermohonanPemblokiran', ['sertifikat' => $sertifikat, 'statusNotif' => $statusCount]);
     }
 
     public function buktiBlokir()
     {
+        $statusCount = $this->countNotif('0');
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
         return view('Pertanahan.addSKBPN', ['sertifikat' => $sertifikat]);

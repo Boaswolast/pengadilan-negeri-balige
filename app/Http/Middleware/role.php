@@ -18,6 +18,21 @@ class role
         if (in_array($request->user()->role,$roles)){
             return $next($request);
         }
-        return redirect('/home');
+        if ($request->user()->role == 1){
+            return redirect()->route('home');
+        }
+        elseif($request->user()->role == 2){
+            return redirect()->route('home');
+        }
+        elseif($request->user()->role == 3){
+            return redirect()->route('pertanahan');
+        }
+        elseif($request->user()->role == 4){
+            return redirect()->route('home');
+        }
+        // else{
+        //     return redirect()->route('/home');
+        // }
+        // return redirect('/home');
     }
 }

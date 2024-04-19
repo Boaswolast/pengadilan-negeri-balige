@@ -19,8 +19,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
 Route::group(['middleware' => ['auth','role:0']], function(){
     Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
     Route::get('/addSertifikatTanahUser', [App\Http\Controllers\AddSertifikatTanahUserController::class, 'index'])->name('addSertifikatUser');
@@ -31,6 +29,8 @@ Route::group(['middleware' => ['auth','role:1']], function(){
 });
 
 Route::group(['middleware' => ['auth','role:2']], function(){
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
     //data sementara
     Route::get('/addDataDiriSertifikat', [App\Http\Controllers\PengadilanController::class, 'addDataDiri'])->name('addDataDiriSertifikat');
     Route::post('/addTemporarySertifikat', [App\Http\Controllers\PengadilanController::class, 'addTemporarySertifikat'])->name('addTemporarySertifikat');

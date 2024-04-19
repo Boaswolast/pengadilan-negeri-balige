@@ -14,16 +14,25 @@ class PengadilanController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function countNotif($notif)
+     {
+         $count = DB::table('pemblokiran_sertifikat')->where('status_notif', $notif)->count();
+         return $count === 0 ? null : $count;
+     }
+
     public function index()
     {
+        $statusCount = $this->countNotif('1');
         $data = DB::select('CALL viewAll_sertifikatTanah()');
         $data = collect($data);
-        return view('Pengadilan/pengadilan',['data' => $data]);
+        return view('Pengadilan/pengadilan',['data' => $data, 'statusNotif' => $statusCount]);
     }
 
     public function editSertifikat()
     {
-        return view('Pengadilan/editSertifikatTanah');
+        $statusCount = $this->countNotif('1');
+        return view('Pengadilan/editSertifikatTanah', ['statusNotif' => $statusCount]);
     }
 
     /**
@@ -40,6 +49,7 @@ class PengadilanController extends Controller
     //Data Sementara
     public function addDataDiri()
     {
+        $statusCount = $this->countNotif('1');
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
         $kecamatan = DB::table('districts')->get();
@@ -47,6 +57,7 @@ class PengadilanController extends Controller
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
+            'statusNotif' => $statusCount
         ]);
     }
 
@@ -103,19 +114,21 @@ class PengadilanController extends Controller
     public function showTemporarySertifikat()
     {
         // Mengambil data sementara dari sesi
+        $statusCount = $this->countNotif('1');
         $temporarySertifikat = session('temporary_sertifikat', []); 
 
         // Mengirim data sementara ke tampilan
-        return view('Pengadilan/addSertifikatTanah')->with('temporarySertifikat', $temporarySertifikat);
+        return view('Pengadilan/addSertifikatTanah', ['statusNotif' => $statusCount])->with('temporarySertifikat', $temporarySertifikat);
     }
      //-- end Data Sementara--
 
     public function addSertifikat()
     {
+        $statusCount = $this->countNotif('1');
         $temporarySertifikat = session('temporary_sertifikat', []);
 
         // Mengirim data sementara ke tampilan
-        return view('Pengadilan/addSertifikatTanah')->with('temporarySertifikat', $temporarySertifikat);
+        return view('Pengadilan/addSertifikatTanah', ['statusNotif' => $statusCount])->with('temporarySertifikat', $temporarySertifikat);
     }
 
     public function storeSertifikat(Request $request){
@@ -247,6 +260,7 @@ class PengadilanController extends Controller
     // detail sertifikat
     public function showDataAll(string $id)
     {
+        $statusCount = $this->countNotif('1');
         $dataDiriAll = DB::select('CALL viewAll_sertifikatTanah_dataDiri(?)', array($id));
         $dataGugatan = DB::select('CALL view_sertifikatTanah_gugatan(?)', array($id));
         $dataPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
@@ -260,6 +274,7 @@ class PengadilanController extends Controller
             'dataGugatan' => $dataGugatan,
             'dataPetitum' => $dataPetitum,
             'dataStatus' => $dataStatus,
+            'statusNotif' => $statusCount,
         ]);
     }
 
@@ -291,13 +306,15 @@ class PengadilanController extends Controller
 
     public function show(string $id)
     {
+        $statusCount = $this->countNotif('1');
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
-        return view('Pengadilan.DetailSertifikat.detailPihakSertifikat', ['sertifikat' => $sertifikat]);
+        return view('Pengadilan.DetailSertifikat.detailPihakSertifikat', ['sertifikat' => $sertifikat, 'statusNotif' => $statusCount]);
     }
 
     public function showDeleted(string $id)
     {
+        $statusCount = $this->countNotif('1');
         $sertifikatDeleted = DB::table('data_diri_pihak')->where('id_data_diri', $id)->delete();
         return redirect()->route('pengadilan')->with('success', 'Data berhasil dihapus');
     }
@@ -307,6 +324,7 @@ class PengadilanController extends Controller
      */
     public function edit(string $id)
     {
+        $statusCount = $this->countNotif('1');
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
         $provinsi = DB::table('provinces')->get();
@@ -317,6 +335,7 @@ class PengadilanController extends Controller
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
+            'statusNotif' => $statusCount,
         ]);
     }
 
@@ -326,6 +345,7 @@ class PengadilanController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $statusCount = $this->countNotif('1');
         DB::table('data_diri_pihak')
             ->where('id_data_diri', $id)
             ->update([
@@ -358,10 +378,12 @@ class PengadilanController extends Controller
 
     public function editPetitum(string $id)
     {
+        $statusCount = $this->countNotif('1');
         $editPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
         $editPetitum = collect($editPetitum);
         return view('Pengadilan.editPetitumSertifikat', [
             'editPetitum' => $editPetitum,
+            'statusNotif' => $statusCount,
         ]);
     }
 
