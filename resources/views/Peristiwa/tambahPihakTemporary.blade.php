@@ -122,7 +122,7 @@
                             <label class="col-lg-4 col-form-label">Jenis Kelamin:</label>
                             <div class="col-lg-8">
                                 <select class="form-select" name="jenis_kelamin" required>
-                                    <option value="">Pilih Jenis Kelamin</option>
+                                    <option value="" disabled selected>Pilih Jenis Kelamin</option>
                                     <option value="Laki Laki">Laki-Laki</option>
                                     <option value="Perempuan">Perempuan</option>
                                 </select>

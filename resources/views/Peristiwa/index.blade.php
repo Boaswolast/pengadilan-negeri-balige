@@ -155,7 +155,7 @@
                             <td>{{$loop->iteration}}</td>
                             <td>{!! nl2br(e($d->penggugat)) !!}</td>
                             <td>{!! nl2br(e($d->tergugat)) !!}</td>
-                            <td>{{\Carbon\Carbon::parse($d->tanggal_permohonan)->format('d F Y')}}</td>
+                            <td>{{ \Carbon\Carbon::parse($d->tanggal_permohonan)->translatedFormat('d F Y') }}</td>
                             <td>{{$d->status_permohonan}}</td>
                             {{--<td>{{$sertifikat->status}}</td> --}}
                             <td class="text-center">

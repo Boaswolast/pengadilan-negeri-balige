@@ -189,7 +189,7 @@
                                 <select class="form-select" name="pendidikan">
                                     <option value="">Pilih Pendidikan</option>
                                     <option value="SD">Sekolah Dasar (SD)</option>
-                                    <option value="SMP">OSekolah Menengah Pertama (SMP)</option>
+                                    <option value="SMP">Sekolah Menengah Pertama (SMP)</option>
                                     <option value="SMA">Sekolah Menengah Atas (SMA)</option>
                                     <option value="Sarjana">Sarjana (S1)</option>
                                     <option value="Magister">Magister (S2)</option>
@@ -205,25 +205,27 @@
                         <h6 style="margin-bottom: 40px">Informasi Tambahan</h6>
 
                         <div class="row mb-3">
+                            <label class="col-lg-4 col-form-label">NIK:</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="nik" class="form-control" placeholder="NIK">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Email:</label>
                             <div class="col-lg-8">
-                                <input type="email" name="email" class="form-control" placeholder="Email">
+                                <input type="email" name="email" class="form-control" placeholder="Alamat Email">
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">No Telepon:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="no_telp" class="form-control" placeholder="No Telepon">
+                                <input type="text" name="no_telp" class="form-control" placeholder="Nomor Telepon">
                             </div>
                         </div>
 
-                        <div class="row mb-3">
-                            <label class="col-lg-4 col-form-label">NIK:</label>
-                            <div class="col-lg-8">
-                                <input type="text" name="nik" class="form-control" placeholder="NIK">
-                            </div>
-                        </div>
+                        
 
                         <div class="text-end mt-4">
                             <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
@@ -296,7 +298,7 @@
                 method: 'GET',
                 success: function(response) {
                     // Menghapus semua opsi kota sebelum menambahkan yang baru
-                    $('#kelurahan').disable();
+                    $('#kelurahan').empty();
                     $('#kelurahan').append('<option value="#" disabled selected>Pilih Kelurahan</option>');
 
                     // Menambahkan opsi kota berdasarkan respons dari server

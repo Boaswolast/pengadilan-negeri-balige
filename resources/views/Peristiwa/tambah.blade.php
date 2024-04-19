@@ -94,7 +94,7 @@
                                         <div class="quill-basic" id="quill-editor" name="amarPutusan"></div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="amarPutusan" id="amarPutusan-input" required>
+                                <input type="hidden" name="amarPutusan" id="petitum-input" required>
                             </fieldset>
 
                             <h6>Upload Surat</h6>
@@ -123,7 +123,8 @@
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="surat_pengantar" class="file-input" required>
+                                        <input type="file" name="surat_pengantar" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" required>
+                                        {{-- <input type="file" name="surat_pengantar" class="file-input" required> --}}
                                     </div>
                                 </div>
                             </fieldset>
@@ -160,7 +161,7 @@
                                         </table>
                                         {{-- <form action="/submit-choice" method="post"> --}}
                                         <input type="hidden" name="reqTTD" id="choiceInput">
-                                        <input type="submit" value="Simpan">
+                                        {{-- <input type="submit" value="Simpan"> --}}
                                     {{-- </form> --}}
                                         {{-- <input type="file" name="dokumen_gugatan" class="file-input" required> --}}
                                     </div>
