@@ -40,6 +40,13 @@
             </ul>
 
             <div id="pihak" class="tab-content active">
+                @foreach($status as $data)
+                    @if ($data->status_id == 4)
+                        <div class="addGugatan mt-4">
+                            <a href="{{route('addPihakPengadilan',$id)}}" type="button" class="btn btn-success">Tambah Pihak</a>
+                        </div>
+                    @endif
+                @endforeach
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
@@ -96,9 +103,13 @@
             </div>
             <div id="petitum" class="tab-content">
                 @foreach($dataPetitum as $data)
-                <div class="addGugatan mt-4">
-                    <a href="{{route('editSertifikatPetitum', ['id' => $data->id_pemblokiran])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
-                </div>
+                @foreach($status as $data)
+                    @if ($data->status_id == 4)
+                    <div class="addGugatan mt-4">
+                        <a href="{{route('editSertifikatPetitum', ['id' => $data->id_pemblokiran])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                    </div>
+                    @endif
+                @endforeach
                     <div class="mt-2">{!! $data->petitum !!}</div>
                 @endforeach
             </div>

@@ -15,24 +15,57 @@ class PengadilanController extends Controller
      * Display a listing of the resource.
      */
 
-     public function countNotif($notif)
-     {
-         $count = DB::table('pemblokiran_sertifikat')->where('status_notif', $notif)->count();
-         return $count === 0 ? null : $count;
-     }
+    //  public function countNotif($notif)
+    //  {
+         
+    //      return $count === 0 ? null : $count;
+    //  }
 
     public function index()
     {
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::select('CALL viewAll_sertifikatTanah()');
         $data = collect($data);
-        return view('Pengadilan/pengadilan',['data' => $data, 'statusNotif' => $statusCount]);
+        return view('Pengadilan/pengadilan',[
+            'data' => $data,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     public function editSertifikat()
     {
-        $statusCount = $this->countNotif('1');
-        return view('Pengadilan/editSertifikatTanah', ['statusNotif' => $statusCount]);
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
+        return view('Pengadilan/editSertifikatTanah', [
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     /**
@@ -49,7 +82,20 @@ class PengadilanController extends Controller
     //Data Sementara
     public function addDataDiri()
     {
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
         $kecamatan = DB::table('districts')->get();
@@ -57,7 +103,8 @@ class PengadilanController extends Controller
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
-            'statusNotif' => $statusCount
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
         ]);
     }
 
@@ -114,21 +161,52 @@ class PengadilanController extends Controller
     public function showTemporarySertifikat()
     {
         // Mengambil data sementara dari sesi
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $temporarySertifikat = session('temporary_sertifikat', []); 
 
         // Mengirim data sementara ke tampilan
-        return view('Pengadilan/addSertifikatTanah', ['statusNotif' => $statusCount])->with('temporarySertifikat', $temporarySertifikat);
+        return view('Pengadilan/addSertifikatTanah', [
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ])->with('temporarySertifikat', $temporarySertifikat);
     }
      //-- end Data Sementara--
 
     public function addSertifikat()
     {
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $temporarySertifikat = session('temporary_sertifikat', []);
 
-        // Mengirim data sementara ke tampilan
-        return view('Pengadilan/addSertifikatTanah', ['statusNotif' => $statusCount])->with('temporarySertifikat', $temporarySertifikat);
+        return view('Pengadilan/addSertifikatTanah', [
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ])->with('temporarySertifikat', $temporarySertifikat);
     }
 
     public function storeSertifikat(Request $request){
@@ -198,69 +276,106 @@ class PengadilanController extends Controller
             // dd($e->getMessage());
         }
     }
-    // public function storeSertifikat(Request $request)
-    // {
-    //     $request->validate([
-    //         'petitum' => 'required',
-    //         'dokumen_gugatan' => 'required',
-    //     ]);
 
-    //     $temporarySertifikat = session('temporary_sertifikat', []);
+    public function addPihak(string $id)
+    {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
 
-    //     $insertData = [];
-    //     // Loop melalui setiap item data dan masukkan ke dalam database
-    //     foreach ($temporarySertifikat as $sertifikat) {
-    //         $sertifikatData = [
-    //             'status_pihak' => $sertifikat['status_pihak']?? null,
-    //             'jenis_pihak' => $sertifikat['jenis_pihak']?? null,
-    //             'nama' => $sertifikat['nama']?? null,
-    //             'tempat_lahir' => $sertifikat['tempat_lahir']?? null,
-    //             'tanggal_lahir' => $sertifikat['tanggal_lahir']?? null,
-    //             'umur' => $sertifikat['umur']?? null,
-    //             'jenis_kelamin' => $sertifikat['jenis_kelamin']?? null,
-    //             'warga_negara' => $sertifikat['warga_negara']?? null,
-    //             'alamat' => $sertifikat['alamat']?? null,
-    //             'provinsi' => $sertifikat['provinsi']?? null,
-    //             'kabupaten' => $sertifikat['kabupaten']?? null,
-    //             'kecamatan' => $sertifikat['kecamatan']?? null,
-    //             'kelurahan' => $sertifikat['kelurahan']?? null,
-    //             'pekerjaan' => $sertifikat['pekerjaan']?? null,
-    //             'status_kawin' => $sertifikat['status_kawin']?? null,
-    //             'pendidikan' => $sertifikat['pendidikan']?? null,
-    //             // Anda dapat menambahkan kolom lainnya sesuai kebutuhan
-    //         ];
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-    //         $insertData = array_merge($insertData, $sertifikatData);
-    //     }
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
 
-    //     $requestData= [
-    //         'petitum' => $request->petitum,
-    //         'dokumen_gugatan' => $request->dokumen_gugatan,
-    //     ];
+        $provinsi = DB::table('provinces')->get();
+        return view('Pengadilan/addDataDiriTambahan', [
+            'provinsi' => $provinsi, 
+            'id' => $id,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
+    }
 
-    //     $insertData = array_merge($insertData, $requestData);
+    public function storePihak(Request $request, string $id)
+    {
+        $provinsiId = $request->input('provinsi');
+        $kabupatenId = $request->input('kabupaten');
+        $kecamatanId = $request->input('kecamatan');
+        $kelurahanId = $request->input('kelurahan');
+        $kodeUnik = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->pluck('kode_unik')->first();
 
-    //     try {
-    //         DB::table('sertifikat_tanah')->insert($insertData);
-    
-    //         // Hapus data sementara dari sesi setelah data berhasil disimpan ke database
-    //         session()->forget('temporary_sertifikat');
-    
-    //         return redirect()->route('pengadilan')->with('success', 'Data telah disimpan.');
-    //     } catch (\Exception $e) {
-    //         // Tangani kesalahan jika terjadi
-    //         return redirect()->back()->with('error', 'Terjadi kesalahan saat menyimpan data.');
-    //     }
-    //     // dd($request->all());
-    // }
-
+        $status_pihak = $request->input('status_pihak');
+         $jenis_pihak = $request->input('jenis_pihak');
+         $nama = $request->input('nama');
+         $tempat_lahir = $request->input('tempat_lahir');
+         $tanggal_lahir = $request->input('tanggal_lahir');
+         $umur = $request->input('umur');
+         $jenis_kelamin = $request->input('jenis_kelamin');
+         $warga_negara = $request->input('warga_negara');
+         $alamat = $request->input('alamat');
+         $provinsi = DB::table('provinces')->where('prov_id', $provinsiId)->pluck('prov_name')->first();
+         $kabupaten =  DB::table('cities')->where('city_id', $kabupatenId)->pluck('city_name')->first();
+         $kecamatan =  DB::table('districts')->where('dis_id', $kecamatanId)->pluck('dis_name')->first();
+         $kelurahan =  DB::table('subdistricts')->where('subdis_id', $kelurahanId)->pluck('subdis_name')->first();
+         $pekerjaan = $request->input('pekerjaan');
+         $status_kawin = $request->input('status_kawin');
+         $pendidikan = $request->input('pendidikan');
+         $email = $request->input('email');
+         $no_telp = $request->input('no_telp');
+         $nik = $request->input('nik');
+ 
+        DB::table('data_diri_pihak')->insert([
+             'status_pihak' => $status_pihak,
+             'jenis_pihak' => $jenis_pihak,
+             'nama' => $nama,
+             'tempat_lahir' => $tempat_lahir,
+             'tanggal_lahir' => $tanggal_lahir,
+             'umur' => $umur,
+             'jenis_kelamin' => $jenis_kelamin,
+             'warga_negara' => $warga_negara,
+             'alamat' => $alamat,
+             'provinsi' => $provinsi,
+             'kabupaten' => $kabupaten,
+             'kecamatan' => $kecamatan,
+             'kelurahan' => $kelurahan,
+             'pekerjaan' => $pekerjaan,
+             'status_kawin' => $status_kawin,
+             'pendidikan' => $pendidikan,
+             'email' => $email,
+             'no_telp' => $no_telp,
+             'nik' => $nik,
+             'kode_unik' => $kodeUnik,
+             'created_by' => 'Admin'
+         ]);
+ 
+         return redirect()->route('detailAllSertifikat',$id)->with('success', 'Task Created Successfully!');
+    }
     /**
      * Display the specified resource.
      */
     // detail sertifikat
     public function showDataAll(string $id)
     {
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $dataDiriAll = DB::select('CALL viewAll_sertifikatTanah_dataDiri(?)', array($id));
         $dataGugatan = DB::select('CALL view_sertifikatTanah_gugatan(?)', array($id));
         $dataPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
@@ -269,12 +384,18 @@ class PengadilanController extends Controller
         $dataGugatan = collect($dataGugatan);
         $dataPetitum = collect($dataPetitum);
         $dataStatus = collect($dataStatus);
+
+        $status = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->get();
+        $id = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->pluck('id_pemblokiran')->first();
         return view('Pengadilan.DetailSertifikat.detailDataSertifikat', [
             'dataDiriAll' => $dataDiriAll,
+            'status' => $status, 
+            'id' => $id,
             'dataGugatan' => $dataGugatan,
             'dataPetitum' => $dataPetitum,
             'dataStatus' => $dataStatus,
-            'statusNotif' => $statusCount,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
         ]);
     }
 
@@ -306,15 +427,31 @@ class PengadilanController extends Controller
 
     public function show(string $id)
     {
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
-        return view('Pengadilan.DetailSertifikat.detailPihakSertifikat', ['sertifikat' => $sertifikat, 'statusNotif' => $statusCount]);
+        return view('Pengadilan.DetailSertifikat.detailPihakSertifikat', [
+            'sertifikat' => $sertifikat, 
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     public function showDeleted(string $id)
     {
-        $statusCount = $this->countNotif('1');
         $sertifikatDeleted = DB::table('data_diri_pihak')->where('id_data_diri', $id)->delete();
         return redirect()->route('pengadilan')->with('success', 'Data berhasil dihapus');
     }
@@ -324,7 +461,20 @@ class PengadilanController extends Controller
      */
     public function edit(string $id)
     {
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
         $provinsi = DB::table('provinces')->get();
@@ -335,7 +485,8 @@ class PengadilanController extends Controller
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
-            'statusNotif' => $statusCount,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
         ]);
     }
 
@@ -345,7 +496,6 @@ class PengadilanController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $statusCount = $this->countNotif('1');
         DB::table('data_diri_pihak')
             ->where('id_data_diri', $id)
             ->update([
@@ -378,12 +528,26 @@ class PengadilanController extends Controller
 
     public function editPetitum(string $id)
     {
-        $statusCount = $this->countNotif('1');
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $editPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
         $editPetitum = collect($editPetitum);
         return view('Pengadilan.editPetitumSertifikat', [
             'editPetitum' => $editPetitum,
-            'statusNotif' => $statusCount,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
         ]);
     }
 
@@ -398,7 +562,7 @@ class PengadilanController extends Controller
 
         $petitumSertifikat = DB::table('pemblokiran_sertifikat');
 
-        return redirect()->route('pengadilan')->with('success', 'Data Berhasil di Ubah');
+        return redirect()->route('detailAllSertifikat', ['id' => $id])->with('success', 'Data Berhasil di Ubah');
     }
 
     /**

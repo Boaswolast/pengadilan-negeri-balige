@@ -157,7 +157,14 @@
                             <td>{{$sertifikat->penggugat}}</td>
                             <td>{{$sertifikat->tergugat}}</td>
                             <td>{{$sertifikat->tanggal_gugatan}}</td>
-                            <td>{{$sertifikat->status_permohonan}}</td>
+                            <td>
+                                {{$sertifikat->status_permohonan}}
+                                @if ($sertifikat->status_permohonan == 'Terkonfirmasi')
+                                    <div>
+                                        <a href="{{url('/print', $sertifikat->surat_pemblokiran_bpn)}}">Lihat Bukti</a>
+                                    </div>
+                                @endif
+                            </td>
                             <td class="text-center">
                                 <div class="d-inline-flex">
                                     <div class="dropdown">

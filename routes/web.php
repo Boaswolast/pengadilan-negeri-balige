@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth','role:2']], function(){
 
     Route::get('/pengadilan', [App\Http\Controllers\PengadilanController::class, 'index'])->name('pengadilan');
     Route::get('/addSertifikat', [App\Http\Controllers\PengadilanController::class, 'addSertifikat'])->name('addSertifikatPengadilan');
+    Route::get('/addPihak/{id}', [App\Http\Controllers\PengadilanController::class, 'addPihak'])->name('addPihakPengadilan');
+    Route::post('/storePihak/{id}', [App\Http\Controllers\PengadilanController::class, 'storePihak'])->name('storePihakPengadilan');
     Route::post('/storeSertifikat', [App\Http\Controllers\PengadilanController::class, 'storeSertifikat'])->name('storeSertifikat');
     Route::get('/editSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'edit'])->name('editSertifikat');
     Route::put('/updateSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'update'])->name('updateSertifikat');
@@ -101,4 +103,5 @@ Route::group(['middleware' => ['auth','role:3']], function(){
     Route::post('/submitBuktiPemblokiran/{id}', [App\Http\Controllers\PertanahanController::class, 'uploadBuktiBlokir'])->name('submitBuktiPemblokiran');
     Route::get('/downloadBPN/{file}', [App\Http\Controllers\PertanahanController::class, 'download'])->name('downloadFileBPN');
     Route::get('/printBPN/{file}', [App\Http\Controllers\PertanahanController::class, 'print'])->name('printFileBPN');
+    Route::get('/diproses/{id}', [App\Http\Controllers\PertanahanController::class, 'diproses'])->name('diproses');
 });
