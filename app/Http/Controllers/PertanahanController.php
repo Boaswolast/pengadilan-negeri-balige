@@ -16,20 +16,36 @@ class PertanahanController extends Controller
      public function countNotif($notif)
      {
          $count = DB::table('pemblokiran_sertifikat')->where('status_notif', $notif)->count();
-         return $count;
+         return $count === 0 ? null : $count;
      }
 
     public function index()
     {
-        $statusCount = $this->countNotif('0');
-        $data = DB::select('CALL viewAll_sertifikatTanah()');
+        $notif = collect(DB::select('CALL notifBPN()'));
+        foreach($notif as $notification){
+            if($notification->jumlah_permohonan === 0){
+                $notification->jumlah_permohonan = null;
+            }
+        }
+        $data = collect(DB::select('CALL viewAll_sertifikatTanah()'))
+        ->filter(function ($item) {
+            return $item->status_permohonan == 'Menunggu' || $item->status_permohonan == 'Sedang diproses';
+        });
         $data = collect($data);
-        return view('Pertanahan/daftarKasusPertanahan',['data' => $data, 'statusNotif' => $statusCount]);
+        return view('Pertanahan/daftarKasusPertanahan',[
+            'data' => $data, 
+            'notif' => $notif
+        ]);
     }
 
     public function showDataAll(string $id)
     {
-        $statusCount = $this->countNotif('0');
+        $notif = collect(DB::select('CALL notifBPN()'));
+        foreach($notif as $notification){
+            if($notification->jumlah_permohonan === 0){
+                $notification->jumlah_permohonan = null;
+            }
+        }
         $dataDiriAll = DB::select('CALL viewAll_sertifikatTanah_dataDiri(?)', array($id));
         $dataGugatan = DB::select('CALL view_sertifikatTanah_gugatan(?)', array($id));
         $dataPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
@@ -43,24 +59,40 @@ class PertanahanController extends Controller
             'dataGugatan' => $dataGugatan,
             'dataPetitum' => $dataPetitum,
             'dataStatus' => $dataStatus,
-            'statusNotif' => $statusCount,
+            'notif' => $notif
         ]);
     }
 
     public function show(string $id)
     {
-        $statusCount = $this->countNotif('0');
+        $notif = collect(DB::select('CALL notifBPN()'));
+        foreach($notif as $notification){
+            if($notification->jumlah_permohonan === 0){
+                $notification->jumlah_permohonan = null;
+            }
+        }
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
-        return view('Pertanahan.detailPihakPermohonanPemblokiran', ['sertifikat' => $sertifikat, 'statusNotif' => $statusCount]);
+        return view('Pertanahan.detailPihakPermohonanPemblokiran', [
+            'sertifikat' => $sertifikat, 
+            'notif' => $notif
+        ]);
     }
 
     public function buktiBlokir()
     {
-        $statusCount = $this->countNotif('0');
+        $notif = collect(DB::select('CALL notifBPN()'));
+        foreach($notif as $notification){
+            if($notification->jumlah_permohonan === 0){
+                $notification->jumlah_permohonan = null;
+            }
+        }
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
-        return view('Pertanahan.addSKBPN', ['sertifikat' => $sertifikat]);
+        return view('Pertanahan.addSKBPN', [
+            'sertifikat' => $sertifikat,
+            'notif' => $notif
+        ]);
     }
 
     public function uploadBuktiBlokir(Request $request, $id)
@@ -87,20 +119,27 @@ class PertanahanController extends Controller
 
                 // Update status dan tambahkan path dokumen
                 DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update([
-                    'status_id' => 3,
+                    'status_id' => 6,
+                    'is_read_byPN' => 3,
                     'surat_pemblokiran_bpn' => $documentPath
                 ]);
 
-                return "Status post berhasil diubah dan dokumen berhasil diunggah.";
+                return redirect()->route('pertanahan')->with('success', 'Konfirmasi Terkirim');
             } else {
                 // Jika tidak ada file yang diunggah, hanya ubah status
-                DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update(['status_id' => 3]);
+                DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update(['status_id' => 5, 'is_read_byPN' => 1]);
 
-                return "Status post berhasil diubah.";
+                return redirect()->route('pertanahan')->with('warning', 'Terkonfirmasi untuk diroses');
             }
         } else {
-            return "Post tidak ditemukan.";
+            return redirect()->route('pertanahan')->with('error', 'Terjadi kesalahan');
         }
+    }
+
+    public function diproses($id){
+        $diproses = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update(['status_id' => 5, 'is_read_byPN' => 1]);
+
+        return redirect()->route('detailAllSertifikatPertanahan', ['id' => $id])->with('success', 'Data telah disimpan.');
     }
     
     public function download(Request $request, $file)

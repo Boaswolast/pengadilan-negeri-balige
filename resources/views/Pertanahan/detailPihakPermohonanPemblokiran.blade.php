@@ -1,4 +1,4 @@
-@extends('layouts.pengadilan')
+@extends('layouts.pertanahan')
 @section('content')
  <!-- Page header -->
  <div class="page-header page-header-light shadow">

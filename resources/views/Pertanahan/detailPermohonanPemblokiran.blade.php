@@ -1,4 +1,4 @@
-@extends('layouts.pengadilan')
+@extends('layouts.pertanahan')
 @section('content')
  <!-- Page header -->
  <div class="page-header page-header-light shadow">
@@ -131,6 +131,9 @@
                     </table>
                 </div>
                 <div class="addKasus mt-4">
+                    @foreach($dataPetitum as $id)
+                        <a href="{{route('diproses', ['id' => $id->id_pemblokiran])}}" type="button" class="btn btn-success">Proses Kasus</a>
+                    @endforeach
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_default">Konfirmasi Kasus</button>
                 </div>
             </div>

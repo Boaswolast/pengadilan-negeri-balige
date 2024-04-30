@@ -1,4 +1,4 @@
-@extends('layouts.pengadilan')
+@extends('layouts.pertanahan')
 @section('content')
 
 
