@@ -14,9 +14,27 @@ class PeristiwaController extends Controller
      */
     public function index()
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::select('CALL viewAll_peristiwaPenting()');
         $data = collect($data);
-        return view('Peristiwa/index',['data' => $data]);
+        return view('Peristiwa/index',[
+            'data' => $data,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     /**
@@ -25,6 +43,20 @@ class PeristiwaController extends Controller
 
      public function addDataDiri()
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
         $kecamatan = DB::table('districts')->get();
@@ -32,6 +64,8 @@ class PeristiwaController extends Controller
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
         ]);
     }
 
@@ -89,19 +123,46 @@ class PeristiwaController extends Controller
 
     public function showTemporaryPeristiwa()
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
         // Mengambil data sementara dari sesi
         $temporaryPeristiwa = session('temporary_peristiwa', []); 
 
         // Mengirim data sementara ke tampilan
-        return view('Peristiwa/tambah')->with('temporaryPeristiwa', $temporaryPeristiwa);
+        return view('Peristiwa/tambah', ['totalNotif' => $totalNotif, 'messages' => $messages])->with('temporaryPeristiwa', $temporaryPeristiwa);
     }
 
     public function create()
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $temporaryPeristiwa = session('temporary_peristiwa', []);
 
         // Mengirim data sementara ke tampilan
-        return view('Peristiwa/tambah')->with('temporaryPeristiwa', $temporaryPeristiwa);
+        return view('Peristiwa/tambah', ['totalNotif' => $totalNotif, 'messages' => $messages])->with('temporaryPeristiwa', $temporaryPeristiwa);
 
         // $provinsi = DB::table('provinces')->get();
         // $kota = DB::table('cities')->get();
@@ -245,8 +306,26 @@ class PeristiwaController extends Controller
 
     public function createPihak(string $id)
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $provinsi = DB::table('provinces')->get();
-        return view('Peristiwa/tambahPihak', ['provinsi' => $provinsi, 'id' => $id]);
+        return view('Peristiwa/tambahPihak', [
+            'provinsi' => $provinsi, 
+            'id' => $id,
+            'totalNotif' => $totalNotif,
+            'messages' => $messages]);
     }
 
     public function storePihak(Request $request, string $id)
@@ -306,6 +385,20 @@ class PeristiwaController extends Controller
 
     public function editPihak(string $idDiri, string $id)
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::table('data_diri_pihak')
                 ->join('provinces', 'data_diri_pihak.provinsi', '=', 'provinces.prov_name')
                 ->join('cities', 'data_diri_pihak.kabupaten', '=', 'cities.city_name')
@@ -316,7 +409,13 @@ class PeristiwaController extends Controller
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
         // return $data;
-        return view('Peristiwa/editPihak', ['provinsi' => $provinsi, 'id' => $id, 'data' => $data, 'kabupaten' => $kabupaten]);
+        return view('Peristiwa/editPihak', [
+            'provinsi' => $provinsi, 
+            'id' => $id, 
+            'data' => $data, 
+            'kabupaten' => $kabupaten,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages]);
     }
 
     public function updatePihak(string $idDiri, string $id, Request $request){
@@ -376,6 +475,20 @@ class PeristiwaController extends Controller
      */
     public function show(string $id)
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::select('CALL viewAll_peristiwaPenting_dataDiri(?)', array($id));
         $dataAmar = DB::select('CALL view_peristiwaPenting_amarPutusan(?)', array($id));
         $dataPutusan = DB::select('CALL view_peristiwaPenting_suratPutusan(?)', array($id));
@@ -396,15 +509,35 @@ class PeristiwaController extends Controller
             'dataAmar' => $dataAmar,
             'dataPutusan' => $dataPutusan,
             'dataPengantar' => $dataPengantar,
-            'dataStatus' => $dataStatus
+            'dataStatus' => $dataStatus,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
         ]);
     }
 
     public function showPihak(string $id)
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::select('CALL view_peristiwaPenting_dataDiri(?)', array($id));
         $data = collect($data);
-        return view('Peristiwa/detailPihak',['data' => $data]);
+        return view('Peristiwa/detailPihak',[
+            'data' => $data,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     /**
@@ -426,8 +559,26 @@ class PeristiwaController extends Controller
     // EDIT AMAR PUTUSAN
     public function editAmarPutusan(string $id)
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::select('CALL view_peristiwaPenting_amarPutusan("'.$id.'")');
-        return view('Peristiwa/editAmarPutusan', ['data' => $data]);
+        return view('Peristiwa/editAmarPutusan', [
+            'data' => $data,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     public function updateAmarPutusan(Request $request, string $id)
@@ -445,8 +596,26 @@ class PeristiwaController extends Controller
     // EDIT SURAT PUTUSAN
     public function editSuratPutusan(string $id)
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::select('CALL view_peristiwaPenting_suratPutusan("'.$id.'")');
-        return view('Peristiwa/editSuratPutusan', ['data' => $data]);
+        return view('Peristiwa/editSuratPutusan', [
+            'data' => $data, 
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     public function updateSuratPutusan(string $id, Request $request)
@@ -548,8 +717,26 @@ class PeristiwaController extends Controller
 
     public function editSuratPengantar(string $id)
     {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
         $data = DB::select('CALL view_peristiwaPenting_suratPengantar("'.$id.'")');
-        return view('Peristiwa/editSuratPengantar', ['data' => $data]);
+        return view('Peristiwa/editSuratPengantar', [
+            'data' => $data,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
     }
 
     public function updateSuratPengantar(Request $request, string $id)

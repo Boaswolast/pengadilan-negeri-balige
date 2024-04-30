@@ -49,4 +49,13 @@ class HomeController extends Controller
         $messages = array_merge($messages1, $messages2);
         return view('home', ['totalNotif' => $totalNotif, 'messages' => $messages]);
     }
+
+    public function getProfilePictureAttribute()
+    {
+        $initial = strtoupper(substr($this->name, 0, 1));
+        
+        $path = 'img/profiles/' . $initial . '.png';
+        
+        return asset($path);
+    }
 }

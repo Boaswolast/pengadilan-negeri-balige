@@ -201,7 +201,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="#" class="nav-link">
+							<a href="{{route('peristiwa')}}" class="nav-link">
 								<i class="ph-user-square"></i>
 								<span>Peristiwa Penting</span>
 							</a>
