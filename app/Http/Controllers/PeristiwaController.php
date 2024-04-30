@@ -596,8 +596,7 @@ class PeristiwaController extends Controller
 
     // EDIT SURAT PUTUSAN
     public function editSuratPutusan(string $id)
-<<<<<<< HEAD
-    {
+    {   
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
         $messages1 = collect($notif1)->pluck('notification')->all();
@@ -611,10 +610,7 @@ class PeristiwaController extends Controller
             $totalNotif = null;
         }
         $messages = array_merge($messages1, $messages2);
-
-=======
-    {   
->>>>>>> ae3098345f9010c1ac5dcaca76b7b1b67b03f197
+        
         $data = DB::select('CALL view_peristiwaPenting_suratPutusan("'.$id.'")');
         return view('Peristiwa/editSuratPutusan', [
             'data' => $data, 
