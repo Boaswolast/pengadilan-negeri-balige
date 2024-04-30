@@ -174,12 +174,17 @@
                                                     <i class="ph-pencil me-2"></i>
                                                     Edit
                                                 </a> --}}
-                                                <form action="{{route('deletedPeristiwa', ['id' => $d->id_peristiwa_penting])}}" type="button" method="POST" class="dropdown-item text-danger">
+                                                <a href="#" class="dropdown-item text-danger" onclick="confirmDeletePihak('{{ $d->id_peristiwa_penting }}')">
+                                                <i class="ph-trash me-2"></i>
+                                                Hapus
+                                            </a>
+
+                                                {{-- <form action="{{route('deletedPeristiwa', ['id' => $d->id_peristiwa_penting])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                     <i class="ph-trash me-2"></i>
                                                     @csrf
                                                     @method('delete')
                                                     <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
-                                                </form>
+                                                </form> --}}
                                             </div>
                                         </div>
                                     </div>
@@ -198,4 +203,12 @@
     </div>
         <!-- /basic datatable -->
 </div>
+<script>
+    function confirmDeletePihak(id) {
+        const url = '/peristiwa/delete/' + id;
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        console.log(url);
+        ajaxDelete(url, csrfToken);
+    }
+</script>
 @endsection

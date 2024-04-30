@@ -36,26 +36,51 @@
 
     <!-- Basic setup -->
     <div class="content">
-        {{-- @foreach($editPetitum as $data) --}}
-        <form action="{{route('updateSuratPengantar', $d->id_peristiwa)}}" method="POST">
+        
+        <form action="{{route('updateSuratPengantar', $d->id_peristiwa)}}" method="POST" enctype="multipart/form-data">
             @csrf
-            {{-- @method('PUT') --}}
-            {{-- <div class="card">
-                <div class="border-top">
-                    <div class="quill-basic" id="quill-editor" name="amar_putusan">{!! $d->amar_putusan !!}</div>
-                </div>
-            </div>
-            <input type="hidden" name="amar_putusan" id="petitum-input" required value="{!! $d->amar_putusan !!}"> --}}
-            <h6>Surat Pengantar</h6>
-                            <fieldset>
-                                <div class="card">
-                                    <div class="card-body">
-                                        <input type="file" name="surat_pengantar" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" required>
-                                        {{-- <input type="file" name="surat_pengantar" class="file-input" required> --}}
+            @method('PUT')
+            <fieldset>
+                <div class="card">
+                    <div class="card-body">
+                        {{-- <input type="file" id="putusanPN" name="putusanPN"  accept=".pdf" class="form-control" value="{{ old($d->putusan_pn) }}"> --}}
+                        
+                        <fieldset>
+                            {{-- FILE PN --}}
+                                @if($d->surat_pengantar)
+                                
+                                    <div class="row">
+                                        <p class="col-4"><b>File: {{ $d->surat_pengantar }} </b></p>
+                                        <div class="col-8">
+                                            <a href="{{ asset('files/surat-pengantar/' . $d->surat_pengantar) }}" target="_blank">Tinjau</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </fieldset>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-3">Surat Pengantar (.pdf)</label>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <input type="file" name="surat_pengantar" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" required> 
+                                                {{-- <input type="file" name="surat_pengantar" class="file-input" required> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="row">
+                                        <p>Tidak Ada Data Tersimpan Sebelumnya</p>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-3">Penetapan/Putusan PN (.pdf)</label>
+                                        <div class="col-lg-9">
+                                            <input type="file" class="form-control" name="putusanPN" accept=".pdf">
+                                        </div>
+                                    </div>
+                                @endif
+                        </fieldset>
+                    </div>
+                </div>
+            </fieldset>
             <div class="text-end">
+                <a href="{{route('detailPeristiwa', $d->id_peristiwa)}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan<i class="ph-paper-plane-tilt ms-2"></i></button>
             </div>
         </form>
