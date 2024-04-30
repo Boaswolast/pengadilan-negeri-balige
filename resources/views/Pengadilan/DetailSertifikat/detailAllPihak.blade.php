@@ -17,7 +17,7 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- @if(!@empty())
+                {{-- @if(!@empty()))
                 @foreach() --}}
                 <tr>
                     <td>2</td>

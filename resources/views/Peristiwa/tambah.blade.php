@@ -102,19 +102,19 @@
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan PN (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanPN">
+										<input type="file" class="form-control" name="putusanPN" accept=".pdf">
 									</div>
 								</div>
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan PT (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanPT">
+										<input type="file" class="form-control" name="putusanPT" accept=".pdf">
 									</div>
 								</div>
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan MA RI (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanMA">
+										<input type="file" class="form-control" name="putusanMA" accept=".pdf">
 									</div>
 								</div>
                             </fieldset>
@@ -123,7 +123,7 @@
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="surat_pengantar" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" required>
+                                        <input type="file" name="surat_pengantar" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
                                         {{-- <input type="file" name="surat_pengantar" class="file-input" required> --}}
                                     </div>
                                 </div>

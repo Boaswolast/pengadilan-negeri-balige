@@ -228,7 +228,7 @@
                         
 
                         <div class="text-end mt-4">
-                            <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
+                            <a href="{{route('detailPeristiwa', $id)}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
                             <button type="submit" class="btn btn-success">Tambah <i class="ph-paper-plane-tilt ms-2"></i></button>
                         </div>
                     </form>

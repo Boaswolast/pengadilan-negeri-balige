@@ -36,48 +36,99 @@
 
     <!-- Basic setup -->
     <div class="content">
-        {{-- @foreach($editPetitum as $data) --}}
-        <form action="{{route('updateSuratPutusan', $d->id_peristiwa)}}" method="POST">
+        <form action="{{route('updateSuratPutusan', $d->id_peristiwa)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            {{-- <fieldset>
+            <fieldset>
                 <div class="card">
-                    <div class="card-body"> --}}
-                        {{-- <label for="putusanPN"><b>Putusan PN (.pdf)</b></label> --}}
-                        {{-- <input type="file" name="putusanPN" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" required> --}}
-                        {{-- <input type="file" name="putusan_pn" class="file-input form-control-sm" multiple="multiple" data-input-group-class="input-group-sm" data-show-upload="false" data-show-caption="true" data-show-preview="true" required> --}}
-                        {{-- <input type="file" name="putusan">
+                    <div class="card-body">
+                        {{-- <input type="file" id="putusanPN" name="putusanPN"  accept=".pdf" class="form-control" value="{{ old($d->putusan_pn) }}"> --}}
+                        
+                        <fieldset>
+                            {{-- FILE PN --}}
+                                @if($d->putusan_pn)
+                                    <div class="row">
+                                        <p class="col-3"><b>File: {{ $d->putusan_pn }} </b></p>
+                                        <div class="col-9">
+                                            <a href="{{ asset('files/putusanPN/' . $d->putusan_pn) }}" target="_blank">Tinjau</a>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-3">Penetapan/Putusan PN (.pdf)</label>
+                                        <div class="col-lg-9">
+                                            <input type="file" class="form-control" name="putusanPN" accept=".pdf">
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="row">
+                                        <p>Tidak Ada Data Tersimpan Sebelumnya</p>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-3">Penetapan/Putusan PN (.pdf)</label>
+                                        <div class="col-lg-9">
+                                            <input type="file" class="form-control" name="putusanPN" accept=".pdf">
+                                        </div>
+                                    </div>
+                                @endif
+
+                                {{-- FILE PT --}}
+                                @if($d->putusan_pt)
+                                    <div class="row">
+                                        <p class="col-3"><b>File: {{ $d->putusan_pt }}</b></p>
+                                        <div class="col-9">
+                                            <a href="{{ asset('files/putusanPN/' . $d->putusan_pt) }}" target="_blank">Tinjau</a>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-3">Penetapan/Putusan PT (.pdf)</label>
+                                        <div class="col-lg-9">
+                                            <input type="file" class="form-control" name="putusanPT" accept=".pdf">
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="row">
+                                        <p>Tidak Ada Data Tersimpan Sebelumnya</p>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-3">Penetapan/Putusan PT (.pdf)</label>
+                                        <div class="col-lg-9">
+                                            <input type="file" class="form-control" name="putusanPT" accept=".pdf">
+                                        </div>
+                                    </div>
+                                @endif
+
+                                {{-- FILE MA --}}
+                                @if($d->putusan_ma)
+                                    <div class="row">
+                                        <p class="col-3"><b>File: {{ $d->putusan_ma }}</b></p>
+                                        <div class="col-9">
+                                            <a href="{{ asset('files/putusanMA/' . $d->putusan_ma) }}" target="_blank">Tinjau</a>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label class="col-form-label col-lg-3">Penetapan/Putusan MA RI (.pdf)</label>
+                                        <div class="col-lg-9">
+                                            <input type="file" class="form-control" name="putusanMA" accept=".pdf">
+                                        </div>
+                                    </div>
+                                @else
+                                    <div class="row">
+                                        <p>Tidak Ada Data Tersimpan Sebelumnya</p>
+                                    </div>
+                                    <div class="row mb-4">
+                                        <label class="col-form-label col-lg-3">Penetapan/Putusan MA (.pdf)</label>
+                                        <div class="col-lg-9">
+                                            <input type="file" class="form-control" name="putusanMA" accept=".pdf">
+                                        </div>
+                                    </div>
+                                @endif
+
+                            </fieldset>
                     </div>
                 </div>
-            </fieldset> --}}
-            <h6>Upload Surat</h6>
-                            <fieldset>
-                                <div class="row mb-3">
-									<label class="col-form-label col-lg-4">Penetapan/Putusan PN (.pdf)</label>
-									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusan_PN">
-									</div>
-								</div>
-                                <div class="row mb-3">
-									<label class="col-form-label col-lg-4">Penetapan/Putusan PT (.pdf)</label>
-									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanPT">
-									</div>
-								</div>
-                                <div class="row mb-3">
-									<label class="col-form-label col-lg-4">Penetapan/Putusan MA RI (.pdf)</label>
-									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanMA">
-									</div>
-								</div>
-                            </fieldset>
-            {{-- <div class="card">
-                <div class="border-top">
-                    <div class="quill-basic" id="quill-editor" name="amar_putusan">{!! $d->putusan_pn !!}</div>
-                </div>
-            </div>
-            <input type="hidden" name="amar_putusan" id="petitum-input" required value="{!! $d->putusan_pn !!}"> --}}
+            </fieldset>
             <div class="text-end">
+                <a href="{{route('detailPeristiwa', $d->id_peristiwa)}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan<i class="ph-paper-plane-tilt ms-2"></i></button>
             </div>
         </form>

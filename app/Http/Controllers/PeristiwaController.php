@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class PeristiwaController extends Controller
 {
@@ -595,6 +596,7 @@ class PeristiwaController extends Controller
 
     // EDIT SURAT PUTUSAN
     public function editSuratPutusan(string $id)
+<<<<<<< HEAD
     {
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
@@ -610,6 +612,9 @@ class PeristiwaController extends Controller
         }
         $messages = array_merge($messages1, $messages2);
 
+=======
+    {   
+>>>>>>> ae3098345f9010c1ac5dcaca76b7b1b67b03f197
         $data = DB::select('CALL view_peristiwaPenting_suratPutusan("'.$id.'")');
         return view('Peristiwa/editSuratPutusan', [
             'data' => $data, 
@@ -620,97 +625,91 @@ class PeristiwaController extends Controller
 
     public function updateSuratPutusan(string $id, Request $request)
     {
-        // dd($request->all());
-        return $request->file('putusan_PN')->getClientOriginalName();
         $request->validate([
-        'putusanPN' => 'nullable|mimes:pdf',
-        'putusanPT' => 'nullable|mimes:pdf',
-        'putusanMA' => 'nullable|mimes:pdf'
-    ],[
-        'putusanPN.mimes' => 'File putusan PN harus berupa file PDF.',
-        'putusanPT.mimes' => 'File putusan PT harus berupa file PDF.',
-        'putusanMA.mimes' => 'File putusan MA harus berupa file PDF.'
-    ]);
-
-            // Buat UUID untuk peristiwa
-            $docPNName = null;
-            $docPTName = null;
-            $docMAName = null;
-            
-            if ($request->hasFile('putusanPN')) {
-                // Ada file yang diunggah, lanjutkan proses
-                $docPN = $request->file('putusanPN');
-                $docPNName =  time() . '.' . $docPN->getClientOriginalName(); // Nama file unik dengan timestamp
-                // $mimeType = $docPN->getClientMimeType();
-                // $dokumenPathPN = $docPN->storeAs($docPNName);
-                $docPN->move(public_path('files/putusanPN'), $docPNName);
-            }
-
-            if ($request->hasFile('putusanPT')) {
-                // Ada file yang diunggah, lanjutkan proses
-                $docPT = $request->file('putusanPT');
-                $docPTName = time() . '.' . $docPT->getClientOriginalName();
-                // $mimeType1 = $docPT->getClientMimeType();
-                // $dokumenPathPT = $docPT->storeAs($docPTName);
-                $docPT->move(public_path('files/putusanPT'), $docPTName);
-            }
-
-            if ($request->hasFile('putusanMA')) {
-                // Ada file yang diunggah, lanjutkan proses
-                $docMA = $request->file('putusanMA');
-                $docMAName = time() . '.' . $docMA->getClientOriginalName();
-                // $mimeType2 = $docMA->getClientMimeType();
-                // $dokumenPathMA = $docMA->storeAs($docMAName);
-                $docMA->move(public_path('files/putusanMA'), $docMAName);
-            }
-
-            $docSurat = $request->file('surat_pengantar');
-            $docSuratName = time() . '.' . $docSurat->getClientOriginalName();
-            // $mimeType3 = $docSurat->getClientMimeType();
-            $dokumenPathSurat = $docSurat->storeAs($docSuratName);
-            $docSurat->move(public_path('files/surat-pengantar'), $docSuratName);
-
-        return $request->file('putusan')->getClientOriginalName();
-        $docPNName = null;
-            // $docPTName = null;
-            // $docMAName = null;
-            
-            if ($request->hasFile('putusanPN')) {
-                // Ada file yang diunggah, lanjutkan proses
-                $docPN = $request->file('putusanPN');
-                $docPNName =  time() . '.' . $docPN->getClientOriginalName(); // Nama file unik dengan timestamp
-                // $mimeType = $docPN->getClientMimeType();
-                // $dokumenPathPN = $docPN->storeAs($docPNName);
-                $docPN->move(public_path('files/putusanPN'), $docPNName);
-            }
-
-            return $request->file('putusanPN')->getClientOriginalName();
-
-            // if ($request->hasFile('putusanPT')) {
-            //     // Ada file yang diunggah, lanjutkan proses
-            //     $docPT = $request->file('putusanPT');
-            //     $docPTName = time() . '.' . $docPT->getClientOriginalName();
-            //     // $mimeType1 = $docPT->getClientMimeType();
-            //     // $dokumenPathPT = $docPT->storeAs($docPTName);
-            //     $docPT->move(public_path('files/putusanPT'), $docPTName);
-            // }
-
-            // if ($request->hasFile('putusanMA')) {
-            //     // Ada file yang diunggah, lanjutkan proses
-            //     $docMA = $request->file('putusanMA');
-            //     $docMAName = time() . '.' . $docMA->getClientOriginalName();
-            //     // $mimeType2 = $docMA->getClientMimeType();
-            //     // $dokumenPathMA = $docMA->storeAs($docMAName);
-            //     $docMA->move(public_path('files/putusanMA'), $docMAName);
-            // }
+            'putusanPN' => 'nullable|mimes:pdf',
+            'putusanPT' => 'nullable|mimes:pdf',
+            'putusanMA' => 'nullable|mimes:pdf'
+        ],[
+            'putusanPN.mimes' => 'File putusan PN harus berupa file PDF.',
+            'putusanPT.mimes' => 'File putusan PT harus berupa file PDF.',
+            'putusanMA.mimes' => 'File putusan MA harus berupa file PDF.'
+        ]);
         
-        DB::table('peristiwa_penting')
+        $docMAName = null;
+            
+        if ($request->hasFile('putusanPN')) {
+            $docPNName = null;
+            $docLama = DB::table('peristiwa_penting')->where(["id_peristiwa" => $id])->value('putusan_pn');
+            $docPN = $request->file('putusanPN');
+            $docPNName =  time() . '.' . $docPN->getClientOriginalName(); // Nama file unik dengan timestamp
+                
+            // hapus file lama
+            if ($docLama!=null) {
+                $pathToFile = public_path('files/putusanPN/' . $docLama);
+
+                    // Periksa apakah file lama ada sebelum mencoba menghapusnya
+                if (file_exists($pathToFile)) {
+                    // Hapus file lama
+                    unlink($pathToFile);
+                }
+            }
+            $docPN->move(public_path('files/putusanPN'), $docPNName);
+
+            DB::table('peristiwa_penting')
             ->where('id_peristiwa', $id)    
             ->update([
-                'putusan_pn' => $docPNName,
-                // 'putusan_pt' => $request->putusan_pt,
-                // 'putusan_ma' => $request->putusan_ma,
+                'putusan_pn' => $docPNName
             ]);
+
+        }
+
+        if ($request->hasFile('putusanPT')) {
+            $docPTName = null;
+            $docLamaPT = DB::table('peristiwa_penting')->where(["id_peristiwa" => $id])->value('putusan_pt');
+            $docPT = $request->file('putusanPT');
+            $docPTName =  time() . '.' . $docPT->getClientOriginalName(); // Nama file unik dengan timestamp
+                
+            // hapus file lama
+            if ($docLamaPT!=null) {
+                $pathToFile = public_path('files/putusanPT/' . $docLamaPT);
+
+                    // Periksa apakah file lama ada sebelum mencoba menghapusnya
+                if (file_exists($pathToFile)) {
+                    // Hapus file lama
+                    unlink($pathToFile);
+                }
+            }
+            $docPT->move(public_path('files/putusanPT'), $docPTName);
+            DB::table('peristiwa_penting')
+            ->where('id_peristiwa', $id)    
+            ->update([
+                'putusan_pt' => $docPTName
+            ]);
+        }
+
+        if ($request->hasFile('putusanMA')) {
+            $docMAName = null;
+            $docLamaMA = DB::table('peristiwa_penting')->where(["id_peristiwa" => $id])->value('putusan_ma');
+            $docMA = $request->file('putusanMA');
+            $docMAName =  time() . '.' . $docMA->getClientOriginalName(); // Nama file unik dengan timestamp
+                
+            // hapus file lama
+            if ($docLamaMA!=null) {
+                $pathToFile = public_path('files/putusanMA/' . $docLamaMA);
+
+                    // Periksa apakah file lama ada sebelum mencoba menghapusnya
+                if (file_exists($pathToFile)) {
+                    // Hapus file lama
+                    unlink($pathToFile);
+                }
+            }
+            $docMA->move(public_path('files/putusanMA'), $docMAName);
+            DB::table('peristiwa_penting')
+            ->where('id_peristiwa', $id)    
+            ->update([
+                'putusan_ma' => $docMAName
+            ]);
+        }
 
         return redirect()->route('detailPeristiwa',$id)->with('success', 'Amar Putusaan Berhasil di Ubah');
     }
@@ -739,7 +738,7 @@ class PeristiwaController extends Controller
         ]);
     }
 
-    public function updateSuratPengantar(Request $request, string $id)
+    public function updateSuratPengantar(string $id, Request $request)
     {
         $request->validate([
         'surat_pengantar' => 'required|mimes:pdf,doc,docx'
@@ -748,96 +747,122 @@ class PeristiwaController extends Controller
         'surat_pengantar.mimes' => 'Surat pengantar harus berupa file PDF, DOC, atau DOCX.',
     ]);
 
-    return  dd($request->all());
+    if ($request->hasFile('surat_pengantar')) {
+            $docSPName = null;
+            $docLamaSP = DB::table('peristiwa_penting')->where(["id_peristiwa" => $id])->value('surat_pengantar');
+            $docSP = $request->file('surat_pengantar');
+            $docSPName =  time() . '.' . $docSP->getClientOriginalName(); // Nama file unik dengan timestamp
+                
+            // hapus file lama
+            if ($docLamaSP!=null) {
+                $pathToFile = public_path('files/surat-pengantar/' . $docLamaSP);
 
-        try{
-            DB::beginTransaction();
-
-            $docPNName = null;
-            $docPTName = null;
-            $docMAName = null;
-            
-            if ($request->hasFile('putusanPN')) {
-                // Ada file yang diunggah, lanjutkan proses
-                $docPN = $request->file('putusanPN');
-                $docPNName =  time() . '.' . $docPN->getClientOriginalName(); // Nama file unik dengan timestamp
-                // $mimeType = $docPN->getClientMimeType();
-                // $dokumenPathPN = $docPN->storeAs($docPNName);
-                $docPN->move(public_path('files/putusanPN'), $docPNName);
+                    // Periksa apakah file lama ada sebelum mencoba menghapusnya
+                if (file_exists($pathToFile)) {
+                    // Hapus file lama
+                    unlink($pathToFile);
+                }
             }
-
-            if ($request->hasFile('putusanPT')) {
-                // Ada file yang diunggah, lanjutkan proses
-                $docPT = $request->file('putusanPT');
-                $docPTName = time() . '.' . $docPT->getClientOriginalName();
-                // $mimeType1 = $docPT->getClientMimeType();
-                // $dokumenPathPT = $docPT->storeAs($docPTName);
-                $docPT->move(public_path('files/putusanPT'), $docPTName);
-            }
-
-            if ($request->hasFile('putusanMA')) {
-                // Ada file yang diunggah, lanjutkan proses
-                $docMA = $request->file('putusanMA');
-                $docMAName = time() . '.' . $docMA->getClientOriginalName();
-                // $mimeType2 = $docMA->getClientMimeType();
-                // $dokumenPathMA = $docMA->storeAs($docMAName);
-                $docMA->move(public_path('files/putusanMA'), $docMAName);
-            }
-
-            $docSurat = $request->file('surat_pengantar');
-            $docSuratName = time() . '.' . $docSurat->getClientOriginalName();
-            // $mimeType3 = $docSurat->getClientMimeType();
-            $dokumenPathSurat = $docSurat->storeAs($docSuratName);
-            $docSurat->move(public_path('files/surat-pengantar'), $docSuratName);
-
-            DB::table('peristiwa_penting')->insert([
-                'kode_unik' => $dokumenUuid,
-                'amar_putusan' => $request->amarPutusan,
-                'putusan_pn' => $docPNName,
-                'putusan_pt' => $docPTName,
-                'putusan_ma' => $docMAName,
-                'surat_pengantar' => $dokumenPathSurat,
-                'tanda_tangan' => $request->requestTTD,
+            $docSP->move(public_path('files/surat-pengantar'), $docSPName);
+            DB::table('peristiwa_penting')
+            ->where('id_peristiwa', $id)    
+            ->update([
+                'surat_pengantar' => $docSPName
             ]);
-
-            foreach ($temporaryPeristiwa as $peristiwa) {
-                DB::table('data_diri_pihak')->insert([
-                    'kode_unik' => $dokumenUuid,
-                    'status_pihak' => $peristiwa['status_pihak']?? null,
-                    'jenis_pihak' => $peristiwa['jenis_pihak']?? null,
-                    'nama' => $peristiwa['nama']?? null,
-                    'tempat_lahir' => $peristiwa['tempat_lahir']?? null,
-                    'tanggal_lahir' => $peristiwa['tanggal_lahir']?? null,
-                    'umur' => $peristiwa['umur']?? null,
-                    'jenis_kelamin' => $peristiwa['jenis_kelamin']?? null,
-                    'warga_negara' => $peristiwa['warga_negara']?? null,
-                    'alamat' => $peristiwa['alamat']?? null,
-                    'provinsi' => $peristiwa['provinsi']?? null,
-                    'kabupaten' => $peristiwa['kabupaten']?? null,
-                    'kecamatan' => $peristiwa['kecamatan']?? null,
-                    'kelurahan' => $peristiwa['kelurahan']?? null,
-                    'pekerjaan' => $peristiwa['pekerjaan']?? null,
-                    'status_kawin' => $peristiwa['status_kawin']?? null,
-                    'pendidikan' => $peristiwa['pendidikan']?? null,
-                    'email' => $peristiwa['email']?? null,
-                    'no_telp' => $peristiwa['no_telp']?? null,
-                    'nik' => $peristiwa['nik']?? null
-                ]);
-            }
-
-            DB::commit();
-
-            session()->forget('temporary_peristiwa');
-
-            return redirect()->route('peristiwa')->with('success', 'Data telah disimpan.');
         }
-        catch (\Exception $e) {
-            DB::rollback();
-            // dd($e->getMessage()); 
-            // Tangani kesalahan jika terjadi
-            return redirect()->route('peristiwa')->with('error', 'Terjadi kesalahan saat menyimpan data.');
-            // dd($e->getMessage());
-        }
+
+        return redirect()->route('detailPeristiwa',$id)->with('success', 'Surat Pengantar Berhasil di Ubah');
+
+    return  dd($request->surat_pengantar->getClientOriginalName());
+
+        // try{
+        //     DB::beginTransaction();
+
+        //     $docPNName = null;
+        //     $docPTName = null;
+        //     $docMAName = null;
+            
+        //     if ($request->hasFile('putusanPN')) {
+        //         // Ada file yang diunggah, lanjutkan proses
+        //         $docPN = $request->file('putusanPN');
+        //         $docPNName =  time() . '.' . $docPN->getClientOriginalName(); // Nama file unik dengan timestamp
+        //         // $mimeType = $docPN->getClientMimeType();
+        //         // $dokumenPathPN = $docPN->storeAs($docPNName);
+        //         $docPN->move(public_path('files/putusanPN'), $docPNName);
+        //     }
+
+        //     if ($request->hasFile('putusanPT')) {
+        //         // Ada file yang diunggah, lanjutkan proses
+        //         $docPT = $request->file('putusanPT');
+        //         $docPTName = time() . '.' . $docPT->getClientOriginalName();
+        //         // $mimeType1 = $docPT->getClientMimeType();
+        //         // $dokumenPathPT = $docPT->storeAs($docPTName);
+        //         $docPT->move(public_path('files/putusanPT'), $docPTName);
+        //     }
+
+        //     if ($request->hasFile('putusanMA')) {
+        //         // Ada file yang diunggah, lanjutkan proses
+        //         $docMA = $request->file('putusanMA');
+        //         $docMAName = time() . '.' . $docMA->getClientOriginalName();
+        //         // $mimeType2 = $docMA->getClientMimeType();
+        //         // $dokumenPathMA = $docMA->storeAs($docMAName);
+        //         $docMA->move(public_path('files/putusanMA'), $docMAName);
+        //     }
+
+        //     $docSurat = $request->file('surat_pengantar');
+        //     $docSuratName = time() . '.' . $docSurat->getClientOriginalName();
+        //     // $mimeType3 = $docSurat->getClientMimeType();
+        //     $dokumenPathSurat = $docSurat->storeAs($docSuratName);
+        //     $docSurat->move(public_path('files/surat-pengantar'), $docSuratName);
+
+        //     DB::table('peristiwa_penting')->insert([
+        //         'kode_unik' => $dokumenUuid,
+        //         'amar_putusan' => $request->amarPutusan,
+        //         'putusan_pn' => $docPNName,
+        //         'putusan_pt' => $docPTName,
+        //         'putusan_ma' => $docMAName,
+        //         'surat_pengantar' => $dokumenPathSurat,
+        //         'tanda_tangan' => $request->requestTTD,
+        //     ]);
+
+        //     foreach ($temporaryPeristiwa as $peristiwa) {
+        //         DB::table('data_diri_pihak')->insert([
+        //             'kode_unik' => $dokumenUuid,
+        //             'status_pihak' => $peristiwa['status_pihak']?? null,
+        //             'jenis_pihak' => $peristiwa['jenis_pihak']?? null,
+        //             'nama' => $peristiwa['nama']?? null,
+        //             'tempat_lahir' => $peristiwa['tempat_lahir']?? null,
+        //             'tanggal_lahir' => $peristiwa['tanggal_lahir']?? null,
+        //             'umur' => $peristiwa['umur']?? null,
+        //             'jenis_kelamin' => $peristiwa['jenis_kelamin']?? null,
+        //             'warga_negara' => $peristiwa['warga_negara']?? null,
+        //             'alamat' => $peristiwa['alamat']?? null,
+        //             'provinsi' => $peristiwa['provinsi']?? null,
+        //             'kabupaten' => $peristiwa['kabupaten']?? null,
+        //             'kecamatan' => $peristiwa['kecamatan']?? null,
+        //             'kelurahan' => $peristiwa['kelurahan']?? null,
+        //             'pekerjaan' => $peristiwa['pekerjaan']?? null,
+        //             'status_kawin' => $peristiwa['status_kawin']?? null,
+        //             'pendidikan' => $peristiwa['pendidikan']?? null,
+        //             'email' => $peristiwa['email']?? null,
+        //             'no_telp' => $peristiwa['no_telp']?? null,
+        //             'nik' => $peristiwa['nik']?? null
+        //         ]);
+        //     }
+
+        //     DB::commit();
+
+        //     session()->forget('temporary_peristiwa');
+
+        //     return redirect()->route('peristiwa')->with('success', 'Data telah disimpan.');
+        // }
+        // catch (\Exception $e) {
+        //     DB::rollback();
+        //     // dd($e->getMessage()); 
+        //     // Tangani kesalahan jika terjadi
+        //     return redirect()->route('peristiwa')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+        //     // dd($e->getMessage());
+        // }
     }
 
     /**
@@ -845,7 +870,9 @@ class PeristiwaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        return 'salo';
+        DB::select('CALL delete_peristiwaPenting("'.$id.'")');
+        return redirect()->route('peristiwa',$id,)->with('success', 'Data Peristiwa Berhasil Dihapus!');
     }
 
     public function deletePihak(string $idDiri, string $id)
