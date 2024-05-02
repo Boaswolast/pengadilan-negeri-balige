@@ -39,12 +39,20 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
+                                                        @if(!@empty(session('temporaryPeristiwaUser')))
+                                                        @foreach(session('temporaryPeristiwaUser') as $peristiwa)
                                                         <tr>
-                                                            <td>#</td>
-                                                            <td>#</td>
-                                                            <td>#</td>
-                                                            <td>#</td>
+                                                            <td>{{$loop->iteration}}</td>
+                                                            <td>{{ $peristiwa['nama'] ?? '' }}</td>
+                                                            <td>{{ $peristiwa['status_pihak'] ?? '' }}</td>
+                                                            <td>{{ $peristiwa['alamat'] ?? '' }}</td>
                                                         </tr>
+                                                        @endforeach
+                                                        @else
+                                                        <tr>
+                                                            <td colspan="4" style="text-align: center">Tidak ada data yang tersedia.</td>
+                                                        </tr>
+                                                        @endif
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -127,7 +135,7 @@
     
                     <div class="card-body pb-0">
                         <div class="row text-left">
-                            <p>Email</p>
+                            <p>{{ Auth::user()->email }}</p>
                         </div>
                     </div>
 

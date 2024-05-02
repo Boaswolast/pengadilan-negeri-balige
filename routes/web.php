@@ -20,8 +20,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::group(['middleware' => ['auth','role:1']], function(){
-    Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
+    //data semetara
     Route::get('/addDataDiriPihak', [App\Http\Controllers\UserController::class, 'addDataDiriPihak'])->name('addDataDiriPihak');
+    Route::post('/addTemporaryPeristiwaUser', [App\Http\Controllers\UserController::class, 'addTemporaryPeristiwaUser'])->name('addTemporaryPeristiwaUser');
+    Route::get('/showTemporaryPeristiwaUser', [App\Http\Controllers\UserController::class, 'showTemporaryPeristiwaUser'])->name('showTemporaryPeristiwaUser');
+
+    //data real
+    Route::get('/get-cities/{provinsiId}', [App\Http\Controllers\UserController::class, 'getCities'])->name('getCities');
+    Route::get('/get-districts/{kabupatenId}', [App\Http\Controllers\UserController::class, 'getDistricts'])->name('getDistricts');
+    Route::get('/get-subdistricts/{kecamatanId}', [App\Http\Controllers\UserController::class, 'getSubDistricts'])->name('getSubDistricts');
+    Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
     Route::get('/homeUser', [App\Http\Controllers\UserController::class, 'homeUser'])->name('homeUser');
 });
 

@@ -225,83 +225,80 @@
 
     </div>
     <script>
-    $(document).ready(function() {
-        // Event listener untuk perubahan nilai pada form provinsi
-        $('#provinsi').change(function() {
-            var provinsiId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
-
-            // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
-            $.ajax({
-                url: '/get-cities/' + provinsiId,
-                method: 'GET',
-                success: function(response) {
-                    // Menghapus semua opsi kota sebelum menambahkan yang baru
-                    $('#kabupaten').empty();
-                    $('#kabupaten').append('<option value="#" disabled selected>Pilih Kabupaten/Kota</option>');
-
-                    // Menambahkan opsi kota berdasarkan respons dari server
-                    $.each(response.cities, function(key, city) {
-                        $('#kabupaten').append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
-                    });
-                },
-                error: function(xhr) {
-                    // Menangani kesalahan jika terjadi
-                    console.log(xhr.responseText);
-                }
-            });
-        });
-
-        $('#kabupaten').change(function() {
-            var kabupatenId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
-
-            // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
-            $.ajax({
-                url: '/get-districts/' + kabupatenId,
-                method: 'GET',
-                success: function(response) {
-                    // Menghapus semua opsi kota sebelum menambahkan yang baru
-                    $('#kecamatan').empty();
-                    $('#kecamatan').append('<option value="#" disabled selected>Pilih Kecamatan</option>');
-
-                    // Menambahkan opsi kota berdasarkan respons dari server
-                    $.each(response.districts, function(key, district) {
-                        $('#kecamatan').append('<option value="' + district.dis_id + '">' + district.dis_name + '</option>');
-                    });
-                },
-                error: function(xhr) {
-                    // Menangani kesalahan jika terjadi
-                    console.log(xhr.responseText);
-                }
-            });
-        });
-
-        $('#kecamatan').change(function() {
-            var kecamatanId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
-
-            // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
-            $.ajax({
-                url: '/get-subdistricts/' + kecamatanId,
-                method: 'GET',
-                success: function(response) {
-                    // Menghapus semua opsi kota sebelum menambahkan yang baru
-                    $('#kelurahan').empty();
-                    $('#kelurahan').append('<option value="#" disabled selected>Pilih Kelurahan</option>');
-
-                    // Menambahkan opsi kota berdasarkan respons dari server
-                    $.each(response.subDistricts, function(key, subdistrict) {
-                        $('#kelurahan').append('<option value="' + subdistrict.subdis_id + '">' + subdistrict.subdis_name + '</option>');
-                    });
-
-                    // $('#pilih').disable();
-                },
-                error: function(xhr) {
-                    // Menangani kesalahan jika terjadi
-                    console.log(xhr.responseText);
-                }
-            });
-        });
-    });
-
+        $(document).ready(function() {
+            $('#provinsi').change(function() {
+                var provinsiId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
     
-</script>
+                // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
+                $.ajax({
+                    url: '/get-cities/' + provinsiId,
+                    method: 'GET',
+                    success: function(response) {
+                        // Menghapus semua opsi kota sebelum menambahkan yang baru
+                        $('#kabupaten').empty();
+                        $('#kabupaten').append('<option value="#" disabled selected>Pilih Kabupaten/Kota</option>');
+    
+                        // Menambahkan opsi kota berdasarkan respons dari server
+                        $.each(response.cities, function(key, city) {
+                            $('#kabupaten').append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
+                        });
+                    },
+                    error: function(xhr) {
+                        // Menangani kesalahan jika terjadi
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+    
+            $('#kabupaten').change(function() {
+                var kabupatenId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
+    
+                // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
+                $.ajax({
+                    url: '/get-districts/' + kabupatenId,
+                    method: 'GET',
+                    success: function(response) {
+                        // Menghapus semua opsi kota sebelum menambahkan yang baru
+                        $('#kecamatan').empty();
+                        $('#kecamatan').append('<option value="#" disabled selected>Pilih Kecamatan</option>');
+    
+                        // Menambahkan opsi kota berdasarkan respons dari server
+                        $.each(response.districts, function(key, district) {
+                            $('#kecamatan').append('<option value="' + district.dis_id + '">' + district.dis_name + '</option>');
+                        });
+                    },
+                    error: function(xhr) {
+                        // Menangani kesalahan jika terjadi
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+    
+            $('#kecamatan').change(function() {
+                var kecamatanId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
+    
+                // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
+                $.ajax({
+                    url: '/get-subdistricts/' + kecamatanId,
+                    method: 'GET',
+                    success: function(response) {
+                        // Menghapus semua opsi kota sebelum menambahkan yang baru
+                        $('#kelurahan').empty();
+                        $('#kelurahan').append('<option value="#" disabled selected>Pilih Kelurahan</option>');
+    
+                        // Menambahkan opsi kota berdasarkan respons dari server
+                        $.each(response.subDistricts, function(key, subdistrict) {
+                            $('#kelurahan').append('<option value="' + subdistrict.subdis_id + '">' + subdistrict.subdis_name + '</option>');
+                        });
+    
+                        // $('#pilih').disable();
+                    },
+                    error: function(xhr) {
+                        // Menangani kesalahan jika terjadi
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });   
+    </script>
 @endsection
