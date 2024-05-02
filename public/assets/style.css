@@ -37,3 +37,26 @@
     margin-top: 30px;
     margin-left: 13px;
 }
+.headerUser{
+    font-size: 20px;
+    margin-right: 50px;
+    color: black;
+    font-weight: 500;
+}
+.headerUser:hover{
+    color: green;
+}
+.body-user{
+    background: linear-gradient(green 200px, white 200px);
+}
+.card-user{
+    margin-left: 70px;
+    margin-top: 50px;
+}
+.upload-header{
+    margin-left: 50px;
+    margin-top: 20px;
+}
+.home-user{
+    background: linear-gradient(green 500px, white 500px);
+}

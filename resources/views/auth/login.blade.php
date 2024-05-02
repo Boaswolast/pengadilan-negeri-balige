@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+	<link rel="icon" href="{{ asset('assets/images/logo_pengadilan.png') }}">
 	<title>Login</title>
 	<link href="{{asset('assets/fonts/inter/inter.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/icons/phosphor/styles.min.css')}}" rel="stylesheet" type="text/css">

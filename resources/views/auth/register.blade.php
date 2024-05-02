@@ -79,6 +79,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
+    <link rel="icon" href="{{ asset('assets/images/logo_pengadilan.png') }}">
     <title>Registrasi</title>
 	<link href="{{asset('assets/fonts/inter/inter.css')}}" rel="stylesheet" type="text/css">
 	<link href="{{asset('assets/icons/phosphor/styles.min.css')}}" rel="stylesheet" type="text/css">
@@ -96,7 +97,7 @@
 	<!-- Generate Sendiri -->
 	<link href="{{asset('assets/style.css')}}" id="stylesheet" rel="stylesheet" type="text/css">
 
-</head>
+</head> 
 
 <body>
 

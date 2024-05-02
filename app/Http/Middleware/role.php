@@ -19,7 +19,7 @@ class role
             return $next($request);
         }
         if ($request->user()->role == 1){
-            return redirect()->route('dukcapil');
+            return redirect()->route('user');
         }
         elseif($request->user()->role == 2){
             return redirect()->route('home');
@@ -28,7 +28,7 @@ class role
             return redirect()->route('pertanahan');
         }
         elseif($request->user()->role == 4){
-            return redirect()->route('home');
+            return redirect()->route('dukcapil');
         }
         // else{
         //     return redirect()->route('/home');

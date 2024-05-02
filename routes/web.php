@@ -19,13 +19,10 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::group(['middleware' => ['auth','role:0']], function(){
-    Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
-    Route::get('/addSertifikatTanahUser', [App\Http\Controllers\AddSertifikatTanahUserController::class, 'index'])->name('addSertifikatUser');
-});
-
 Route::group(['middleware' => ['auth','role:1']], function(){
-    Route::get('/dukcapil', [App\Http\Controllers\DukcapilController::class, 'index'])->name('dukcapil');
+    Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
+    Route::get('/addDataDiriPihak', [App\Http\Controllers\UserController::class, 'addDataDiriPihak'])->name('addDataDiriPihak');
+    Route::get('/homeUser', [App\Http\Controllers\UserController::class, 'homeUser'])->name('homeUser');
 });
 
 Route::group(['middleware' => ['auth','role:2']], function(){
@@ -104,4 +101,8 @@ Route::group(['middleware' => ['auth','role:3']], function(){
     Route::get('/downloadBPN/{file}', [App\Http\Controllers\PertanahanController::class, 'download'])->name('downloadFileBPN');
     Route::get('/printBPN/{file}', [App\Http\Controllers\PertanahanController::class, 'print'])->name('printFileBPN');
     Route::get('/diproses/{id}', [App\Http\Controllers\PertanahanController::class, 'diproses'])->name('diproses');
+});
+
+Route::group(['middleware' => ['auth','role:4']], function(){
+    Route::get('/dukcapil', [App\Http\Controllers\DukcapilController::class, 'index'])->name('dukcapil');
 });

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -12,6 +15,19 @@ class UserController extends Controller
     public function index()
     {
         return view('User/user');
+    }
+
+    public function addDataDiriPihak()
+    {
+        $provinsi = DB::table('provinces')->get();
+        return view('User/addDataDiriPihak', [
+            'provinsi' => $provinsi, 
+        ]);
+    }
+
+    public function homeUser()
+    {
+        return view('User/homeUser');
     }
 
     /**
