@@ -30,17 +30,15 @@
                         <h5 class="mb-0">Tambah Data Diri Pihak</h5>
                     </div>
                     <div class="card-body border-top">
-                        <form action="{{route('addTemporarySertifikat')}}" method="POST" id="formDataDiri">
+                        <form action="{{route('addTemporaryPeristiwaUser')}}" method="POST" id="formDataDiri">
                             @csrf
                             <div class="row mb-3 mt-3">
                                 <label class="col-lg-4 col-form-label">Status Pihak:</label>
                                 <div class="col-lg-8">
                                     <select class="form-select" name="status_pihak" required>
                                         <option value="">Pilih Status Pihak</option>
-                                        <option value="Penggugat">Penggugat</option>
-                                        <option value="Tergugat">Tergugat</option>
-                                        <option value="Intervensi">Intervensi</option>
-                                        <option value="Turut Tergugat">Turut Tergugat</option>
+                                        <option value="Pemohon">Pemohon</option>
+                                        <option value="Termohon">Termohon</option>
                                     </select>
                                 </div>
                             </div>
@@ -227,24 +225,20 @@
     <script>
         $(document).ready(function() {
             $('#provinsi').change(function() {
-                var provinsiId = $(this).val(); // Mendapatkan nilai ID provinsi yang dipilih
+                var provinsiId = $(this).val(); 
     
-                // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
                 $.ajax({
-                    url: '/get-cities/' + provinsiId,
+                    url: '/get-citiess/' + provinsiId,
                     method: 'GET',
                     success: function(response) {
-                        // Menghapus semua opsi kota sebelum menambahkan yang baru
                         $('#kabupaten').empty();
                         $('#kabupaten').append('<option value="#" disabled selected>Pilih Kabupaten/Kota</option>');
     
-                        // Menambahkan opsi kota berdasarkan respons dari server
                         $.each(response.cities, function(key, city) {
                             $('#kabupaten').append('<option value="' + city.city_id + '">' + city.city_name + '</option>');
                         });
                     },
                     error: function(xhr) {
-                        // Menangani kesalahan jika terjadi
                         console.log(xhr.responseText);
                     }
                 });
@@ -255,7 +249,7 @@
     
                 // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
                 $.ajax({
-                    url: '/get-districts/' + kabupatenId,
+                    url: '/get-districtss/' + kabupatenId,
                     method: 'GET',
                     success: function(response) {
                         // Menghapus semua opsi kota sebelum menambahkan yang baru
@@ -279,14 +273,12 @@
     
                 // Mengirimkan permintaan AJAX untuk mendapatkan daftar kota berdasarkan provinsi yang dipilih
                 $.ajax({
-                    url: '/get-subdistricts/' + kecamatanId,
+                    url: '/get-subdistrictss/' + kecamatanId,
                     method: 'GET',
                     success: function(response) {
-                        // Menghapus semua opsi kota sebelum menambahkan yang baru
                         $('#kelurahan').empty();
                         $('#kelurahan').append('<option value="#" disabled selected>Pilih Kelurahan</option>');
     
-                        // Menambahkan opsi kota berdasarkan respons dari server
                         $.each(response.subDistricts, function(key, subdistrict) {
                             $('#kelurahan').append('<option value="' + subdistrict.subdis_id + '">' + subdistrict.subdis_name + '</option>');
                         });

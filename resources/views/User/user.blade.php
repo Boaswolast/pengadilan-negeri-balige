@@ -15,7 +15,7 @@
                     <div class="card-body border-top">
                         <div class="row">
                             <div class="col-lg-10 offset-lg-1">
-                                <form class="wizard-form steps-basic" action="{{route('storeSertifikat')}}" method="POST" enctype="multipart/form-data">
+                                <form class="wizard-form steps-basic" action="{{route('storeEksekusi')}}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <h6>Data Diri Terlibat</h6>
                                     <fieldset>
@@ -39,8 +39,8 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @if(!@empty(session('temporaryPeristiwaUser')))
-                                                        @foreach(session('temporaryPeristiwaUser') as $peristiwa)
+                                                        @if(!@empty(session('temporary_peristiwa_user')))
+                                                        @foreach(session('temporary_peristiwa_user') as $peristiwa)
                                                         <tr>
                                                             <td>{{$loop->iteration}}</td>
                                                             <td>{{ $peristiwa['nama'] ?? '' }}</td>
@@ -66,10 +66,10 @@
                                         <div class="row mb-3 mt-4">
                                             <label class="col-lg-4 col-form-label">Jenis Eksekusi:</label>
                                             <div class="col-lg-8">
-                                                <select class="form-select" name="jenis_kelamin" required>
+                                                <select class="form-select" name="jenis_eksekusi" required>
                                                     <option value="">Pilih Jenis Eksekusi</option>
-                                                    <option value="Laki Laki">Eksekusi Rill/Pengosongan</option>
-                                                    <option value="Perempuan">Eksekusi Lelang</option>
+                                                    <option value="Eksekusi Rill/Pengosongan">Eksekusi Rill/Pengosongan</option>
+                                                    <option value="Eksekusi Lelang">Eksekusi Lelang</option>
                                                 </select>
                                             </div>
                                             <div class="mt-4">
@@ -89,28 +89,28 @@
                                         <div class="card">
                                             <h6 class="upload-header">Surat Permohonana</h6>
                                             <div class="card-body">
-                                                <input type="file" name="dokumen_gugatan" class="file-input" required>
+                                                <input type="file" name="surat_permohonan" class="file-input" required>
                                             </div>
                                         </div>
 
                                         <div class="card">
                                             <h6 class="upload-header">Putusan Pengadilan Negeri</h6>
                                             <div class="card-body">
-                                                <input type="file" name="dokumen_gugatan" class="file-input" required>
+                                                <input type="file" name="putusan_pn" class="file-input" required>
                                             </div>
                                         </div>
 
                                         <div class="card">
                                             <h6 class="upload-header">Putusan Pengadilan Tinggi</h6>
                                             <div class="card-body">
-                                                <input type="file" name="dokumen_gugatan" class="file-input" required>
+                                                <input type="file" name="putusan_pt" class="file-input" required>
                                             </div>
                                         </div>
 
                                         <div class="card">
                                             <h6 class="upload-header">Putusan Mahkamah Agung</h6>
                                             <div class="card-body">
-                                                <input type="file" name="dokumen_gugatan" class="file-input" required>
+                                                <input type="file" name="putusan_ma" class="file-input" required>
                                             </div>
                                         </div>
                                     </fieldset>

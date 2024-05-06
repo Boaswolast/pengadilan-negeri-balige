@@ -24,13 +24,14 @@ Route::group(['middleware' => ['auth','role:1']], function(){
     Route::get('/addDataDiriPihak', [App\Http\Controllers\UserController::class, 'addDataDiriPihak'])->name('addDataDiriPihak');
     Route::post('/addTemporaryPeristiwaUser', [App\Http\Controllers\UserController::class, 'addTemporaryPeristiwaUser'])->name('addTemporaryPeristiwaUser');
     Route::get('/showTemporaryPeristiwaUser', [App\Http\Controllers\UserController::class, 'showTemporaryPeristiwaUser'])->name('showTemporaryPeristiwaUser');
-
     //data real
-    Route::get('/get-cities/{provinsiId}', [App\Http\Controllers\UserController::class, 'getCities'])->name('getCities');
-    Route::get('/get-districts/{kabupatenId}', [App\Http\Controllers\UserController::class, 'getDistricts'])->name('getDistricts');
-    Route::get('/get-subdistricts/{kecamatanId}', [App\Http\Controllers\UserController::class, 'getSubDistricts'])->name('getSubDistricts');
+    Route::get('/get-citiess/{provinsiId}', [App\Http\Controllers\UserController::class, 'getCitiess'])->name('getCitiess');
+    Route::get('/get-districtss/{kabupatenId}', [App\Http\Controllers\UserController::class, 'getDistrictss'])->name('getDistrictss');
+    Route::get('/get-subdistrictss/{kecamatanId}', [App\Http\Controllers\UserController::class, 'getSubDistrictss'])->name('getSubDistrictss');
     Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
+    Route::post('/storeEksekusi', [App\Http\Controllers\UserController::class, 'storeEksekusi'])->name('storeEksekusi');
     Route::get('/homeUser', [App\Http\Controllers\UserController::class, 'homeUser'])->name('homeUser');
+
 });
 
 Route::group(['middleware' => ['auth','role:2']], function(){
@@ -112,5 +113,11 @@ Route::group(['middleware' => ['auth','role:3']], function(){
 });
 
 Route::group(['middleware' => ['auth','role:4']], function(){
-    Route::get('/dukcapil', [App\Http\Controllers\DukcapilController::class, 'index'])->name('dukcapil');
+    Route::get('/dukcapil', [App\Http\Controllers\DukcapilController::class, 'dukcapil'])->name('dukcapil');
+    Route::get('/detailDukcapil/{id}', [App\Http\Controllers\DukcapilController::class, 'show'])->name('detailDukcapil');
+    Route::get('/detailDataDiriDukcapil/{id}', [App\Http\Controllers\DukcapilController::class, 'showDataDiri'])->name('detailDataDiriDukcapil');
+    Route::get('/downloadCapil/{file}', [App\Http\Controllers\DukcapilController::class, 'download'])->name('downloadFileCapil');
+    Route::get('/printCapil/{file}', [App\Http\Controllers\DukcapilController::class, 'print'])->name('printFileCapil');
+    Route::get('/diprosesCapil/{id}', [App\Http\Controllers\DukcapilController::class, 'diprosesCapil'])->name('diprosesCapil');
+    Route::get('/konfirmasiCapil/{id}', [App\Http\Controllers\DukcapilController::class, 'konfirmasiCapil'])->name('konfirmasiCapil');
 });

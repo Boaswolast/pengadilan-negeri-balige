@@ -92,13 +92,14 @@
 			</div>
 
 			<ul class="nav flex-row justify-content-end order-1 order-lg-2">
-				{{-- <li class="nav-item ms-lg-2">
-					<a href="#" class="navbar-nav-link navbar-nav-link-icon rounded-pill" data-bs-toggle="offcanvas" data-bs-target="#notifications">
-						<i class="ph-bell"></i>
-						<span class="badge bg-yellow text-black position-absolute top-0 end-0 translate-middle-top zindex-1 rounded-pill mt-1 me-1">{{ $statusNotif }}</span>
-					</a>
-				</li> --}}
-				@include('notifikasi')
+				<li class="nav-item ms-lg-2">
+                    <a href="#" id="refreshButton" class="navbar-nav-link navbar-nav-link-icon rounded-pill" data-bs-toggle="offcanvas" data-bs-target="#notifications">
+                        <i class="ph-bell"></i>
+						{{-- @foreach ($notif as $data)
+                        	<span id="content" class="badge bg-yellow text-black position-absolute top-0 end-0 translate-middle-top zindex-1 rounded-pill mt-1 me-1">{{$data->jumlah_permohonan}}</span>
+						@endforeach --}}
+                    </a>
+                </li>
 
 				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
 					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
@@ -170,7 +171,7 @@
 					<ul class="nav nav-sidebar" data-nav-type="accordion">
 
 						<!-- Main -->
-						@if (auth()->user()->role==4)
+                        @if (auth()->user()->role==4)
 						<li class="nav-item">
 							<a href="{{route('dukcapil')}}" class="nav-link">
 								<i class="ph-handshake"></i>
@@ -197,7 +198,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ route('peristiwa') }}" class="nav-link">
+							<a href="#" class="nav-link">
 								<i class="ph-folder-simple-user"></i>
 								<span>Eksekusi Perkara</span>
 							</a>
@@ -209,7 +210,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{route('peristiwa')}}" class="nav-link">
+							<a href="#" class="nav-link">
 								<i class="ph-user-square"></i>
 								<span>Peristiwa Penting</span>
 							</a>
@@ -299,25 +300,23 @@
 
 		<div class="offcanvas-body p-0">
 			<div class="p-3">
-				@foreach($messages as $data)
+				{{-- @foreach ($notif as $data)
 					<div class="d-flex align-items-start mt-3">
-						@if ($data === null)
-							<div class="me-3">
+						<div class="me-3">
+							@if ($data->notification === null)
 								<div class="bg-warning bg-opacity-10 text-success rounded-pill">
 								</div>
-							</div>
-						@else
-							<div class="me-3">
+							@else
 								<div class="bg-warning bg-opacity-10 text-success rounded-pill">
 									<i class="ph-calendar-plus p-2"></i>
 								</div>
-							</div>
-						@endif
+							@endif
+						</div>
 						<div class="flex-1">
-							{{$data}}
+							{{$data->notification}}
 						</div>
 					</div>
-				@endforeach
+				@endforeach --}}
 			</div>
 		</div>
 	</div>

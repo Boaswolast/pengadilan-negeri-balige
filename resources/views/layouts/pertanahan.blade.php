@@ -171,6 +171,14 @@
 					<ul class="nav nav-sidebar" data-nav-type="accordion">
 
 						<!-- Main -->
+						@if (auth()->user()->role==4)
+						<li class="nav-item">
+							<a href="{{route('dukcapil')}}" class="nav-link">
+								<i class="ph-handshake"></i>
+								<span>Peristiwa</span>
+							</a>
+						</li>
+						@endif
 						@if (auth()->user()->role==3)
 						<li class="nav-item">
 							<a href="{{route('pertanahan')}}" class="nav-link">
