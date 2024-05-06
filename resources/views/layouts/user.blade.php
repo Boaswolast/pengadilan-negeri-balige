@@ -70,6 +70,7 @@
 
 	<!-- Generate Sendiri -->
 	<link href="{{asset('assets/style.css')}}" id="stylesheet" rel="stylesheet" type="text/css">
+	
 
 </head>
 
