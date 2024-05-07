@@ -17,7 +17,10 @@ class DukcapilController extends Controller
                 $notification->jumlah_permohonan = null;
             }
         }
-        $data = DB::select('CALL viewAll_peristiwaPenting()');
+        $data = collect(DB::select('CALL viewAll_peristiwaPenting()'))
+        ->filter(function ($item) {
+            return $item->status_permohonan == 'Menunggu' || $item->status_permohonan == 'Sedang diproses';
+        });
         $data = collect($data);
         return view('Dukcapil/dukcapil',[
             'data' => $data,
