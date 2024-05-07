@@ -113,7 +113,7 @@ class PertanahanController extends Controller
                 $document = $request->file('surat_pemblokiran_bpn');
                 $documentName = $document->getClientOriginalName();
                 $mimeType = $document->getClientMimeType();
-                $documentPath = $document->storeAs('public/dokumen', $documentName);
+                $documentPath = $document->move(public_path('dokumen/Pertanahan'), $documentName);
 
                 $documentPath = basename($documentPath);
 

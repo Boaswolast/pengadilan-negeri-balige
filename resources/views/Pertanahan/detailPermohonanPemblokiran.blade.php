@@ -102,8 +102,9 @@
             <div id="gugatan" class="tab-content">
                 <h3>Gugatan Content</h3>
                 @foreach($dataGugatan as $data)
-                    <a href="{{url('/downloadBPN', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
-                    <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a>
+                    <iframe src="{{ asset('dokumen/Pengadilan/'.$data->dokumen_gugatan) }}" width="100%" height="400px"></iframe>
+                    {{-- <a href="{{url('/downloadBPN', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
+                    <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
                 @endforeach
             </div>
             <div id="status" class="tab-content">

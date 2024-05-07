@@ -226,7 +226,7 @@ class PengadilanController extends Controller
             $dokumen = $request->file('dokumen_gugatan');
             $dokumenName = $dokumen->getClientOriginalName();
             $mimeType = $dokumen->getClientMimeType();
-            $dokumenPath = $dokumen->storeAs('public/dokumen', $dokumenName);
+            $dokumenPath = $dokumen->move(public_path('dokumen/Pengadilan'), $dokumenName);
 
             $dokumenPath = basename($dokumenPath);
 
@@ -401,14 +401,14 @@ class PengadilanController extends Controller
 
     public function download(Request $request, $file)
     {
-        $filePath = public_path('storage/dokumen/' . $file);
+        $filePath = public_path('dokumen/Pengadilan/' . $file);
 
         return response()->download($filePath);
     }
 
     public function print(Request $request, $file)
     {
-        $path = public_path('storage/dokumen/' . $file);
+        $path = public_path('dokumen/Pertanahan/' . $file);
 
         // Periksa apakah file ada
         if (!file_exists($path)) {
