@@ -1,52 +1,16 @@
-@extends('layouts.pengadilan')
+@extends('layouts.User')
 @section('content')
- <!-- Page header -->
- <div class="page-header page-header-light shadow">
-    <div class="page-header-content d-lg-flex">
-        <div class="d-flex">
-            <h4 class="page-title mb-0">
-                Sertifikat Tanah - <span class="fw-normal">Tambah Kasus</span>
-            </h4>
-
-            <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
-                <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-            </a>
-        </div>
-    </div>
-
-    <div class="page-header-content d-lg-flex border-top">
-        <div class="d-flex">
-            <div class="breadcrumb py-2">
-                <a href="{{route('home')}}" class="breadcrumb-item"><i class="ph-house"></i></a>
-                <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
-                <span class="breadcrumb-item active">Tambah Kasus</span>
-            </div>
-
-            <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
-                <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-            </a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
-<div class="content">
-    <div class="col-lg-12">
-        <div class="card card-body">
+<div class="content body-user">
+    <div class="col-lg-12 mt-5">
+        <div class="card card-body ">
             <ul class="nav nav-tabs nav-tabs-highlight nav-justified">
                 <li class="nav-item"><a href="#pihak" class="nav-link active">Pihak</a></li>
-                <li class="nav-item"><a href="#petitum" class="nav-link">Petitum</a></li>
-                <li class="nav-item"><a href="#gugatan" class="nav-link">Gugatan</a></li>
+                <li class="nav-item"><a href="#permohonan" class="nav-link">Dokumen Permohonan</a></li>
+                <li class="nav-item"><a href="#pelaksanaan" class="nav-link">Pelaksanaan</a></li>
                 <li class="nav-item"><a href="#status" class="nav-link">Status</a></li>
             </ul>
 
             <div id="pihak" class="tab-content active">
-                @foreach($status as $data)
-                    @if ($data->status_id == 4)
-                        <div class="addGugatan mt-4">
-                            <a href="{{route('addPihakPengadilan',$id)}}" type="button" class="btn btn-success">Tambah Pihak</a>
-                        </div>
-                    @endif
-                @endforeach
                 <table class="table table-bordered mt-3">
                     <thead>
                         <tr>
@@ -73,20 +37,20 @@
                                         </a>
         
                                         <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="{{route('detailSertifikat', ['id' => $data->id_data_diri])}}" class="dropdown-item text-info">
+                                            <a href="{{route('detailDataDiriEksekusi', ['id' => $data->id_data_diri])}}" class="dropdown-item text-info">
                                                 <i class="ph-eye me-2"></i>
-                                                Detail
+                                                Detail Data Diri
                                             </a>
-                                            <a href="{{route('editSertifikat', ['id' => $data->id_data_diri])}}" class="dropdown-item text-secondary">
+                                            <a href="{{route('editDataDiriEksekusi', ['id' => $data->id_data_diri])}}" class="dropdown-item text-secondary">
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a>
-                                            <form action="{{route('showDeleted', ['id' => $data->id_data_diri])}}" type="button" method="POST" class="dropdown-item text-danger">
+                                            {{-- <form action="{{route('showDeleted', ['id' => $data->id_data_diri])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                 <i class="ph-trash me-2"></i>
                                                 @csrf
                                                 @method('delete')
                                                 <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
-                                            </form>
+                                            </form>  --}}
                                         </div>
                                     </div>
                                 </div>
@@ -101,28 +65,34 @@
                     </tbody>
                 </table>
             </div>
-            <div id="petitum" class="tab-content">
-                @foreach($dataPetitum as $data)
-                @foreach($status as $data)
-                    @if ($data->status_id == 4)
-                    <div class="addGugatan mt-4">
-                        <a href="{{route('editSertifikatPetitum', ['id' => $data->id_pemblokiran])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
-                    </div>
-                    @endif
-                @endforeach
-                    <div class="mt-4">{!! $data->petitum !!}</div>
+            
+            <div id="permohonan" class="tab-content">
+                @foreach($dataPermohonan as $data)
+                    <h3 class="mt-3">Surat Permohonana Eksekusi</h3>
+                    <iframe src="{{ asset('dokumen/User/Permohonan/'.$data->surat_permohonan) }}" width="100%" height="400px"></iframe>
+                    {{-- <a href="{{url('/downloadBPN', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
+                    <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
+
+                    <h3 class="mt-3">Putusan Pengadilan Negeri</h3>
+                    <iframe src="{{ asset('dokumen/User/PN/'.$data->putusan_pn) }}" width="100%" height="400px"></iframe>
+
+                    <h3 class="mt-3">Putusan Pengadilan Tinggi</h3>
+                    <iframe src="{{ asset('dokumen/User/PT/'.$data->putusan_pt) }}" width="100%" height="400px"></iframe>
+
+                    <h3 class="mt-3">Putusan Mahkamah Agung</h3>
+                    <iframe src="{{ asset('dokumen/User/MA/'.$data->putusan_ma) }}" width="100%" height="400px"></iframe>
                 @endforeach
             </div>
-            <div id="gugatan" class="tab-content">
-                @foreach($dataGugatan as $data)
-                    <iframe class="mt-4" src="{{ asset('dokumen/Pengadilan/'.$data->dokumen_gugatan) }}" width="100%" height="400px"></iframe>
-                    {{-- <a href="{{url('/download', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
-                    <a href="{{url('/print', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
-                @endforeach
+
+            <div id="pelaksanaan" class="tab-content">
+                {{-- @foreach($dataPetitum as $data)
+                    <div class="mt-5">{!! $data->petitum !!}</div>
+                @endforeach --}}
             </div>
+
             <div id="status" class="tab-content">
                 <div class="table-responsive mt-4">
-                    <table class="table">
+                    {{-- <table class="table">
                         <tbody>
                             @foreach($dataStatus as $data)
                             <tr class="table-success">
@@ -142,7 +112,7 @@
                             </tr>
                             @endforeach
                         </tbody>
-                    </table>
+                    </table> --}}
                 </div>
             </div>
         </div>

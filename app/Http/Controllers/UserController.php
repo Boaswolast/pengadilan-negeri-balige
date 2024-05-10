@@ -14,6 +14,15 @@ class UserController extends Controller
      */
     public function index()
     {
+        $dataAll = collect(DB::select('CALL viewAll_eksekusi()'));
+        $dataAll = collect($dataAll);
+        return view('User/index',[
+            'data' => $dataAll, 
+        ]);
+    }
+
+    public function eksekusi()
+    {
         $temporaryPeristiwaUser = session('temporary_peristiwa_user', []);
         return view('User/user')->with('temporaryPeristiwaUser', $temporaryPeristiwaUser);
     }
@@ -124,7 +133,7 @@ class UserController extends Controller
             $dokumen1 = $request->file('surat_permohonan');
             $dokumenName1 = $dokumen1->getClientOriginalName();
             $mimeType1 = $dokumen1->getClientMimeType();
-            $dokumenPath1 = $dokumen1->storeAs('public/dokumen', $dokumenName1);
+            $dokumenPath1 = $dokumen1->move(public_path('dokumen/User/Permohonan'), $dokumenName1);
 
             $dokumenPath1 = basename($dokumenPath1);
 
@@ -132,7 +141,7 @@ class UserController extends Controller
             $dokumen2 = $request->file('putusan_pn');
             $dokumenName2 = $dokumen2->getClientOriginalName();
             $mimeType2 = $dokumen2->getClientMimeType();
-            $dokumenPath2 = $dokumen2->storeAs('public/dokumen', $dokumenName2);
+            $dokumenPath2 = $dokumen2->move(public_path('dokumen/User/PN'), $dokumenName2);
 
             $dokumenPath2 = basename($dokumenPath2);
 
@@ -140,7 +149,7 @@ class UserController extends Controller
             $dokumen3 = $request->file('putusan_pt');
             $dokumenName3 = $dokumen3->getClientOriginalName();
             $mimeType3 = $dokumen3->getClientMimeType();
-            $dokumenPath3 = $dokumen3->storeAs('public/dokumen', $dokumenName3);
+            $dokumenPath3 = $dokumen3->move(public_path('dokumen/User/PT'), $dokumenName3);
 
             $dokumenPath3 = basename($dokumenPath3);
 
@@ -148,7 +157,7 @@ class UserController extends Controller
             $dokumen4 = $request->file('putusan_ma');
             $dokumenName4 = $dokumen4->getClientOriginalName();
             $mimeType4 = $dokumen4->getClientMimeType();
-            $dokumenPath4 = $dokumen4->storeAs('public/dokumen', $dokumenName4);
+            $dokumenPath4 = $dokumen4->move(public_path('dokumen/User/MA'), $dokumenName4);
 
             $dokumenPath4 = basename($dokumenPath4);
 
@@ -191,7 +200,7 @@ class UserController extends Controller
 
             session()->forget('temporary_peristiwa_user');
 
-            return redirect()->route('user')->with('success', 'Data telah disimpan.');
+            return redirect()->route('indexUser')->with('success', 'Data telah disimpan.');
         }
         catch (\Exception $e) {
             DB::rollback();
@@ -200,6 +209,92 @@ class UserController extends Controller
             return redirect()->route('user')->with('error', 'Terjadi kesalahan saat menyimpan data.');
             // dd($e->getMessage());
         }
+    }
+
+    public function showDataAllEksekusi(string $id)
+    {
+        $dataDiriAll = DB::select('CALL viewAll_eksekusi_dataDiri(?)', array($id));
+        $dataAanmanig = DB::select('CALL view_eksekusi_aanmaning(?)', array($id));
+        $dataPermohonan = DB::select('CALL view_eksekusi_dokumenPermohonan(?)', array($id));
+        $dataPembayaran = DB::select('CALL view_eksekusi_pembayaran(?)', array($id));
+        $dataTelaah = DB::select('CALL view_eksekusi_telaah(?)', array($id));
+        $dataDiriAll = collect($dataDiriAll);
+        $dataAanmanig = collect($dataAanmanig);
+        $dataPermohonan = collect($dataPermohonan);
+        $dataPembayaran = collect($dataPembayaran);
+        $dataTelaah = collect($dataTelaah);
+
+        // $status = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->get();
+        // $id = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->pluck('id_pemblokiran')->first();
+        return view('User.detailEksekusiUser', [
+            'dataDiriAll' => $dataDiriAll,
+            // 'status' => $status, 
+            // 'id' => $id,
+            'dataAanmanig' => $dataAanmanig,
+            'dataPermohonan' => $dataPermohonan,
+            'dataPembayaran' => $dataPembayaran,
+            'dataTelaah' => $dataTelaah,
+        ]);
+    }
+
+    public function show(string $id)
+    {
+        $eksekusi = DB::select('CALL view_eksekusi_dataDiri(?)', array($id));
+        $eksekusi = collect($eksekusi);
+        return view('User.detailDataDiriEksekusiUser', [
+            'eksekusi' => $eksekusi, 
+        ]);
+    }
+
+    public function edit(string $id)
+    {
+
+        $eksekusi = DB::select('CALL view_eksekusi_dataDiri(?)', array($id));
+        $eksekusi = collect($eksekusi);
+        $provinsi = DB::table('provinces')->get();
+        $kabupaten = DB::table('cities')->get();
+        $kecamatan = DB::table('districts')->get();
+        return view('User.editDataDiriEksekusiUser', [
+            'editDataDiriEksekusi' => $eksekusi,
+            'provinsi' => $provinsi,
+            'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+        ]);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        DB::table('data_diri_pihak')
+            ->where('id_data_diri', $id)
+            ->update([
+                'status_pihak' => $request->status_pihak,
+                'jenis_pihak' => $request->jenis_pihak,
+                'nama' => $request->nama,
+                'tempat_lahir' => $request->tempat_lahir,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'umur' => $request->umur,
+                'jenis_kelamin' => $request->jenis_kelamin,
+                'warga_negara' => $request->warga_negara,
+                'alamat' => $request->alamat,
+                'provinsi' => $request->provinsi,
+                'kabupaten' => $request->kabupaten,
+                'kecamatan' => $request->kecamatan,
+                'kelurahan' => $request->kelurahan,
+                'pekerjaan' => $request->pekerjaan,
+                'status_kawin' => $request->status_kawin,
+                'pendidikan' => $request->pendidikan,
+                'nik' => $request->nik,
+                'email' => $request->email,
+                'no_telp' => $request->no_telp,
+            ]);
+
+        $eksekusi = DB::table('data_diri_pihak');
+
+        return redirect()->route('indexUser')->with('success', 'Data Berhasil di Ubah');
     }
 
     public function homeUser()
@@ -219,30 +314,6 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
     {
         //
     }

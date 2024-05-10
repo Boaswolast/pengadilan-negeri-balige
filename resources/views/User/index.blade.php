@@ -1,36 +1,7 @@
 @extends('layouts.user')
 
 @section('content')
-<!-- Page header -->
-<div class="page-header page-header-light shadow">
-    <div class="page-header-content d-lg-flex">
-        <div class="d-flex">
-            <h4 class="page-title mb-0">
-                Sertifikat Tanah - <span class="fw-normal">Data Kasus</span>
-            </h4>
-
-            <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
-                <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-            </a>
-        </div>
-    </div>
-
-    <div class="page-header-content d-lg-flex border-top">
-        <div class="d-flex">
-            <div class="breadcrumb py-2">
-                <a href="index.html" class="breadcrumb-item"><i class="ph-house"></i></a>
-                <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
-                <span class="breadcrumb-item active">Data Kasus</span>
-            </div>
-
-            <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
-                <i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
-            </a>
-        </div>
-    </div>
-</div>
-<!-- /page header -->
-<div class="content">
+<div class="content body-user">
 
     <style>
         .Filter {
@@ -61,7 +32,7 @@
                     columnDefs: [{
                         orderable: false,
                         width: 100,
-                        targets: [5]
+                        targets: [6]
                     }],
                     dom: '<"datatable-header"fl><"datatable-scroll"t><"datatable-footer"ip>',
                     language: {
@@ -130,77 +101,127 @@
     </script>
     <!-- Main charts -->
     <div class="row">
-        <div class="addGugatan mt-1">
-            <a href="{{route('addSertifikatPengadilan')}}" type="button" class="btn btn-success">Tambah Kasus</a>
+        <div class="addGugatan mt-3">
+            <a href="{{route('user')}}" type="button" class="btn btn-primary">Tambah Kasus</a>
         </div>
-        <div class="card mt-3">
-            <div class="card-header">
-                <h5 class="mb-0">Tabel User</h5>
-            </div>
+        <div class="col-xl-9">
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Tabel User</h5>
+                </div>
 
-            <table class="table datatable-basic">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Penggugat</th>
-                        <th>Tergugat</th>
-                        <th>Tanggal Gugatan</th>
-                        <th>Status Permohonan</th>
-                        <th class="text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if ($data->count() > 0)
-                        @foreach ($data as $sertifikat)
+                <table class="table datatable-basic">
+                    <thead>
                         <tr>
-                            <td>{{$loop->iteration}}</td>
-                            <td>{{$sertifikat->penggugat}}</td>
-                            <td>{{$sertifikat->tergugat}}</td>
-                            <td>{{$sertifikat->tanggal_gugatan}}</td>
-                            <td>
-                                {{$sertifikat->status_permohonan}}
-                                @if ($sertifikat->status_permohonan == 'Terkonfirmasi')
-                                    <div>
-                                        <a href="{{url('/print', $sertifikat->surat_pemblokiran_bpn)}}">Lihat Bukti</a>
-                                    </div>
-                                @endif
-                            </td>
-                            <td class="text-center">
-                                <div class="d-inline-flex">
-                                    <div class="dropdown">
-                                        <a href="#" class="text-body" data-bs-toggle="dropdown">
-                                            <i class="ph-list"></i>
-                                        </a>
-
-                                        <div class="dropdown-menu dropdown-menu-end">
-                                            <a href="{{route('detailAllSertifikat', ['id' => $sertifikat->id_pemblokiran])}}" class="dropdown-item text-info">
-                                            {{-- <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info"> --}}
-                                                <i class="ph-eye me-2"></i>
-                                                Detail
+                            <th>No</th>
+                            <th>Pemohon</th>
+                            <th>Termohon</th>
+                            <th>Tanggal Permohonan</th>
+                            <th>Proses</th>
+                            <th>Status Permohonan</th>
+                            <th class="text-center">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($data->count() > 0)
+                            @foreach ($data as $eksekusi)
+                            <tr>
+                                <td>{{$loop->iteration}}</td>
+                                <td>{{$eksekusi->pemohon}}</td>
+                                <td>{{$eksekusi->termohon}}</td>
+                                <td>{{$eksekusi->tanggal_permohonan}}</td>
+                                <td>{{$eksekusi->proses}}</td>
+                                <td>
+                                    {{$eksekusi->status}}
+                                    {{-- @if ($eksekusi->status == 'Diterima')
+                                        <div>
+                                            <a href="{{url('/print', $eksekusi->surat_pemblokiran_bpn)}}">Lihat Bukti</a>
+                                        </div>
+                                    @endif --}}
+                                </td>
+                                <td class="text-center">
+                                    <div class="d-inline-flex">
+                                        <div class="dropdown">
+                                            <a href="#" class="text-body" data-bs-toggle="dropdown">
+                                                <i class="ph-list"></i>
                                             </a>
-                                            {{-- <a href="{{route('editSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-secondary">
-                                                <i class="ph-pencil me-2"></i>
-                                                Edit
-                                            </a> --}}
-                                            <form action="{{route('deletedSertifikat', ['kode_unik' => $sertifikat->kode_unik])}}" type="button" method="POST" class="dropdown-item text-danger">
-                                                <i class="ph-trash me-2"></i>
-                                                @csrf
-                                                @method('delete')
-                                                <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
-                                            </form>
+
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                {{-- <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info"> --}}
+                                                    <i class="ph-eye me-2"></i>
+                                                    Detail
+                                                </a>
+                                                {{-- <a href="{{route('editSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-secondary">
+                                                    <i class="ph-pencil me-2"></i>
+                                                    Edit
+                                                </a> --}}
+                                                {{-- <form action="{{route('deletedSertifikat', ['kode_unik' => $sertifikat->kode_unik])}}" type="button" method="POST" class="dropdown-item text-danger">
+                                                    <i class="ph-trash me-2"></i>
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
+                                                </form> --}}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach 
-                    @else
-                        <tr>
-                            <td class="text-center" colspan="6">Data Kosong</td>
-                        </tr>
-                    @endif 
-                </tbody>
-            </table>
+                                </td>
+                            </tr>
+                            @endforeach 
+                        @else
+                            <tr>
+                                <td class="text-center" colspan="6">Data Kosong</td>
+                            </tr>
+                        @endif 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-xl-3 mt-3">
+    
+            <!-- Sales stats -->
+            <div class="card">
+                <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
+                    <h6 class="py-sm-2 my-sm-1">{{ Auth::user()->name }}</h6>
+                    <div class="mt-2 mt-sm-0 ms-sm-auto">
+                        <a href="#" type="button" class="btn btn-light">Lihat Laporan</a>
+                    </div>
+                </div>
+
+                <div class="card-body pb-0">
+                    <div class="row text-left">
+                        <p>{{ Auth::user()->email }}</p>
+                    </div>
+                </div>
+
+                <div class="card-body pb-0">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <p class="mb-0">Terverifikasi</p>
+                                <div class="text-muted fs-sm">0</div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <p class="mb-0">Diproses</p>
+                                <div class="text-muted fs-sm">0</div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <p class="mb-0">Selesai</p>
+                                <div class="text-muted fs-sm">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /sales stats -->
+
         </div>
     </div>
         <!-- /basic datatable -->

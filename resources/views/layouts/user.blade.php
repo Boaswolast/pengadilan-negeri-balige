@@ -95,7 +95,7 @@
             <div class="navbar-brand flex-1 flex-lg-1">
 				<a href="{{route('homeUser')}}" class="d-inline-flex align-items-center headerUser">Beranda</a>
                 <a href="{{route('home')}}" class="d-inline-flex align-items-center headerUser">Peristiwa Penting</a>
-                <a href="{{route('user')}}" class="d-inline-flex align-items-center headerUser">Eksekusi Perkara</a>
+                <a href="{{route('indexUser')}}" class="d-inline-flex align-items-center headerUser">Eksekusi Perkara</a>
 			</div>
 
 			<ul class="nav flex-row justify-content-end order-1 order-lg-2">

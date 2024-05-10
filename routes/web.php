@@ -28,8 +28,13 @@ Route::group(['middleware' => ['auth','role:1']], function(){
     Route::get('/get-citiess/{provinsiId}', [App\Http\Controllers\UserController::class, 'getCitiess'])->name('getCitiess');
     Route::get('/get-districtss/{kabupatenId}', [App\Http\Controllers\UserController::class, 'getDistrictss'])->name('getDistrictss');
     Route::get('/get-subdistrictss/{kecamatanId}', [App\Http\Controllers\UserController::class, 'getSubDistrictss'])->name('getSubDistrictss');
-    Route::get('/user', [App\Http\Controllers\UserController::class, 'index'])->name('user');
+    Route::get('/indexUser', [App\Http\Controllers\UserController::class, 'index'])->name('indexUser');
+    Route::get('/user', [App\Http\Controllers\UserController::class, 'eksekusi'])->name('user');
+    Route::get('/detailDataDiriEksekusi/{id}', [App\Http\Controllers\UserController::class, 'show'])->name('detailDataDiriEksekusi');
+    Route::get('/detailAllEksekusi/{id}', [App\Http\Controllers\UserController::class, 'showDataAllEksekusi'])->name('detailAllEksekusi');
     Route::post('/storeEksekusi', [App\Http\Controllers\UserController::class, 'storeEksekusi'])->name('storeEksekusi');
+    Route::get('/editDataDiriEksekusi/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('editDataDiriEksekusi');
+    Route::put('/updateDataDiriEksekusi/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('updateDataDiriEksekusi');
     Route::get('/homeUser', [App\Http\Controllers\UserController::class, 'homeUser'])->name('homeUser');
 
 });

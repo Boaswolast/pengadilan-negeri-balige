@@ -172,6 +172,7 @@
 
 						<!-- Main -->
                         @if (auth()->user()->role==4)
+						<div class="line"></div>
 						<li class="nav-item">
 							<a href="{{route('dukcapil')}}" class="nav-link">
 								<i class="ph-handshake"></i>
@@ -180,6 +181,7 @@
 						</li>
 						@endif
 						@if (auth()->user()->role==3)
+						<div class="line"></div>
 						<li class="nav-item">
 							<a href="{{route('pertanahan')}}" class="nav-link">
 								<i class="ph-handshake"></i>
@@ -223,6 +225,7 @@
 						</li>
 						@endif
 						@if (auth()->user()->role==1)
+						<div class="line"></div>
 						<li class="nav-item">
 							<a href="{{route('dukcapil')}}" class="nav-link">
 								<i class="ph-house"></i>
@@ -234,6 +237,7 @@
 						</li>
 						@endif
 						@if (auth()->user()->role==0)
+						<div class="line"></div>
 						<li class="nav-item nav-item-submenu">
 							<a href="#" class="nav-link">
 								<i class="ph-handshake"></i>
