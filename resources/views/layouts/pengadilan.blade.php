@@ -199,7 +199,7 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ route('peristiwa') }}" class="nav-link">
+							<a href="{{ route('eksekusi') }}" class="nav-link">
 								<i class="ph-folder-simple-user"></i>
 								<span>Eksekusi Perkara</span>
 							</a>

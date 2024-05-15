@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,10 @@ Route::group(['middleware' => ['auth','role:1']], function(){
     Route::get('/editDataDiriEksekusi/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('editDataDiriEksekusi');
     Route::put('/updateDataDiriEksekusi/{id}', [App\Http\Controllers\UserController::class, 'update'])->name('updateDataDiriEksekusi');
     Route::get('/homeUser', [App\Http\Controllers\UserController::class, 'homeUser'])->name('homeUser');
+    Route::get('/printResume/{file}', [App\Http\Controllers\UserController::class, 'printResume'])->name('printResume');
+
+    Route::get('/halamanPembayaran/{id}', [App\Http\Controllers\UserController::class, 'halamanPembayaran'])->name('halamanPembayaran');
+    Route::post('/pembayaran/{id}', [App\Http\Controllers\UserController::class, 'pembayaran'])->name('pembayaran');
 
 });
 
@@ -104,6 +110,26 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     // surat pengantar editSuratPengantar
     Route::get('/peristiwa/surat-pengantar/edit/{id}', [App\Http\Controllers\PeristiwaController::class, 'editSuratPengantar'])->name('editSuratPengantar');
     Route::put('/peristiwa/surat-pengantar/update/{id}', [App\Http\Controllers\PeristiwaController::class, 'updateSuratPengantar'])->name('updateSuratPengantar');
+
+
+    //eksekusi
+    Route::get('/eksekusi', [App\Http\Controllers\EksekusiController::class, 'index'])->name('eksekusi');
+    Route::get('/detailDataDiriEksekusiAdmin/{id}', [App\Http\Controllers\EksekusiController::class, 'show'])->name('detailDataDiriEksekusiAdmin');
+    Route::get('/detailAllEksekusiAdmin/{id}', [App\Http\Controllers\EksekusiController::class, 'showDataAllEksekusi'])->name('detailAllEksekusiAdmin');
+    Route::get('/halamanKonfirmasiData/{id}', [App\Http\Controllers\EksekusiController::class, 'halamanKonfirmasiData'])->name('halamanKonfirmasiData');
+    Route::post('/konfirmasiData/{id}', [App\Http\Controllers\EksekusiController::class, 'konfirmasiData'])->name('konfirmasiData');
+    Route::get('/halamanTolakData/{id}', [App\Http\Controllers\EksekusiController::class, 'halamanTolakData'])->name('halamanTolakData');
+    Route::post('/tolakData/{id}', [App\Http\Controllers\EksekusiController::class, 'tolakData'])->name('tolakData');
+    Route::get('/halamanAanmaning/{id}', [App\Http\Controllers\EksekusiController::class, 'halamanAanmaning'])->name('halamanAanmaning');
+    Route::post('/konfirmasiAanmaning/{id}', [App\Http\Controllers\EksekusiController::class, 'konfirmasiAanmaning'])->name('konfirmasiAanmaning');
+    Route::get('/halamanEksekusi/{id}', [App\Http\Controllers\EksekusiController::class, 'halamanEksekusi'])->name('halamanEksekusi');
+    Route::post('/tetapkanEksekusi/{id}', [App\Http\Controllers\EksekusiController::class, 'tetapkanEksekusi'])->name('tetapkanEksekusi');
+   
+    Route::get('/terimaPembayaran/{id}', [App\Http\Controllers\EksekusiController::class, 'terimaPembayaran'])->name('terimaPembayaran');
+    Route::post('/tolakPembayaran/{id}', [App\Http\Controllers\EksekusiController::class, 'tolakPembayaran'])->name('tolakPembayaran');
+    Route::post('/terimaAanmaning/{id}', [App\Http\Controllers\EksekusiController::class, 'terimaAanmaning'])->name('terimaAanmaning');
+    Route::post('/tolakAanmaning/{id}', [App\Http\Controllers\EksekusiController::class, 'tolakAanmaning'])->name('tolakAanmaning');
+    Route::post('/selesaiKasus/{id}', [App\Http\Controllers\EksekusiController::class, 'selesaiKasus'])->name('selesaiKasus');
 });
 
 Route::group(['middleware' => ['auth','role:3']], function(){

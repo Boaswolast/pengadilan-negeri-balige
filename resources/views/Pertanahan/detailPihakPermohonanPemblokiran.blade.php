@@ -5,7 +5,7 @@
     <div class="page-header-content d-lg-flex">
         <div class="d-flex">
             <h4 class="page-title mb-0">
-                Sertifikat Tanah - <span class="fw-normal">Detail Permohonan Peristiwa Penting</span>
+                Kasus Sertifikat Tanah - Detail Kasus - <span class="fw-normal">Detail Data Diri</span>
             </h4>
 
             <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -17,10 +17,12 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="{{route('home')}}" class="breadcrumb-item"><i class="ph-house"></i></a>
-                <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
-                <a href="#" class="breadcrumb-item">Detail</a>
-                <span class="breadcrumb-item active">Detail Pihak</span>
+                @foreach ($sertifikat as $data)
+                <a href="{{route('pertanahan')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="{{route('pertanahan')}}" class="breadcrumb-item">Kasus Sertifikat Tanah</a>
+                <a href="{{route('detailAllSertifikatPertanahan',['id'=>$data->id_pemblokiran])}}" class="breadcrumb-item">Detail Kasus</a>
+                <span class="breadcrumb-item active">Detail Data Diri</span>
+                @endforeach
             </div>
 
             <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">

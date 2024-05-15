@@ -6,7 +6,10 @@
             <ul class="nav nav-tabs nav-tabs-highlight nav-justified">
                 <li class="nav-item"><a href="#pihak" class="nav-link active">Pihak</a></li>
                 <li class="nav-item"><a href="#permohonan" class="nav-link">Dokumen Permohonan</a></li>
-                <li class="nav-item"><a href="#pelaksanaan" class="nav-link">Pelaksanaan</a></li>
+                <li class="nav-item"><a href="#telaah" class="nav-link">Telaah</a></li>
+                <li class="nav-item"><a href="#pembayaran" class="nav-link">Pembayaran</a></li>
+                <li class="nav-item"><a href="#aanmaning" class="nav-link">Aanmaning</a></li>
+                <li class="nav-item"><a href="#eksekusi" class="nav-link">Eksekusi</a></li>
                 <li class="nav-item"><a href="#status" class="nav-link">Status</a></li>
             </ul>
 
@@ -84,35 +87,381 @@
                 @endforeach
             </div>
 
-            <div id="pelaksanaan" class="tab-content">
-                {{-- @foreach($dataPetitum as $data)
-                    <div class="mt-5">{!! $data->petitum !!}</div>
-                @endforeach --}}
+            <div id="telaah" class="tab-content mt-4">
+                @foreach($dataTelaah as $data)
+                @if (!empty($data->tgl_telaah))
+                    <table class="table">
+                        <tbody>
+                            <tr class="table-success">
+                                <td style="width: 300px">Tanggal Telaah</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_telaah}}</td>
+                            </tr>
+                            <tr>
+                                <td>Status Telaah</td>
+                                <td>:</td>
+                                <td>{{$data->status_telaah}}</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>Keterangan</td>
+                                <td>:</td>
+                                <td>{{$data->keterangan}}</td>
+                            </tr>
+                            <tr>
+                                <td>Resume Telaah</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <iframe src="{{ asset('dokumen/Eksekusi/'.$data->resume) }}" width="100%" height="400px" class="mt-3"></iframe>
+                @else
+                <center><h4 class="mt-6">Proses Telaah masih dalam status menunggu. Tunggu <br>
+                     hingga pengadilan negeri melaksanakan telaah!</h4></center>
+                @endif      
+                @endforeach
+            </div>
+
+            @foreach($dataTelaah as $data)
+            @if ($data->status_telaah == 'Diterima')
+            <div id="pembayaran" class="tab-content mt-4">
+                @foreach($dataPembayaran as $data)
+                @if ($data->status_pembayaran == 'Diterima')
+                    <table class="table">
+                        <tbody>
+                            <tr class="table-success">
+                                <td style="width: 300px">Tanggal Pembayaran</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_pembayaran}}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>:</td>
+                                <td>{{$data->status_pembayaran}}</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>Keterangan</td>
+                                <td>:</td>
+                                <td>{{$data->keterangan}}</td>
+                            </tr>
+                            <tr>
+                                <td>Skum</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <td>Bukti Pembayaran</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
+
+                @elseif($data->status_pembayaran == 'Sudah Bayar')
+                <center><h4 class="mt-4">Pembayaran Anda Sedang dalam proses pemeriksaan oleh pengadilan negeri balige. silahkan tunggu  <br>
+                    untuk melanjutkan ketahap aanmaaning</h4></center>
+                <table class="table mt-4">
+                    <tbody>
+                        <tr class="table-success">
+                            <td style="width: 300px">Tanggal Pembayaran</td>
+                            <td>:</td>
+                            <td>{{$data->tgl_pembayaran}}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td>{{$data->status_pembayaran}}</td>
+                        </tr>
+                        <tr class="table-success">
+                            <td>Keterangan</td>
+                            <td>:</td>
+                            <td>{{$data->keterangan}}</td>
+                        </tr>
+                        <tr>
+                            <td>Skum</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Bukti Pembayaran</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
+
+                @elseif($data->status_pembayaran == 'Ditolak')
+                <center><h4 class="mt-4">Pembayaran Anda Ditolak, silahkan upload ulang sesuai instruksi di keterangan!</h4></center>
+                <a href="{{route('terimaPembayaran', ['id' => $data->id_pembayaran])}}" type="button" class="btn btn-primary mb-4" style="float: right" onclick="return confirmTerima(event)">Edit</a>
+                <table class="table mt-4">
+                    <tbody>
+                        <tr class="table-success">
+                            <td style="width: 300px">Tanggal Pembayaran</td>
+                            <td>:</td>
+                            <td>{{$data->tgl_pembayaran}}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td>{{$data->status_pembayaran}}</td>
+                        </tr>
+                        <tr class="table-success">
+                            <td>Keterangan</td>
+                            <td>:</td>
+                            <td>{{$data->keterangan}}</td>
+                        </tr>
+                        <tr>
+                            <td>Skum</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <td>Bukti Pembayaran</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
+
+                @else
+                <center><h4 class="mt-4">Proses Pembayaran masih dalam status menunggu. <br>
+                    Silahkan lakukan Pembayaran sesuai dengan isi SKUM sesegera mungkin <br>
+                    Kemudian kirim bukti pembayaran!</h4></center>
+
+                    <center><div class="mt-3">
+                        <a href="{{route('halamanPembayaran', ['id' => $data->id_eksekusi])}}" type="button" class="btn btn-success">Kirim Bukti Pembayaran</a>
+                    </div></center>
+
+                    <table class="table mt-4">
+                        <tbody>
+                            <tr class="table-success">
+                                <td>Status</td>
+                                <td>:</td>
+                                <td>{{$data->status_pembayaran}}</td>
+                            </tr>
+                            <tr>
+                                <td>SKUM</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
+                @endif      
+                @endforeach
+            </div>
+            @elseif($data->status_telaah == 'Ditolak')
+            <center><h4 class="mt-5">Proses telaah anda ditolak silahkan melakukan ulang registrasi</h4></center>
+            @endif
+            @endforeach
+
+            <div id="aanmaning" class="tab-content">
+                @foreach($dataAanmaning as $data)
+                @if (!empty($data->tgl_aanmaning))
+                <table class="table mt-4">
+                    <tbody>
+                        <tr class="table-success">
+                            <td style="width: 300px">Tanggal Aanmaning</td>
+                            <td>:</td>
+                            <td>{{$data->tgl_aanmaning}}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td>{{$data->status_aanmaning}}</td>
+                        </tr>
+                        <tr class="table-success">
+                            <td>Keterangan</td>
+                            <td>:</td>
+                            <td>{{$data->keterangan}}</td>
+                        </tr>
+                        <tr>
+                            <td>Surat Pemanggilan</td>
+                            <td>:</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <iframe src="{{ asset('dokumen/Aanmaning/'.$data->surat_pemanggilan) }}" width="100%" height="400px" class="mt-3"></iframe> 
+                @endif
+                @endforeach
+            </div>
+
+            <div id="eksekusi" class="tab-content">
+                @foreach($dataAanmaning as $data)
+                    @if ($data->status_aanmaning == 'Diterima')
+                    <center>
+                        <h4 class="mt-3">Proses Eksekusi Tidak Dilaksanakan Karena Hasil <br>
+                             Aanmangin Adalah Diterima (Damai)</h4>
+                    </center>
+                    
+                    @elseif($data->status_aanmaning == 'Ditolak')
+                    <center>
+                        <h4 class="mt-3">Hasil aanmaning adalah ditolak, maka Eksekusi akan segera <br>
+                            dilakukan. Tunggu proses selanjutnya dari Pengadilan Negeri</h4>
+                    </center>
+
+                    @elseif ($data->status_aanmaning == 'Selesai' && $data->status_eksekusi == 'Diproses')
+                    <center>
+                        <h4 class="mt-3">Proses Eksekusi masih dalam status Diproses. Silahkan <br>
+                            Tunggu Sesuai Penetapan Eksekusi</h4>
+                        <p>Jika proses eksekusi selesai berarti permohonan eksekusi juga telah selesai</p>
+                    </center>
+
+                    <table class="table mt-4">
+                        <tbody>
+                            <tr class="table-success">
+                                <td style="width: 300px">Tanggal Eksekusi</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_eksekusi}}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>:</td>
+                                <td>{{$data->status_eksekusi}}</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>Keterangan</td>
+                                <td>:</td>
+                                <td>{{$data->keterangan_eksekusi}}</td>
+                            </tr>
+                            <tr>
+                                <td>Penetapan Eksekusi</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <iframe src="{{ asset('dokumen/Penetapan/'.$data->penetapan_eksekusi) }}" width="100%" height="400px" class="mt-3"></iframe>
+                    @elseif ($data->status_eksekusi == 'Selesai')
+                    <table class="table mt-4">
+                        <tbody>
+                            <tr class="table-success">
+                                <td style="width: 300px">Tanggal Eksekusi</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_eksekusi}}</td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>:</td>
+                                <td>{{$data->status_eksekusi}}</td>
+                            </tr>
+                            <tr class="table-success">
+                                <td>Keterangan</td>
+                                <td>:</td>
+                                <td>{{$data->keterangan_eksekusi}}</td>
+                            </tr>
+                            <tr>
+                                <td>Penetapan Eksekusi</td>
+                                <td>:</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <iframe src="{{ asset('dokumen/Penetapan/'.$data->penetapan_eksekusi) }}" width="100%" height="400px" class="mt-3"></iframe>
+                    @endif
+                @endforeach
             </div>
 
             <div id="status" class="tab-content">
                 <div class="table-responsive mt-4">
-                    {{-- <table class="table">
+                    <table class="table">
                         <tbody>
-                            @foreach($dataStatus as $data)
+                            @foreach($dataAanmaning as $data)
                             <tr class="table-success">
                                 <td style="width: 300px">Tanggal Permohonan</td>
                                 <td>:</td>
-                                <td>{{$data->created_at}}</td>
-                            </tr>
-                            <tr>
-                                <td>Tanggal Diproses</td>
-                                <td>:</td>
-                                <td>{{$data->tgl_diproses}}</td>
-                            </tr>
-                            <tr class="table-success">
-                                <td>Tanggal selesai</td>
-                                <td>:</td>
-                                <td>{{$data->tgl_selesai}}</td>
+                                <td>{{$data->tgl_permohonan}}</td>
                             </tr>
                             @endforeach
                         </tbody>
-                    </table> --}}
+                    </table>
+                    <h5 class="mt-4">Status Telaah</h5>
+                    <table class="table">
+                        <tbody>
+                            @foreach($dataTelaah as $data)
+                            <tr class="table-success">
+                                <td style="width: 300px">Status Telaah</td>
+                                <td>:</td>
+                                <td>{{$data->status_telaah}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px">Tanggal Telaah</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_telaah}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <h5 class="mt-4">Status Aanmaning</h5>
+                    <table class="table">
+                        <tbody>
+                            @foreach($dataPembayaran as $data)
+                            <tr class="table-success">
+                                <td style="width: 300px">Status Pembayaran</td>
+                                <td>:</td>
+                                <td>{{$data->status_pembayaran}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px">Tanggal Pembayaran</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_pembayaran}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <h5 class="mt-4">Status Aanmaning</h5>
+                    <table class="table">
+                        <tbody>
+                            @foreach($dataAanmaning as $data)
+                            <tr class="table-success">
+                                <td style="width: 300px">Status Aanmaning</td>
+                                <td>:</td>
+                                <td>{{$data->status_aanmaning}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px">Tanggal Aanmaning</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_aanmaning}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <h5 class="mt-4">Status Eksekusi</h5>
+                    <table class="table">
+                        <tbody>
+                            @foreach($dataAanmaning as $data)
+                            <tr class="table-success">
+                                <td style="width: 300px">Status Eksekusi</td>
+                                <td>:</td>
+                                <td>{{$data->status_eksekusi}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px">Tanggal Eksekusi</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_eksekusi}}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

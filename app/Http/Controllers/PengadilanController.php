@@ -293,8 +293,11 @@ class PengadilanController extends Controller
         }
         $messages = array_merge($messages1, $messages2);
 
+        $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
+        $sertifikat = collect($sertifikat);
         $provinsi = DB::table('provinces')->get();
         return view('Pengadilan/addDataDiriTambahan', [
+            'sertifikat_tanah' => $sertifikat,
             'provinsi' => $provinsi, 
             'id' => $id,
             'totalNotif' => $totalNotif, 

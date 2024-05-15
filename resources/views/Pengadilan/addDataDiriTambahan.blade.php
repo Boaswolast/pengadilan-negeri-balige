@@ -37,10 +37,12 @@
         <div class="page-header-content d-lg-flex border-top">
             <div class="d-flex">
                 <div class="breadcrumb py-2">
-                    <a href="{{route('home')}}" class="breadcrumb-item"><i class="ph-house"></i></a>
-                    <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
-                    <a href="#" class="breadcrumb-item">Tambah Kasus</a>
-                    <span class="breadcrumb-item active">Tambah Data Diri</span>
+                    @foreach ($sertifikat_tanah as $data)
+                        <a href="{{route('pengadilan')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                        <a href="{{route('pengadilan')}}" class="breadcrumb-item">Sertifikat Tanah</a>
+                        <a href="{{route('detailAllSertifikat',['id'=>$data->id_pemblokiran])}}" class="breadcrumb-item">Detail Data Kasus</a>
+                        <span class="breadcrumb-item active">Tambah Data Diri Pihak</span>
+                    @endforeach
                 </div>
 
                 <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">

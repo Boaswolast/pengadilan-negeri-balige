@@ -102,9 +102,9 @@
     <!-- Main charts -->
     <div class="row">
         <div class="addGugatan mt-3">
-            <a href="{{route('user')}}" type="button" class="btn btn-primary">Tambah Kasus</a>
+            <a href="{{route('user')}}" type="button" class="btn btn-light" style="color: green">Ajukan Eksekusi Baru</a>
         </div>
-        <div class="col-xl-9">
+        <div class="col-xl-12">
             <div class="card mt-3">
                 <div class="card-header">
                     <h5 class="mb-0">Tabel User</h5>
@@ -133,11 +133,6 @@
                                 <td>{{$eksekusi->proses}}</td>
                                 <td>
                                     {{$eksekusi->status}}
-                                    {{-- @if ($eksekusi->status == 'Diterima')
-                                        <div>
-                                            <a href="{{url('/print', $eksekusi->surat_pemblokiran_bpn)}}">Lihat Bukti</a>
-                                        </div>
-                                    @endif --}}
                                 </td>
                                 <td class="text-center">
                                     <div class="d-inline-flex">
@@ -148,10 +143,58 @@
 
                                             <div class="dropdown-menu dropdown-menu-end">
                                                 <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
-                                                {{-- <a href="{{route('detailSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-info"> --}}
                                                     <i class="ph-eye me-2"></i>
                                                     Detail
-                                                </a>
+                                                </a> 
+                                                {{-- @if ($eksekusi->status == 'Ditolak')
+                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-eye me-2"></i>
+                                                        Detail
+                                                    </a>   --}}
+                                                @if($eksekusi->status == 'Menunggu')
+                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-eye me-2"></i>
+                                                        Detail
+                                                    </a> 
+                                                    <a href="#" class="dropdown-item text-danger">
+                                                        <i class="ph-trash me-2"></i>
+                                                        Delete
+                                                    </a> 
+                                                @elseif($eksekusi->status_telaah == 'Diterima')
+                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-eye me-2"></i>
+                                                        Detail
+                                                    </a> 
+                                                    <a href="#" class="dropdown-item text-info">
+                                                        <i class="ph-trash me-2"></i>
+                                                        Upload Bukti Pembayaran
+                                                    </a> 
+                                                {{-- @elseif ($eksekusi->status_pembayaran == 'Sudah Bayar')
+                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-eye me-2"></i>
+                                                        Detail
+                                                    </a>   --}}
+                                                {{-- @elseif ($eksekusi->status_pembayaran == 'Diterima')
+                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-eye me-2"></i>
+                                                        Detail
+                                                    </a> 
+                                                @elseif ($eksekusi->status_pembayaran == 'Diterima')
+                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-eye me-2"></i>
+                                                        Detail
+                                                    </a>   --}}
+                                                @elseif($eksekusi->status == null)
+                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-eye me-2"></i>
+                                                        Detail
+                                                    </a> 
+                                                    <a href="#" class="dropdown-item text-danger">
+                                                        <i class="ph-trash me-2"></i>
+                                                        Delete
+                                                    </a> 
+                                                @endif
+                                                
                                                 {{-- <a href="{{route('editSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-secondary">
                                                     <i class="ph-pencil me-2"></i>
                                                     Edit
@@ -176,52 +219,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="col-xl-3 mt-3">
-    
-            <!-- Sales stats -->
-            <div class="card">
-                <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                    <h6 class="py-sm-2 my-sm-1">{{ Auth::user()->name }}</h6>
-                    <div class="mt-2 mt-sm-0 ms-sm-auto">
-                        <a href="#" type="button" class="btn btn-light">Lihat Laporan</a>
-                    </div>
-                </div>
-
-                <div class="card-body pb-0">
-                    <div class="row text-left">
-                        <p>{{ Auth::user()->email }}</p>
-                    </div>
-                </div>
-
-                <div class="card-body pb-0">
-                    <div class="row text-center">
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <p class="mb-0">Terverifikasi</p>
-                                <div class="text-muted fs-sm">0</div>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <p class="mb-0">Diproses</p>
-                                <div class="text-muted fs-sm">0</div>
-                            </div>
-                        </div>
-
-                        <div class="col-4">
-                            <div class="mb-3">
-                                <p class="mb-0">Selesai</p>
-                                <div class="text-muted fs-sm">0</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- /sales stats -->
-
         </div>
     </div>
         <!-- /basic datatable -->

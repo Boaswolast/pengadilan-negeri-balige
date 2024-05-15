@@ -37,9 +37,9 @@
         <div class="page-header-content d-lg-flex border-top">
             <div class="d-flex">
                 <div class="breadcrumb py-2">
-                    <a href="{{route('home')}}" class="breadcrumb-item"><i class="ph-house"></i></a>
-                    <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
-                    <a href="#" class="breadcrumb-item">Tambah Kasus</a>
+                    <a href="{{route('pengadilan')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                    <a href="{{route('pengadilan')}}" class="breadcrumb-item">Sertifikat Tanah</a>
+                    <a href="{{route('addSertifikatPengadilan')}}" class="breadcrumb-item">Tambah Kasus</a>
                     <span class="breadcrumb-item active">Tambah Data Diri</span>
                 </div>
 
@@ -208,7 +208,7 @@
                                 <select class="form-select" name="pendidikan" required>
                                     <option value="">Pilih Pendidikan</option>
                                     <option value="SD">Sekolah Dasar (SD)</option>
-                                    <option value="SMP">OSekolah Menengah Pertama (SMP)</option>
+                                    <option value="SMP">Sekolah Menengah Pertama (SMP)</option>
                                     <option value="SMA">Sekolah Menengah Atas (SMA)</option>
                                     <option value="Sarjana">Sarjana (S1)</option>
                                     <option value="Magister">Magister (S2)</option>

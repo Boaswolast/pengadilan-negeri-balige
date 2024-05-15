@@ -177,7 +177,7 @@
                                     <select class="form-select" name="pendidikan" required>
                                         <option value="">Pilih Pendidikan</option>
                                         <option value="SD">Sekolah Dasar (SD)</option>
-                                        <option value="SMP">OSekolah Menengah Pertama (SMP)</option>
+                                        <option value="SMP">Sekolah Menengah Pertama (SMP)</option>
                                         <option value="SMA">Sekolah Menengah Atas (SMA)</option>
                                         <option value="Sarjana">Sarjana (S1)</option>
                                         <option value="Magister">Magister (S2)</option>

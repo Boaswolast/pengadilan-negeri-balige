@@ -129,7 +129,7 @@
                     <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
                         <h6 class="py-sm-2 my-sm-1">{{ Auth::user()->name }}</h6>
                         <div class="mt-2 mt-sm-0 ms-sm-auto">
-                            <a href="#" type="button" class="btn btn-light">Lihat Laporan</a>
+                            <a href="{{route('indexUser')}}" type="button" class="btn btn-light">Lihat Laporan</a>
                         </div>
                     </div>
     

@@ -18,9 +18,8 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="index.html" class="breadcrumb-item"><i class="ph-house"></i></a>
-                <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
-                <span class="breadcrumb-item active">Data Kasus</span>
+                <a href="{{route('pengadilan')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <span class="breadcrumb-item active">Sertifikat Tanah</span>
             </div>
 
             <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">

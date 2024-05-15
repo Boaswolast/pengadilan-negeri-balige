@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,7 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $dataAll = collect(DB::select('CALL viewAll_eksekusi()'));
+        $userId = Auth::id();
+        $dataAll = collect(DB::select('CALL viewAll_eksekusi_User(?)', [$userId]));
         $dataAll = collect($dataAll);
         return view('User/index',[
             'data' => $dataAll, 
@@ -128,6 +130,11 @@ class UserController extends Controller
 
             // Buat UUID untuk sertifikat
             $dokumenUuid = Str::uuid();
+            $user_id = Auth::id();
+
+            $telaah_id = DB::table('telaah')->insertGetId([
+                'status_telaah' => 'Menunggu',
+            ]);
 
             //dokumen1
             $dokumen1 = $request->file('surat_permohonan');
@@ -162,6 +169,8 @@ class UserController extends Controller
             $dokumenPath4 = basename($dokumenPath4);
 
             DB::table('eksekusi')->insert([
+                'telaah_id' => $telaah_id,
+                'users_id' => $user_id,
                 'kode_unik' => $dokumenUuid,
                 'jenis_eksekusi' => $request->jenis_eksekusi,
                 'surat_permohonan' => $dokumenPath1,
@@ -204,9 +213,9 @@ class UserController extends Controller
         }
         catch (\Exception $e) {
             DB::rollback();
-            // dd($e->getMessage()); 
+            dd($e->getMessage()); 
             // Tangani kesalahan jika terjadi
-            return redirect()->route('user')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            // return redirect()->route('user')->with('error', 'Terjadi kesalahan saat menyimpan data.');
             // dd($e->getMessage());
         }
     }
@@ -214,12 +223,12 @@ class UserController extends Controller
     public function showDataAllEksekusi(string $id)
     {
         $dataDiriAll = DB::select('CALL viewAll_eksekusi_dataDiri(?)', array($id));
-        $dataAanmanig = DB::select('CALL view_eksekusi_aanmaning(?)', array($id));
+        $dataAanmaning = DB::select('CALL view_eksekusi_aanmaning(?)', array($id));
         $dataPermohonan = DB::select('CALL view_eksekusi_dokumenPermohonan(?)', array($id));
         $dataPembayaran = DB::select('CALL view_eksekusi_pembayaran(?)', array($id));
         $dataTelaah = DB::select('CALL view_eksekusi_telaah(?)', array($id));
         $dataDiriAll = collect($dataDiriAll);
-        $dataAanmanig = collect($dataAanmanig);
+        $dataAanmaning = collect($dataAanmaning);
         $dataPermohonan = collect($dataPermohonan);
         $dataPembayaran = collect($dataPembayaran);
         $dataTelaah = collect($dataTelaah);
@@ -230,7 +239,7 @@ class UserController extends Controller
             'dataDiriAll' => $dataDiriAll,
             // 'status' => $status, 
             // 'id' => $id,
-            'dataAanmanig' => $dataAanmanig,
+            'dataAanmaning' => $dataAanmaning,
             'dataPermohonan' => $dataPermohonan,
             'dataPembayaran' => $dataPembayaran,
             'dataTelaah' => $dataTelaah,
@@ -302,6 +311,77 @@ class UserController extends Controller
         return view('User/homeUser');
     }
 
+    public function printResume($file)
+    {
+        $path = public_path('dokumen/Eksekusi/' . $file);
+
+        // Periksa apakah file ada
+        if (!file_exists($path)) {
+            return response()->json(['error' => 'File tidak ditemukan'], 404);
+        }
+
+        return response()->file($path);
+    }
+
+    public function halamanPembayaran(string $id)
+    {
+        $dataPembayaran = DB::select('CALL view_eksekusi_pembayaran(?)', array($id));
+        $dataPembayaran = collect($dataPembayaran);
+        return view('User/uploadPembayaran', [
+            'dataPembayaran' => $dataPembayaran,
+        ]);
+    }
+
+    public function pembayaran(Request $request, $id)
+    {
+        // dd($request);
+        $request->validate([
+            'bukti_pembayaran' => 'required|mimes:png,jpg,jpeg,pdf',
+            'keterangan' => 'required',
+        ]);
+        
+        $post = DB::table('pembayaran')->where('id_pembayaran', $id)->first();
+
+        // dd($post);
+        if ($post) {
+            // Periksa apakah ada file yang diunggah
+            if ($request->hasFile('bukti_pembayaran')) {
+                // Simpan file dokumen
+                $document = $request->file('bukti_pembayaran');
+                $documentName = $document->getClientOriginalName();
+                $mimeType = $document->getClientMimeType();
+                $documentPath = $document->move(public_path('dokumen/Pembayaran'), $documentName);
+
+                $documentPath = basename($documentPath);
+
+                $aanmaningId = DB::table('aanmaning')->insertGetId([
+                    'status_aanmaning' => 'Menunggu', 
+                ]);
+
+                $status_pembayaran = 'Sudah Bayar';
+                $tgl_pembayaran = now();
+
+                // Update status dan tambahkan path dokumen
+                DB::table('pembayaran')->where('id_pembayaran', $id)->update([
+                    'status_pembayaran' => $status_pembayaran,
+                    'tgl_pembayaran' => $tgl_pembayaran,
+                    'keterangan' => $request->keterangan,
+                    'bukti_pembayaran' => $documentPath
+                ]);
+
+                DB::table('eksekusi')->where('pembayaran_id', $id)->update([
+                    'proses' => 'Pembayaran',
+                    'aanmaning_id' => $aanmaningId
+                ]);
+
+                return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
+            } else {
+                return redirect()->route('eksekusi')->with('error', 'Terjadi kesalahan');
+            }
+        } else {
+            return redirect()->route('eksekusi')->with('error', 'Terjadi kesalahan');
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */
