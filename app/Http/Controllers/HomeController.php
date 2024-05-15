@@ -34,6 +34,7 @@ class HomeController extends Controller
 
     public function index()
     {
+        // Mengambil data notifikasi
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
         $messages1 = collect($notif1)->pluck('notification')->all();
@@ -43,11 +44,24 @@ class HomeController extends Controller
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
         $totalNotif = $total1 + $total2;
-        if($totalNotif === 0){
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
         $messages = array_merge($messages1, $messages2);
-        return view('home', ['totalNotif' => $totalNotif, 'messages' => $messages]);
+
+        // Mengambil data dari tabel
+        $totalPemblokiranSertifikat = $this->countData('pemblokiran_sertifikat');
+        $totalPeristiwaPenting = $this->countData('peristiwa_penting');
+        $totalEksekusi = $this->countData('eksekusi');
+
+        // Mengirim semua data ke view 'home'
+        return view('home', [
+            'totalNotif' => $totalNotif,
+            'messages' => $messages,
+            'totalPemblokiranSertifikat' => $totalPemblokiranSertifikat,
+            'totalPeristiwaPenting' => $totalPeristiwaPenting,
+            'totalEksekusi' => $totalEksekusi
+        ]);
     }
 
     public function getProfilePictureAttribute()
@@ -57,5 +71,12 @@ class HomeController extends Controller
         $path = 'img/profiles/' . $initial . '.png';
         
         return asset($path);
+    }
+
+    // Metode untuk menghitung total data dalam tabel
+    public function countData($table)
+    {
+        // Menggunakan Query Builder untuk menghitung semua hasil dalam tabel
+        return DB::table($table)->count();
     }
 }

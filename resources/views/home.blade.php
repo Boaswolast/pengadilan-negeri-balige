@@ -30,6 +30,7 @@
     </div>
 </div>
 <!-- /page header -->
+
 <div class="content">
 
     <!-- Main charts -->
@@ -99,10 +100,10 @@
 
         <div class="col-xl-5">
 
-            <!-- Sales stats -->
+            <!-- Statistik Kasus -->
             <div class="card">
                 <div class="card-header d-sm-flex align-items-sm-center py-sm-0">
-                    <h5 class="py-sm-2 my-sm-1">Sales statistics</h5>
+                    <h5 class="py-sm-2 my-sm-1">Statistik Kasus</h5>
                     <div class="mt-2 mt-sm-0 ms-sm-auto">
                         <select class="form-select" id="select_date">
                             <option value="val1">June, 29 - July, 5</option>
@@ -117,22 +118,22 @@
                     <div class="row text-center">
                         <div class="col-4">
                             <div class="mb-3">
-                                <h5 class="mb-0">5,689</h5>
-                                <div class="text-muted fs-sm">new orders</div>
+                            <h5 class="mb-0">{{ $totalEksekusi }}</h5>
+                                <div class="text-muted fs-sm">Eksekusi Online</div>
                             </div>
                         </div>
 
                         <div class="col-4">
                             <div class="mb-3">
-                                <h5 class="mb-0">32,568</h5>
-                                <div class="text-muted fs-sm">this month</div>
+                                <h5 class="mb-0">{{ $totalPemblokiranSertifikat }}</h5>
+                                <div class="text-muted fs-sm">Sertifikat Tanah</div>
                             </div>
                         </div>
 
                         <div class="col-4">
                             <div class="mb-3">
-                                <h5 class="mb-0">$23,464</h5>
-                                <div class="text-muted fs-sm">expected profit</div>
+                            <h5 class="mb-0">{{ $totalPeristiwaPenting }}</h5>
+                                <div class="text-muted fs-sm">Peristiwa Penting</div>
                             </div>
                         </div>
                     </div>
@@ -141,7 +142,7 @@
                 <div class="chart mb-2" id="app_sales"></div>
                 <div class="chart" id="monthly-sales-stats"></div>
             </div>
-            <!-- /sales stats -->
+            <!-- /statistik kasus -->
 
         </div>
     </div>
