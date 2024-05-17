@@ -5,7 +5,7 @@
     <div class="page-header-content d-lg-flex">
         <div class="d-flex">
             <h4 class="page-title mb-0">
-                Sertifikat Tanah - <span class="fw-normal">Data Kasus</span>
+                Detail Data Diri Pihak Eksekusi
             </h4>
 
             <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -17,8 +17,10 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="{{route('pengadilan')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
-                <span class="breadcrumb-item active">Sertifikat Tanah</span>
+                <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
+                <a href="javascript:history.back()" class="breadcrumb-item">Detail Eksekusi</a>
+                <span class="breadcrumb-item active">Detail Pihak</span>
             </div>
 
             <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">

@@ -181,12 +181,16 @@
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a> --}}
-                                            <form action="{{route('deletedSertifikat', ['kode_unik' => $sertifikat->kode_unik])}}" type="button" method="POST" class="dropdown-item text-danger">
+                                            <a href="{{route('deletedSertifikat', ['id' => $sertifikat->id_pemblokiran])}}" type="button" class="dropdown-item text-danger" onclick="return DeleteSertifikat(event)">
+                                                <i class="ph-trash me-2"></i>
+                                                Hapus
+                                            </a>
+                                            {{-- <form action="{{route('deletedSertifikat', ['kode_unik' => $sertifikat->kode_unik])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                 <i class="ph-trash me-2"></i>
                                                 @csrf
                                                 @method('delete')
                                                 <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
-                                            </form>
+                                            </form> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -204,4 +208,34 @@
     </div>
         <!-- /basic datatable -->
 </div>
+<script>
+    function DeleteSertifikat(event) {
+        // Mengambil URL dari tombol
+        const url = event.target.href;
+
+        // Menampilkan pesan konfirmasi Sweet Alert dengan gaya tambahan
+        Swal.fire({
+            title: 'Apakah Anda yakin menghapus Permohonan Pemblokiran Sertifikat Tanah ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Batal', // Mengganti teks tombol batal
+            customClass: {
+                confirmButton: 'btn btn-success', // Gaya tambahan untuk tombol konfirmasi
+                cancelButton: 'btn btn-light' // Gaya tambahan untuk tombol batal
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect ke URL jika pengguna mengonfirmasi
+                window.location.href = url;
+            } else {
+                // Mencegah tindakan default jika pengguna membatalkan
+                event.preventDefault();
+            }
+        });
+
+        // Mencegah tindakan default dari event klik
+        event.preventDefault();
+    }
+</script>
 @endsection

@@ -103,26 +103,40 @@
                 @foreach($dataPutusan as $data)
                 <div>
                     <h5>Putusan PN</h5>
-                    <a href="{{url('/downloadCapil', $data->putusan_pn)}}"><button class="btn btn-success">Download</button></a>
-                    <a href="{{url('/printCapil', $data->putusan_pn)}}"><button class="btn btn-primary">View</button></a>
+                    @if($data->putusan_pn!=null)
+                        <div>
+                            <iframe src="{{ asset('files/putusanPN/'.$data->putusan_pn) }}" width="100%" height="400px"></iframe>
+                        </div>
+                    @else
+                        <p>Tidak Ada Data</p>
+                    @endif
                 </div>
                 <div>
-                    <h5>Putusan PT</h5>
-                    <a href="{{url('/downloadCapil', $data->putusan_pt)}}"><button class="btn btn-success">Download</button></a>
-                    <a href="{{url('/printCapil', $data->putusan_pt)}}"><button class="btn btn-primary">View</button></a>
+                    <h5 class="mt-3">Putusan PT</h5>
+                    @if($data->putusan_pt!=null)
+                        <div>
+                            <iframe src="{{ asset('files/putusanPT/'.$data->putusan_pt) }}" width="100%" height="400px"></iframe>
+                        </div>
+                    @else
+                        <p>Tidak Ada Data</p>
+                    @endif
                 </div>
                 <div>
-                    <h5>Putusan MA RI</h5>
-                    <a href="{{url('/downloadCapil', $data->putusan_ma)}}"><button class="btn btn-success">Download</button></a>
-                    <a href="{{url('/printCapil', $data->putusan_ma)}}"><button class="btn btn-primary">View</button></a>
+                    <h5 class="mt-3">Putusan MA RI</h5>
+                    @if($data->putusan_ma!=null)
+                        <div>
+                            <iframe src="{{ asset('files/putusanMA/'.$data->putusan_ma) }}" width="100%" height="400px"></iframe>
+                        </div>
+                    @else
+                        <p>Tidak Ada Data</p>
+                    @endif
                 </div>
                 @endforeach
             </div>
             <div id="surat_pengantar" class="tab-content">
                 <h3>Gugatan Content</h3>
                 @foreach($dataPengantar as $data)
-                    <a href="{{url('/downloadCapil', $data->surat_pengantar)}}"><button class="btn btn-success">Download</button></a>
-                    <a href="{{url('/printCapil', $data->surat_pengantar)}}"><button class="btn btn-primary">View</button></a>
+                    <iframe src="{{ asset('files/surat-pengantar/'.$data->surat_pengantar) }}" width="100%" height="600px"></iframe>
                 @endforeach
             </div>
             <div id="status" class="tab-content">
@@ -156,7 +170,9 @@
                 </div>
                 <div class="addKasus mt-4">
                     @foreach($dataPengantar as $id)
+                    @if ($id->status_id == 1)
                         <a href="{{route('diprosesCapil', ['id' => $id->id_peristiwa])}}" type="button" class="btn btn-success">Proses Kasus</a>
+                    @endif
                         <a href="{{route('konfirmasiCapil', ['id' => $id->id_peristiwa])}}" type="button" class="btn btn-success">Kasus Selesai</a>
                     @endforeach
                 </div>

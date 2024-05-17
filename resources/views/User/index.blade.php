@@ -152,23 +152,15 @@
                                                         Detail
                                                     </a>   --}}
                                                 @if($eksekusi->status == 'Menunggu')
-                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
-                                                        <i class="ph-eye me-2"></i>
-                                                        Detail
-                                                    </a> 
                                                     <a href="#" class="dropdown-item text-danger">
                                                         <i class="ph-trash me-2"></i>
                                                         Delete
                                                     </a> 
                                                 @elseif($eksekusi->status_telaah == 'Diterima')
-                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
-                                                        <i class="ph-eye me-2"></i>
-                                                        Detail
-                                                    </a> 
-                                                    <a href="#" class="dropdown-item text-info">
+                                                    {{-- <a href="#" class="dropdown-item text-info">
                                                         <i class="ph-trash me-2"></i>
                                                         Upload Bukti Pembayaran
-                                                    </a> 
+                                                    </a>  --}}
                                                 {{-- @elseif ($eksekusi->status_pembayaran == 'Sudah Bayar')
                                                     <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
                                                         <i class="ph-eye me-2"></i>
@@ -185,10 +177,6 @@
                                                         Detail
                                                     </a>   --}}
                                                 @elseif($eksekusi->status == null)
-                                                    <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
-                                                        <i class="ph-eye me-2"></i>
-                                                        Detail
-                                                    </a> 
                                                     <a href="#" class="dropdown-item text-danger">
                                                         <i class="ph-trash me-2"></i>
                                                         Delete

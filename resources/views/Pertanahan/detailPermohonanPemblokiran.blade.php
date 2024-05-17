@@ -133,7 +133,9 @@
                 </div>
                 <div class="addKasus mt-4">
                     @foreach($dataPetitum as $id)
+                    @if ($id->status_id == 4)
                         <a href="{{route('diproses', ['id' => $id->id_pemblokiran])}}" type="button" class="btn btn-success">Proses Kasus</a>
+                    @endif
                     @endforeach
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_default">Konfirmasi Kasus</button>
                 </div>

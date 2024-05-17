@@ -174,10 +174,15 @@
                                                     <i class="ph-pencil me-2"></i>
                                                     Edit
                                                 </a> --}}
-                                                <a href="#" class="dropdown-item text-danger" onclick="confirmDeletePihak('{{ $d->id_peristiwa_penting }}')">
-                                                <i class="ph-trash me-2"></i>
-                                                Hapus
-                                            </a>
+                                                <a href="{{route('deletedPeristiwa', ['id' => $d->id_peristiwa_penting])}}" type="button" class="dropdown-item text-danger" onclick="return DeletePeristiwa(event)">
+                                                    <i class="ph-trash me-2"></i>
+                                                    Hapus
+                                                </a>
+                                                {{-- <a href="#" class="dropdown-item text-danger" onclick="confirmDeletePihak('{{ $d->id_peristiwa_penting }}')">
+                                                    <i class="ph-trash me-2"></i>
+                                                    Hapus
+                                                </a> --}}
+
 
                                                 {{-- <form action="{{route('deletedPeristiwa', ['id' => $d->id_peristiwa_penting])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                     <i class="ph-trash me-2"></i>
@@ -209,6 +214,37 @@
         const csrfToken = $('meta[name="csrf-token"]').attr('content');
         console.log(url);
         ajaxDelete(url, csrfToken);
+    }
+</script>
+
+<script>
+    function DeletePeristiwa(event) {
+        // Mengambil URL dari tombol
+        const url = event.target.href;
+
+        // Menampilkan pesan konfirmasi Sweet Alert dengan gaya tambahan
+        Swal.fire({
+            title: 'Apakah Anda yakin menghapus Permohonan Pemblokiran Sertifikat Tanah ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Batal', // Mengganti teks tombol batal
+            customClass: {
+                confirmButton: 'btn btn-success', // Gaya tambahan untuk tombol konfirmasi
+                cancelButton: 'btn btn-light' // Gaya tambahan untuk tombol batal
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect ke URL jika pengguna mengonfirmasi
+                window.location.href = url;
+            } else {
+                // Mencegah tindakan default jika pengguna membatalkan
+                event.preventDefault();
+            }
+        });
+
+        // Mencegah tindakan default dari event klik
+        event.preventDefault();
     }
 </script>
 @endsection

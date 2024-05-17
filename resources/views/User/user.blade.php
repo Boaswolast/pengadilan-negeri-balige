@@ -140,25 +140,25 @@
                     </div>
 
                     <div class="card-body pb-0">
-                        <div class="row text-center">
+                        <div class="row text-center"> 
                             <div class="col-4">
                                 <div class="mb-3">
-                                    <p class="mb-0">Terverifikasi</p>
-                                    <div class="text-muted fs-sm">0</div>
+                                    <p class="mb-0">Menunggu</p>
+                                    <div class="text-muted fs-sm">{{$countMenunggu}}</div>
                                 </div>
                             </div>
     
                             <div class="col-4">
                                 <div class="mb-3">
                                     <p class="mb-0">Diproses</p>
-                                    <div class="text-muted fs-sm">0</div>
+                                    <div class="text-muted fs-sm">{{$countProses}}</div>
                                 </div>
                             </div>
     
                             <div class="col-4">
                                 <div class="mb-3">
                                     <p class="mb-0">Selesai</p>
-                                    <div class="text-muted fs-sm">0</div>
+                                    <div class="text-muted fs-sm">{{$countSelesai}}</div>
                                 </div>
                             </div>
                         </div>

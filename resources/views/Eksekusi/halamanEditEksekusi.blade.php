@@ -26,7 +26,7 @@
         <div class="page-header-content d-lg-flex">
             <div class="d-flex">
                 <h4 class="page-title mb-0">
-                    Eksekusi Perkara - <span class="fw-normal">Tetapkan Eksekusi</span>
+                    Eksekusi Perkara - <span class="fw-normal">Edit Tetapan Eksekusi</span>
                 </h4>
 
                 <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -41,7 +41,7 @@
                     <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
                     <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
                     <a href="javascript:history.back()" class="breadcrumb-item">Detail Eksekusi</a>
-                    <span class="breadcrumb-item active">Tetapkan Eksekusi</span>
+                    <span class="breadcrumb-item active">Edit Tetapan Eksekusi</span>
                 </div>
 
                 <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -58,13 +58,13 @@
             <div class="card">
                 <div class="card-body border-top">
                     @foreach ($eksekusi as $id)
-                        <form action="{{route('tetapkanEksekusi', ['id' => $id->id_eksekusi])}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('tetapkanEditEksekusi', ['id' => $id->id_eksekusi])}}" method="POST" enctype="multipart/form-data">
                             @csrf
                         
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">Tanggal Eksekusi</label>
                                 <div class="col-lg-8">
-                                    <input type="date" name="tgl_eksekusi" class="form-control" placeholder="Tannggal Eksekusi" required>
+                                    <input type="date" name="tgl_eksekusi" value="{{$id->tgl_eksekusi}}" class="form-control" placeholder="Tannggal Eksekusi" required>
                                 </div>
                             </div>
                         

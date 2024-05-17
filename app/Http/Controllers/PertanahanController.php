@@ -114,13 +114,14 @@ class PertanahanController extends Controller
                 $documentName = $document->getClientOriginalName();
                 $mimeType = $document->getClientMimeType();
                 $documentPath = $document->move(public_path('dokumen/Pertanahan'), $documentName);
-
+                $tgl_diproses = now();
                 $documentPath = basename($documentPath);
 
                 // Update status dan tambahkan path dokumen
                 DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update([
                     'status_id' => 6,
                     'is_read_byPN' => 3,
+                    'tgl_diproses' => $tgl_diproses,
                     'surat_pemblokiran_bpn' => $documentPath
                 ]);
 
@@ -137,7 +138,11 @@ class PertanahanController extends Controller
     }
 
     public function diproses($id){
-        $diproses = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update(['status_id' => 5, 'is_read_byPN' => 1]);
+        $tgl_diproses = now();
+        $diproses = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update([
+            'status_id' => 5, 'is_read_byPN' => 1,
+            'tgl_diproses' => $tgl_diproses
+        ]);
 
         return redirect()->route('detailAllSertifikatPertanahan', ['id' => $id])->with('success', 'Data telah disimpan.');
     }

@@ -105,13 +105,21 @@ class DukcapilController extends Controller
     }
 
     public function diprosesCapil($id){
-        $diproses = DB::table('peristiwa_penting')->where('id_peristiwa', $id)->update(['status_id' => 2, 'is_read_byPN' => 1]);
+        $tgl_diproses = now();
+        $diproses = DB::table('peristiwa_penting')->where('id_peristiwa', $id)->update([
+            'status_id' => 2, 'is_read_byPN' => 1,
+            'tgl_diproses' => $tgl_diproses
+        ]);
 
         return redirect()->route('dukcapil')->with('success', 'Data telah disimpan.');
     }
 
     public function konfirmasiCapil($id){
-        $konfirmasi = DB::table('peristiwa_penting')->where('id_peristiwa', $id)->update(['status_id' => 3, 'is_read_byPN' => 3]);
+        $tgl_selesai = now();
+        $konfirmasi = DB::table('peristiwa_penting')->where('id_peristiwa', $id)->update([
+            'status_id' => 3, 'is_read_byPN' => 3,
+            'tgl_selesai' => $tgl_selesai
+        ]);
 
         return redirect()->route('dukcapil')->with('success', 'Data telah disimpan.');
     }

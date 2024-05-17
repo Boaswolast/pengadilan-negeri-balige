@@ -166,3 +166,13 @@
 .btnAanmaning{
     text-align: center;
 }
+
+.btnauth{
+    font-size: 20px;
+    color: black;
+    font-weight: 500;
+    margin-top: -10px;
+}
+.btnauth:hover{
+    color: green;
+}

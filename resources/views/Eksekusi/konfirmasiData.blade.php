@@ -20,12 +20,13 @@
         }
     });
 </script>
+<div class="content">
     <!-- Page header -->
     <div class="page-header page-header-light shadow">
         <div class="page-header-content d-lg-flex">
             <div class="d-flex">
                 <h4 class="page-title mb-0">
-                    Sertifikat Tanah - Tambah Kasus - <span class="fw-normal">Tambah Data Diri</span>
+                    Ubah Status Telaah Diterima
                 </h4>
 
                 <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -37,10 +38,9 @@
         <div class="page-header-content d-lg-flex border-top">
             <div class="d-flex">
                 <div class="breadcrumb py-2">
-                    <a href="{{route('pengadilan')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
-                    <a href="{{route('pengadilan')}}" class="breadcrumb-item">Sertifikat Tanah</a>
-                    <a href="{{route('addSertifikatPengadilan')}}" class="breadcrumb-item">Tambah Kasus</a>
-                    <span class="breadcrumb-item active">Tambah Data Diri</span>
+                    <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                    <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
+                    <span class="breadcrumb-item active">Ubah</span>
                 </div>
 
                 <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -105,4 +105,5 @@
         </div>
     </div>
     <!-- /centered card -->
+</div>
 @endsection

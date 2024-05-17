@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Charts\PengadilanChart;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -32,7 +33,7 @@ class HomeController extends Controller
     // }
 
 
-    public function index()
+    public function index(PengadilanChart $pengadilanChart)
     {
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
@@ -46,8 +47,19 @@ class HomeController extends Controller
         if($totalNotif === 0){
             $totalNotif = null;
         }
+
+        $eksekusi = DB::table('eksekusi')->where('is_deleted', 0)->count();
+        $pemblokiran = DB::table('pemblokiran_sertifikat')->where('is_deleted', 0)->count();
+        $peristiwa = DB::table('peristiwa_penting')->where('is_deleted', 0)->count();
         $messages = array_merge($messages1, $messages2);
-        return view('home', ['totalNotif' => $totalNotif, 'messages' => $messages]);
+        return view('home', [
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages,
+            'pengadilanChart' => $pengadilanChart->build(),
+            'eksekusi' => $eksekusi,
+            'pemblokiran' => $pemblokiran,
+            'peristiwa' => $peristiwa
+        ]);
     }
 
     public function getProfilePictureAttribute()

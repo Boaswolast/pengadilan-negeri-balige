@@ -5,7 +5,7 @@
     <div class="page-header-content d-lg-flex">
         <div class="d-flex">
             <h4 class="page-title mb-0">
-                Sertifikat Tanah - <span class="fw-normal">Data Kasus</span>
+                Detail Permohonan Eksekusi Perkara
             </h4>
 
             <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -17,8 +17,9 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="{{route('pengadilan')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
-                <span class="breadcrumb-item active">Sertifikat Tanah</span>
+                <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
+                <span class="breadcrumb-item active">Detail</span>
             </div>
 
             <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -73,10 +74,10 @@
                                                 <i class="ph-eye me-2"></i>
                                                 Detail Data Diri
                                             </a>
-                                            <a href="{{route('editDataDiriEksekusi', ['id' => $data->id_data_diri])}}" class="dropdown-item text-secondary">
+                                            {{-- <a href="{{route('editDataDiriEksekusi', ['id' => $data->id_data_diri])}}" class="dropdown-item text-secondary">
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
-                                            </a>
+                                            </a> --}}
                                             {{-- <form action="{{route('showDeleted', ['id' => $data->id_data_diri])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                 <i class="ph-trash me-2"></i>
                                                 @csrf
@@ -189,6 +190,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="addGugatan mt-4">
+                        <a href="{{url('/download', ['file' => $data->bukti_pembayaran])}}" type="button" class="btn btn-success">Download</a>
+                    </div>
                     <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
                 
                     @elseif($data->status_pembayaran == 'Ditolak')
@@ -227,6 +231,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="addGugatan mt-4">
+                        <a href="{{url('/download', ['file' => $data->bukti_pembayaran])}}" type="button" class="btn btn-success">Download</a>
+                    </div>
                     <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
 
                 @elseif($data->status_pembayaran == 'Sudah Bayar')
@@ -262,6 +269,9 @@
                     </tbody>
                 </table>
                 <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
+                <div class="addGugatan mt-4">
+                    <a href="{{url('/download', ['file' => $data->bukti_pembayaran])}}" type="button" class="btn btn-success">Download</a>
+                </div>
                 <table class="table">
                     <tbody>
                         <tr>
@@ -274,36 +284,14 @@
                 <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
 
                 @else
-                <center><h4 class="mt-5">Proses Pembayaran masih dalam status menunggu. <br>
-                    Silahkan lakukan Pembayaran sesuai dengan isi SKUM sesegera mungkin <br>
-                    Kemudian kirim bukti pembayaran!</h4></center>
-
-                    <center><div class="mt-3">
-                        <a href="{{route('halamanPembayaran', ['id' => $data->id_eksekusi])}}" type="button" class="btn btn-success">Kirim Bukti Pembayaran</a>
-                    </div></center>
-
-                    <table class="table mt-4">
-                        <tbody>
-                            <tr class="table-success">
-                                <td>Status</td>
-                                <td>:</td>
-                                <td>{{$data->status_pembayaran}}</td>
-                            </tr>
-                            <tr>
-                                <td>SKUM</td>
-                                <td>:</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
+                <center><h4 class="mt-5">Proses Telaah Belum Dilakukan</h4></center>
                 @endif      
                 @endforeach
             </div>
 
             <div id="aanmaning" class="tab-content">
                 @foreach($dataAanmaning as $data)
-                    @if ($data->status_aanmaning == null)
+                    @if ($data->status_aanmaning == 'Menunggu')
                     <center><h4 class="mt-5">Proses Aanmaning masih dalam status Menunggu. Silahkan <br> 
                         tetapkan tanggal Aanmaning dan surat Pemanggilan!</h4></center>
 
@@ -313,7 +301,7 @@
                     @endif
                 @endforeach
                 @foreach($dataAanmaning as $data)
-                    @if ($data->status_aanmaning == 'Menunggu')
+                    @if ($data->status_aanmaning == 'Diproses')
                     <center>
                         <h4 class="mt-3">Proses Aanmaning masih dalam status Diproses. Silahkan <br>
                         Ubah Status Aanmaning (Diterima/Ditolak)!</h4>
@@ -325,7 +313,7 @@
                         <a href="#" class="btn btn-danger" type="button" onclick="tolakAanmaning(event, {{ $data->id_aanmaning }})">Ditolak</a>
                     </div>
                     <div class="addGugatan mt-4">
-                        <a href="#" type="button" class="btn btn-primary" onclick="return confirmTerima(event)">Edit</a>
+                        <a href="{{route('halamanEditAanmaning', ['id' => $data->id_aanmaning])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
                     </div>
                     <table class="table mt-4">
                         <tbody>
@@ -353,7 +341,7 @@
                     </table>
                     <iframe src="{{ asset('dokumen/Aanmaning/'.$data->surat_pemanggilan) }}" width="100%" height="400px" class="mt-3"></iframe>     
 
-                    @elseif ($data->status_aanmaning == 'Diterima' || 'Ditolak')
+                    @elseif ($data->status_aanmaning == 'Diterima' || $data->status_aanmaning == 'Ditolak' || $data->status_aanmaning == 'Selesai')
 
                     <table class="table mt-4">
                         <tbody>
@@ -409,6 +397,9 @@
                     </center>
                     <div class="btnAanmaning mt-4">
                         <a href="#" class="btn btn-success" type="button" onclick="selesaiKasus(event, {{ $data->id_eksekusi }})">Selesai</a>
+                    </div>
+                    <div class="addGugatan mt-4">
+                        <a href="{{route('halamanEditEksekusi', ['id' => $data->id_eksekusi])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
                     </div>
 
                     <table class="table mt-4">
@@ -543,6 +534,11 @@
                                 <td style="width: 300px">Tanggal Eksekusi</td>
                                 <td>:</td>
                                 <td>{{$data->tgl_eksekusi}}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 300px">Eksekusi Selesai</td>
+                                <td>:</td>
+                                <td>{{$data->tgl_selesai}}</td>
                             </tr>
                             @endforeach
                         </tbody>

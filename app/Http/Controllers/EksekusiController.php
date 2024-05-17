@@ -233,7 +233,7 @@ class EksekusiController extends Controller
     {
         // dd($request);
         $request->validate([
-            'resume' => 'required|mimes:png,jpg,jpeg,pdf',
+            'resume' => 'required|mimes:doc,docx,pdf',
             'status_telaah' => 'required',
             'tgl_telaah' => 'required',
             'keterangan' => 'required',
@@ -348,11 +348,77 @@ class EksekusiController extends Controller
         DB::table('aanmaning')->where('id_aanmaning', $id)->update([
             'surat_pemanggilan' => basename($suratPemanggilanPath),
             'tgl_aanmaning' => $request->tgl_aanmaning,
-            'status_aanmaning' => 'Menunggu'
+            'status_aanmaning' => 'Diproses'
         ]);
 
         DB::table('eksekusi')->where('aanmaning_id', $id)->update([
             'proses' => 'Aanmaning',
+        ]);
+    
+        return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
+    }
+
+    public function halamanEditAanmaning(string $id)
+    {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
+        $dataAll = DB::table('eksekusi')->where('aanmaning_id', $id)->first();
+        if ($dataAll) {
+            $aanmaningId = $dataAll->aanmaning_id;
+            $aanmaningData = DB::table('aanmaning')->where('id_aanmaning', $aanmaningId)->get();
+        } else {
+            $aanmaningData = collect();
+        }
+        return view('Eksekusi.editAanmaning', [
+            'aanmaningId' => $aanmaningId,
+            'aanmaning' => $aanmaningData,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
+    }
+
+    public function konfirmasiEditAanmaning(Request $request, $id)
+    {
+        // dd($request);
+        $request->validate([
+            'surat_pemanggilan' => 'required|mimes:doc,docx,pdf',
+            'tgl_aanmaning' => 'required',
+        ]);
+        
+        $telaah = DB::table('aanmaning')->where('id_aanmaning', $id)->first();
+
+        if (!$telaah) {
+            return redirect()->route('eksekusi')->with('error', 'Data telaah tidak ditemukan');
+        }
+    
+        // Simpan file skum
+        $suratPemanggilan = $request->file('surat_pemanggilan');
+        $suratPemanggilanName = $suratPemanggilan->getClientOriginalName();
+        $suratPemanggilanPath = $suratPemanggilan->move(public_path('dokumen/Aanmaning'), $suratPemanggilanName);
+    
+        // Buat entri baru dalam tabel pembayaran
+        // $pembayaranId = DB::table('pembayaran')->insertGetId([
+        //     'surat_pemanggilan' => basename($surat_pemanggilanPath),
+        //     'status_pembayaran' => 'Menunggu', 
+        // ]);
+    
+        // Buat entri baru dalam tabel eksekusi
+        DB::table('aanmaning')->where('id_aanmaning', $id)->update([
+            'surat_pemanggilan' => basename($suratPemanggilanPath),
+            'tgl_aanmaning' => $request->tgl_aanmaning,
+            'status_aanmaning' => 'Diproses'
         ]);
     
         return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
@@ -422,7 +488,7 @@ class EksekusiController extends Controller
     {
         // dd($request);
         $request->validate([
-            'penetapan_eksekusi' => 'required|mimes:png,jpg,jpeg,pdf',
+            'penetapan_eksekusi' => 'required|mimes:doc,docx,pdf',
             'tgl_eksekusi' => 'required',
         ]);
         
@@ -453,6 +519,60 @@ class EksekusiController extends Controller
         return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
     }
 
+    public function halamanEditEksekusi(string $id)
+    {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
+        $dataAll = DB::table('eksekusi')->where('id_eksekusi', $id)->get();
+        return view('Eksekusi.halamanEditEksekusi', [
+            'eksekusi' => $dataAll,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
+    }
+
+    public function tetapkanEditEksekusi(Request $request, $id)
+    {
+        // dd($request);
+        $request->validate([
+            'penetapan_eksekusi' => 'required|mimes:doc,docx,pdf',
+            'tgl_eksekusi' => 'required',
+        ]);
+        
+        $eksekusi = DB::table('eksekusi')->where('id_eksekusi', $id)->first();
+
+        if (!$eksekusi) {
+            return redirect()->route('eksekusi')->with('error', 'Data eksekusi tidak ditemukan');
+        }
+    
+        // Simpan file skum
+        $suratPenetapan = $request->file('penetapan_eksekusi');
+        $suratPenetapanName = $suratPenetapan->getClientOriginalName();
+        $suratPenetapanPath = $suratPenetapan->move(public_path('dokumen/Penetapan'), $suratPenetapanName);
+    
+        // Buat entri baru dalam tabel eksekusi
+        DB::table('eksekusi')->where('id_eksekusi', $id)->update([
+            'penetapan_eksekusi' => basename($suratPenetapanPath),
+            'tgl_eksekusi' => $request->tgl_eksekusi,
+            'status_eksekusi' => 'Diproses',
+            'Proses' => 'Eksekusi'
+        ]);  
+
+        return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
+    }
+
     public function selesaiKasus(Request $request, $id)
     {
         $request->validate([
@@ -461,13 +581,22 @@ class EksekusiController extends Controller
     
         // Tangkap data dari input form
         $keterangan = $request->input('keterangan');
+        $tgl_selesai = now();
     
         // Lakukan operasi penyimpanan ke database
         DB::table('eksekusi')->where('id_eksekusi', $id)->update([
             'status_eksekusi' => 'Selesai',
-            'keterangan' => $keterangan, // Simpan alasan penolakan ke dalam database
+            'keterangan' => $keterangan, 
+            'tgl_selesai' => $tgl_selesai
         ]);
 
         return redirect()->route('eksekusi')->with('success', 'Berhasil Ditolak');
+    }
+
+    public function download(Request $request, $file)
+    {
+        $filePath = public_path('dokumen/Pembayaran/' . $file);
+
+        return response()->download($filePath);
     }
 }

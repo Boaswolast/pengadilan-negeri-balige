@@ -137,10 +137,14 @@
             </ul>
 
             <div id="pihak" class="tab-content active">
-                <div class="addGugatan mt-4">
-                    <a href="{{route('addPihakPeristiwa',$id)}}" type="button" class="btn btn-success">Tambah Pihak</a>
-                </div>
-                <table class="table datatable-basic table-bordered mt-3">
+                @foreach($dataPengantar as $d)
+                @if ($d->status_id == 1)  
+                    <div class="addGugatan mt-4">
+                        <a href="{{route('addPihakPeristiwa',$id)}}" type="button" class="btn btn-success">Tambah Pihak</a>
+                    </div>
+                @endif
+                @endforeach
+                <table class="table datatable-basic table-bordered mt-4">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -174,10 +178,14 @@
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a>
-                                            <a href="" class="dropdown-item text-danger" onclick="confirmDeletePihak('{{ $d->id_data_diri }}', '{{ $id }}')">
+                                            <a href="{{route('deletePihakPeristiwa', ['id' => $d->id_data_diri])}}" type="button" class="dropdown-item text-danger" onclick="return DeleteDataDiriPeristiwa(event)">
                                                 <i class="ph-trash me-2"></i>
                                                 Hapus
                                             </a>
+                                            {{-- <a href="" class="dropdown-item text-danger" onclick="confirmDeletePihak('{{ $d->id_data_diri }}', '{{ $id }}')">
+                                                <i class="ph-trash me-2"></i>
+                                                Hapus
+                                            </a> --}}
                                             {{-- <form action="{{route('deletePihakPeristiwa',['idDiri' => $d->id_data_diri, $id])}}" type="button" method="POST" class="dropdown-item text-danger">
                                                     <i class="ph-trash me-2"></i>
                                                     @csrf
@@ -204,19 +212,23 @@
             {{-- Amar Putusan --}}
             <div id="amarPutusan" class="tab-content">
                 @foreach($dataAmar as $d)
-                <div class="addGugatan mt-4">
-                    <a href="{{route('editAmarPutusan', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
-                </div>
-                    <div class="mt-2">{!! $d->amar_putusan !!}</div>
+                @if ($d->status_id == 1)    
+                    <div class="addGugatan mt-4">
+                        <a href="{{route('editAmarPutusan', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                    </div>
+                @endif
+                    <div class="mt-4">{!! $d->amar_putusan !!}</div>
                 @endforeach
             </div>
             {{-- Surat Putusan --}}
             <div id="surat" class="tab-content">
                 @foreach($dataPutusan as $d)
+                @if ($d->status_id == 1)    
                     <div class="addGugatan mt-4">
                         <a href="{{route('editSuratPutusan', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
                     </div>
-                    <div class="mt-2">
+                @endif
+                    <div class="mt-4">
                         <h6>Putusan PN</h6>
                         @if($d->putusan_pn!=null)
                             <div>
@@ -253,10 +265,12 @@
             {{-- Surat Pengantar --}}
             <div id="suratPengantar" class="tab-content">
                 @foreach($dataPengantar as $d)
-                <div class="addGugatan mt-4">
-                    <a href="{{route('editSuratPengantar', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
-                </div>
-                <div class="mt-2">
+                @if ($d->status_id == 1) 
+                    <div class="addGugatan mt-4">
+                        <a href="{{route('editSuratPengantar', ['id' => $d->id_peristiwa])}}" type="button" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                    </div>
+                @endif
+                <div class="mt-4">
                     <iframe src="{{ asset('files/surat-pengantar/'.$d->surat_pengantar) }}" width="100%" height="600px"></iframe>
                 </div>
                 @endforeach
@@ -362,5 +376,35 @@
     });
 </script>
 
+<script>
+    function DeleteDataDiriPeristiwa(event) {
+        // Mengambil URL dari tombol
+        const url = event.target.href;
+
+        // Menampilkan pesan konfirmasi Sweet Alert dengan gaya tambahan
+        Swal.fire({
+            title: 'Apakah Anda yakin menghapus Permohonan Pemblokiran Sertifikat Tanah ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Batal', // Mengganti teks tombol batal
+            customClass: {
+                confirmButton: 'btn btn-success', // Gaya tambahan untuk tombol konfirmasi
+                cancelButton: 'btn btn-light' // Gaya tambahan untuk tombol batal
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect ke URL jika pengguna mengonfirmasi
+                window.location.href = url;
+            } else {
+                // Mencegah tindakan default jika pengguna membatalkan
+                event.preventDefault();
+            }
+        });
+
+        // Mencegah tindakan default dari event klik
+        event.preventDefault();
+    }
+</script>
 
 @endsection

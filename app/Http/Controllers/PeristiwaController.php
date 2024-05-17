@@ -866,14 +866,13 @@ class PeristiwaController extends Controller
      */
     public function destroy(string $id)
     {
-        return 'salo';
         DB::select('CALL delete_peristiwaPenting("'.$id.'")');
         return redirect()->route('peristiwa',$id,)->with('success', 'Data Peristiwa Berhasil Dihapus!');
     }
 
-    public function deletePihak(string $idDiri, string $id)
+    public function deletePihak(string $id)
     {
-        DB::select('CALL delete_dataDiri("'.$idDiri.'")');
-        return redirect()->route('detailPeristiwa',$id,)->with('success', 'Data Diri Pihak Berhasil Dihapus!');
+        DB::select('CALL delete_dataDiri(?)', array($id));
+        return redirect()->back()->with('success', 'Data Peristiwa Berhasil Dihapus!');
     }
 }

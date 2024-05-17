@@ -455,8 +455,8 @@ class PengadilanController extends Controller
 
     public function showDeleted(string $id)
     {
-        $sertifikatDeleted = DB::table('data_diri_pihak')->where('id_data_diri', $id)->delete();
-        return redirect()->route('pengadilan')->with('success', 'Data berhasil dihapus');
+        DB::select('CALL delete_dataDiri(?)', array($id));
+        return redirect()->route('detailAllSertifikat',$id)->with('success', 'Data Peristiwa Berhasil Dihapus!');
     }
 
     /**
@@ -571,25 +571,27 @@ class PengadilanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $kode_unik)
+    public function destroy(string $id)
     {
-        DB::beginTransaction();
-        try {
-            $sertifikat = DB::table('pemblokiran_sertifikat')->where('kode_unik', $kode_unik)->first();
+        DB::select('CALL delete_pemblokiranSertifikat(?)', array($id));
+        return redirect()->route('pengadilan',$id)->with('success', 'Data Peristiwa Berhasil Dihapus!');
+        // DB::beginTransaction();
+        // try {
+        //     $sertifikat = DB::table('pemblokiran_sertifikat')->where('kode_unik', $kode_unik)->first();
     
-            DB::table('data_diri_pihak')->where('kode_unik', $kode_unik)->delete();
-            DB::table('pemblokiran_sertifikat')->where('kode_unik', $kode_unik)->delete();
+        //     DB::table('data_diri_pihak')->where('kode_unik', $kode_unik)->delete();
+        //     DB::table('pemblokiran_sertifikat')->where('kode_unik', $kode_unik)->delete();
     
-            DB::commit();
+        //     DB::commit();
     
-            return redirect()->route('pengadilan', ['pemblokiran_sertifikat' => $sertifikat])->with('success', 'Data berhasil dihapus');
-        } catch (\Exception $e) {
-            // Jika terjadi kesalahan, rollback transaksi
-            DB::rollback();
+        //     return redirect()->route('pengadilan', ['pemblokiran_sertifikat' => $sertifikat])->with('success', 'Data berhasil dihapus');
+        // } catch (\Exception $e) {
+        //     // Jika terjadi kesalahan, rollback transaksi
+        //     DB::rollback();
     
-            // Tampilkan pesan error atau lakukan penanganan lain sesuai kebutuhan
-            return redirect()->route('pengadilan')->with('error', 'Gagal menghapus data');
-        }
+        //     // Tampilkan pesan error atau lakukan penanganan lain sesuai kebutuhan
+        //     return redirect()->route('pengadilan')->with('error', 'Gagal menghapus data');
+        // }
         // $sertifikat = DB::table('sertifikat_tanah')->where('id', $id)->delete();
     }
 

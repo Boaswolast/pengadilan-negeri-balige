@@ -26,7 +26,7 @@
         <div class="page-header-content d-lg-flex">
             <div class="d-flex">
                 <h4 class="page-title mb-0">
-                    Eksekusi Perkara - <span class="fw-normal">Tetapkan Eksekusi</span>
+                    Eksekusi Perkara - <span class="fw-normal">Edit Aanmaning</span>
                 </h4>
 
                 <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -38,10 +38,10 @@
         <div class="page-header-content d-lg-flex border-top">
             <div class="d-flex">
                 <div class="breadcrumb py-2">
-                    <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                    <<a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
                     <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
                     <a href="javascript:history.back()" class="breadcrumb-item">Detail Eksekusi</a>
-                    <span class="breadcrumb-item active">Tetapkan Eksekusi</span>
+                    <span class="breadcrumb-item active">Edit Aanmaning</span>
                 </div>
 
                 <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -57,30 +57,29 @@
         <div class="col-lg-8 offset-lg-2 mt-4">
             <div class="card">
                 <div class="card-body border-top">
-                    @foreach ($eksekusi as $id)
-                        <form action="{{route('tetapkanEksekusi', ['id' => $id->id_eksekusi])}}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                        
-                            <div class="row mb-3">
-                                <label class="col-lg-4 col-form-label">Tanggal Eksekusi</label>
-                                <div class="col-lg-8">
-                                    <input type="date" name="tgl_eksekusi" class="form-control" placeholder="Tannggal Eksekusi" required>
-                                </div>
+                    <form action="{{route('konfirmasiEditAanmaning', ['id' => $aanmaningId])}}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @foreach ($aanmaning as $item)
+                        <div class="row mb-3">
+                            <label class="col-lg-4 col-form-label">Tanggal Aanmaning</label>
+                            <div class="col-lg-8">
+                                <input type="date" name="tgl_aanmaning" value="{{$item->tgl_aanmaning}}" class="form-control" placeholder="Tannggal Aanmaning" required>
                             </div>
-                        
-                            <div class="row mb-3">
-                                <label class="col-lg-4 col-form-label">Penetapan Eksekusi</label>
-                                <div class="col-lg-8">
-                                    <input type="file" name="penetapan_eksekusi" class="form-control" placeholder="Penetapan Eksekusi">
-                                </div>
+                        </div>
+                    
+                        <div class="row mb-3">
+                            <label class="col-lg-4 col-form-label">Surat Pemanggilan</label>
+                            <div class="col-lg-8">
+                                <input type="file" name="surat_pemanggilan" value="{{$item->surat_pemanggilan}}" class="form-control" placeholder="File Resume">
                             </div>
+                        </div>
 
-                            <div class="text-end mt-4">
-                                <a href="{{route('eksekusi')}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
-                                <button type="submit" class="btn btn-success">Tetapkan <i class="ph-paper-plane-tilt ms-2"></i></button>
-                            </div>
-                        </form>
-                    @endforeach
+                        <div class="text-end mt-4">
+                            <a href="{{route('eksekusi')}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
+                            <button type="submit" class="btn btn-success">Edit <i class="ph-paper-plane-tilt ms-2"></i></button>
+                        </div>
+                        @endforeach
+                    </form>
                 </div>
             </div>
         </div>

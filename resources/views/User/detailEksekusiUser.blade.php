@@ -161,6 +161,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="addGugatan mt-4">
+                        <a href="{{url('/downloadUser', ['file' => $data->bukti_pembayaran])}}" type="button" class="btn btn-success">Download</a>
+                    </div>
                     <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
 
                 @elseif($data->status_pembayaran == 'Sudah Bayar')
@@ -200,11 +203,14 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="addGugatan mt-4">
+                    <a href="{{url('/downloadUser', ['file' => $data->bukti_pembayaran])}}" type="button" class="btn btn-success">Download</a>
+                </div>
                 <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
 
                 @elseif($data->status_pembayaran == 'Ditolak')
-                <center><h4 class="mt-4">Pembayaran Anda Ditolak, silahkan upload ulang sesuai instruksi di keterangan!</h4></center>
-                <a href="{{route('terimaPembayaran', ['id' => $data->id_pembayaran])}}" type="button" class="btn btn-primary mb-4" style="float: right" onclick="return confirmTerima(event)">Edit</a>
+                <center><h4 class="mt-4">Pembayaran Anda Ditolak, Silahkan Upload Ulang Bukti Pembayaran Sesuai Instruksi di Keterangan!</h4></center>
+                <a href="{{route('halamanUploadUlangPembayaran', ['id' => $data->id_eksekusi])}}" type="button" class="btn btn-primary mb-4" style="float: right"><i class="ph-pencil me-2"></i>Edit</a>
                 <table class="table mt-4">
                     <tbody>
                         <tr class="table-success">
@@ -239,6 +245,9 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="addGugatan mt-4">
+                    <a href="{{url('/downloadUser', ['file' => $data->bukti_pembayaran])}}" type="button" class="btn btn-success">Download</a>
+                </div>
                 <iframe src="{{ asset('dokumen/Pembayaran/'.$data->bukti_pembayaran) }}" width="100%" height="400px" class="mt-3"></iframe>
 
                 @else

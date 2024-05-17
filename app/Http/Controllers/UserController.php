@@ -25,8 +25,33 @@ class UserController extends Controller
 
     public function eksekusi()
     {
+        $userId = Auth::id();
+
+        // Fetching data from stored procedure and converting to collections
+        $eksekusiData = collect(DB::select('CALL viewAll_eksekusi_User(?)', [$userId]));
+
+        // Count the number of records for each status
+        $countMenunggu = $eksekusiData->where('status_telaah', 'Menunggu')->count();
+        $countStatusTelaahDiterima = $eksekusiData->where('status_telaah', 'Diterima')->count();
+
+        $countProsesPembayaranAanmaning = $eksekusiData->filter(function($item) {
+            return isset($item->proses) && ($item->proses == 'Pembayaran' || $item->proses == 'Aanmaning');
+        })->count();
+
+        $countStatusEksekusiDiproses = $eksekusiData->where('status_eksekusi', 'Diproses')->count();
+
+        $countProses = $countStatusTelaahDiterima + $countProsesPembayaranAanmaning + $countStatusEksekusiDiproses;
+        
+        $countSelesai = DB::table('eksekusi')->where('users_id', $userId)->where('status_eksekusi', 'Selesai')->count();
+
         $temporaryPeristiwaUser = session('temporary_peristiwa_user', []);
-        return view('User/user')->with('temporaryPeristiwaUser', $temporaryPeristiwaUser);
+
+        return view('User/user', [
+            'countMenunggu' => $countMenunggu,
+            'countProses' => $countProses,
+            'countSelesai' => $countSelesai,
+            'temporaryPeristiwaUser' => $temporaryPeristiwaUser,
+        ]);
     }
 
     public function addDataDiriPihak()
@@ -104,14 +129,37 @@ class UserController extends Controller
          ];
          session()->push('temporary_peristiwa_user', $temporaryPeristiwaUser);
  
-         return redirect()->route('showTemporaryPeristiwaUser')->with('success', 'Task Created Successfully!');
+         return redirect()->route('user')->with('success', 'Task Created Successfully!');
         // dd($request->all());
      }
 
     public function showTemporaryPeristiwaUser()
     {
+        $userId = Auth::id();
+
+        // Fetching data from stored procedure and converting to collections
+        $eksekusiData = collect(DB::select('CALL viewAll_eksekusi_User(?)', [$userId]));
+
+        // Count the number of records for each status
+        $countMenunggu = $eksekusiData->where('status_telaah', 'Menunggu')->count();
+        $countStatusTelaahDiterima = $eksekusiData->where('status_telaah', 'Diterima')->count();
+
+        $countProsesPembayaranAanmaning = $eksekusiData->filter(function($item) {
+            return isset($item->proses) && ($item->proses == 'Pembayaran' || $item->proses == 'Aanmaning');
+        })->count();
+
+        $countStatusEksekusiDiproses = $eksekusiData->where('status_eksekusi', 'Diproses')->count();
+
+        $countProses = $countStatusTelaahDiterima + $countProsesPembayaranAanmaning + $countStatusEksekusiDiproses;
+        
+        $countSelesai = DB::table('eksekusi')->where('users_id', $userId)->where('status_eksekusi', 'Selesai')->count();
+
         $temporaryPeristiwaUser = session('temporary_peristiwa_user', []); 
-        return view('User/user')->with('temporaryPeristiwaUser', $temporaryPeristiwaUser);
+        return view('User/user', [
+            'countMenunggu' => $countMenunggu,
+            'countProses' => $countProses,
+            'countSelesai' => $countSelesai,
+        ])->with('temporaryPeristiwaUser', $temporaryPeristiwaUser);
     }
 
     public function storeEksekusi(Request $request){
@@ -336,7 +384,7 @@ class UserController extends Controller
     {
         // dd($request);
         $request->validate([
-            'bukti_pembayaran' => 'required|mimes:png,jpg,jpeg,pdf',
+            'bukti_pembayaran' => 'required|mimes:png,jpg,jpeg,pdf,doc,docx',
             'keterangan' => 'required',
         ]);
         
@@ -374,35 +422,70 @@ class UserController extends Controller
                     'aanmaning_id' => $aanmaningId
                 ]);
 
-                return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
+                return redirect()->route('indexUser')->with('success', 'Konfirmasi Terkirim');
             } else {
-                return redirect()->route('eksekusi')->with('error', 'Terjadi kesalahan');
+                return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
             }
         } else {
-            return redirect()->route('eksekusi')->with('error', 'Terjadi kesalahan');
+            return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
         }
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function halamanUploadUlangPembayaran(string $id)
     {
-        //
+        $dataPembayaran = DB::select('CALL view_eksekusi_pembayaran(?)', array($id));
+        $dataPembayaran = collect($dataPembayaran);
+        return view('User/uploadUlangPembayaran', [
+            'dataPembayaran' => $dataPembayaran,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function uploadUlangPembayaran(Request $request, $id)
     {
-        //
+        // dd($request);
+        $request->validate([
+            'bukti_pembayaran' => 'required|mimes:png,jpg,jpeg,pdf,doc,docx',
+            'keterangan' => 'required',
+        ]);
+        
+        $post = DB::table('pembayaran')->where('id_pembayaran', $id)->first();
+
+        // dd($post);
+        if ($post) {
+            // Periksa apakah ada file yang diunggah
+            if ($request->hasFile('bukti_pembayaran')) {
+                // Simpan file dokumen
+                $document = $request->file('bukti_pembayaran');
+                $documentName = $document->getClientOriginalName();
+                $mimeType = $document->getClientMimeType();
+                $documentPath = $document->move(public_path('dokumen/Pembayaran'), $documentName);
+
+                $documentPath = basename($documentPath);
+
+                $status_pembayaran = 'Sudah Bayar';
+                $tgl_pembayaran = now();
+
+                // Update status dan tambahkan path dokumen
+                DB::table('pembayaran')->where('id_pembayaran', $id)->update([
+                    'status_pembayaran' => $status_pembayaran,
+                    'tgl_pembayaran' => $tgl_pembayaran,
+                    'keterangan' => $request->keterangan,
+                    'bukti_pembayaran' => $documentPath
+                ]);
+
+                return redirect()->route('indexUser')->with('success', 'Konfirmasi Terkirim');
+            } else {
+                return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
+            }
+        } else {
+            return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function download(Request $request, $file)
     {
-        //
+        $filePath = public_path('dokumen/Pembayaran/' . $file);
+
+        return response()->download($filePath);
     }
 }

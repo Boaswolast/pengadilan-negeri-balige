@@ -156,7 +156,7 @@
 									</div>
 								</div>
 
-                                {{-- <div class="mb-3">
+                                <div class="mb-3">
 									<label class="form-label">Role</label>
 									<div class="form-control-feedback form-control-feedback-start">
                                         <select id="role" class="form-control @error('role') is-invalid @enderror" name="role" required>
@@ -175,7 +175,7 @@
 											<i class="ph-user-circle text-muted"></i>
 										</div>
 									</div>
-								</div> --}}
+								</div>
 
 								<div class="mb-3">
 									<label class="form-label">Password</label>
@@ -235,4 +235,3 @@
 
 </body>
 </html>
-
