@@ -53,7 +53,6 @@ class HomeController extends Controller
         $pemblokiran = DB::table('pemblokiran_sertifikat')->where('is_deleted', 0)->count();
         $peristiwa = DB::table('peristiwa_penting')->where('is_deleted', 0)->count();
         $messages = array_merge($messages1, $messages2);
-<<<<<<< HEAD
         return view('home', [
             'totalNotif' => $totalNotif, 
             'messages' => $messages,
@@ -61,21 +60,6 @@ class HomeController extends Controller
             'eksekusi' => $eksekusi,
             'pemblokiran' => $pemblokiran,
             'peristiwa' => $peristiwa
-=======
-
-        // Mengambil data dari tabel
-        $totalPemblokiranSertifikat = $this->countData('pemblokiran_sertifikat');
-        $totalPeristiwaPenting = $this->countData('peristiwa_penting');
-        $totalEksekusi = $this->countData('eksekusi');
-
-        // Mengirim semua data ke view 'home'
-        return view('home', [
-            'totalNotif' => $totalNotif,
-            'messages' => $messages,
-            'totalPemblokiranSertifikat' => $totalPemblokiranSertifikat,
-            'totalPeristiwaPenting' => $totalPeristiwaPenting,
-            'totalEksekusi' => $totalEksekusi
->>>>>>> c8a6ddecf900d5b83541da9ec9a8e9bd4d2a49f9
         ]);
     }
 
