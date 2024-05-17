@@ -30,6 +30,7 @@
     </div>
 </div>
 <!-- /page header -->
+
 <div class="content">
 
     <!-- Main charts -->
@@ -92,7 +93,7 @@
                 {{-- <div class="chart mb-2" id="app_sales"></div> --}}
                 {{-- <div class="chart" id="monthly-sales-stats"></div> --}}
             </div>
-            <!-- /sales stats -->
+            <!-- /statistik kasus -->
 
         </div>
     </div>

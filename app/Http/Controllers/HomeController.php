@@ -35,6 +35,7 @@ class HomeController extends Controller
 
     public function index(PengadilanChart $pengadilanChart)
     {
+        // Mengambil data notifikasi
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
         $messages1 = collect($notif1)->pluck('notification')->all();
@@ -44,7 +45,7 @@ class HomeController extends Controller
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
         $totalNotif = $total1 + $total2;
-        if($totalNotif === 0){
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
 
@@ -52,6 +53,7 @@ class HomeController extends Controller
         $pemblokiran = DB::table('pemblokiran_sertifikat')->where('is_deleted', 0)->count();
         $peristiwa = DB::table('peristiwa_penting')->where('is_deleted', 0)->count();
         $messages = array_merge($messages1, $messages2);
+<<<<<<< HEAD
         return view('home', [
             'totalNotif' => $totalNotif, 
             'messages' => $messages,
@@ -59,6 +61,21 @@ class HomeController extends Controller
             'eksekusi' => $eksekusi,
             'pemblokiran' => $pemblokiran,
             'peristiwa' => $peristiwa
+=======
+
+        // Mengambil data dari tabel
+        $totalPemblokiranSertifikat = $this->countData('pemblokiran_sertifikat');
+        $totalPeristiwaPenting = $this->countData('peristiwa_penting');
+        $totalEksekusi = $this->countData('eksekusi');
+
+        // Mengirim semua data ke view 'home'
+        return view('home', [
+            'totalNotif' => $totalNotif,
+            'messages' => $messages,
+            'totalPemblokiranSertifikat' => $totalPemblokiranSertifikat,
+            'totalPeristiwaPenting' => $totalPeristiwaPenting,
+            'totalEksekusi' => $totalEksekusi
+>>>>>>> c8a6ddecf900d5b83541da9ec9a8e9bd4d2a49f9
         ]);
     }
 
@@ -69,5 +86,12 @@ class HomeController extends Controller
         $path = 'img/profiles/' . $initial . '.png';
         
         return asset($path);
+    }
+
+    // Metode untuk menghitung total data dalam tabel
+    public function countData($table)
+    {
+        // Menggunakan Query Builder untuk menghitung semua hasil dalam tabel
+        return DB::table($table)->count();
     }
 }
