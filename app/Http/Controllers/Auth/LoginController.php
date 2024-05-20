@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -20,6 +22,18 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    protected function attemptLogin(Request $request)
+    {
+        $credentials = $this->credentials($request);
+        $credentials['is_active'] = 0;
+
+        return Auth::attempt($credentials, $request->filled('remember'));
+    }
+
+    protected function credentials(Request $request)
+    {
+        return $request->only($this->username(), 'password');
+    }
     /**
      * Where to redirect users after login.
      *
@@ -35,5 +49,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->middleware('check.is_active')->only('login');
     }
 }

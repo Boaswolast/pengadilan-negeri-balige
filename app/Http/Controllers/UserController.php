@@ -488,4 +488,16 @@ class UserController extends Controller
 
         return response()->download($filePath);
     }
+
+    public function destroy(string $id)
+    {
+        DB::select('CALL delete_eksekusi(?)', array($id));
+        return redirect()->route('pengadilan',$id)->with('success', 'Data Eksekusi Berhasil Dihapus!');
+    }
+
+    public function showDeleted(string $id)
+    {
+        DB::select('CALL delete_dataDiri(?)', array($id));
+        return redirect()->route('detailAllSertifikat',$id)->with('success', 'Data Diri Eksekusi Berhasil Dihapus!');
+    }
 }

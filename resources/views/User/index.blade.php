@@ -152,10 +152,10 @@
                                                         Detail
                                                     </a>   --}}
                                                 @if($eksekusi->status == 'Menunggu')
-                                                    <a href="#" class="dropdown-item text-danger">
+                                                    <a href="{{route('deletedEksekusiUser', ['id' => $eksekusi->id_eksekusi])}}" type="button" class="dropdown-item text-danger" onclick="return DeleteEksekusiUser(event)">
                                                         <i class="ph-trash me-2"></i>
-                                                        Delete
-                                                    </a> 
+                                                        Hapus
+                                                    </a>
                                                 @elseif($eksekusi->status_telaah == 'Diterima')
                                                     {{-- <a href="#" class="dropdown-item text-info">
                                                         <i class="ph-trash me-2"></i>
@@ -177,9 +177,9 @@
                                                         Detail
                                                     </a>   --}}
                                                 @elseif($eksekusi->status == null)
-                                                    <a href="#" class="dropdown-item text-danger">
+                                                    <a href="{{route('deletedEksekusiUser', ['id' => $eksekusi->id_eksekusi])}}" type="button" class="dropdown-item text-danger" onclick="return DeleteEksekusiUser(event)">
                                                         <i class="ph-trash me-2"></i>
-                                                        Delete
+                                                        Hapus
                                                     </a> 
                                                 @endif
                                                 
@@ -211,4 +211,35 @@
     </div>
         <!-- /basic datatable -->
 </div>
+
+<script>
+    function DeleteEksekusiUser(event) {
+        // Mengambil URL dari tombol
+        const url = event.target.href;
+
+        // Menampilkan pesan konfirmasi Sweet Alert dengan gaya tambahan
+        Swal.fire({
+            title: 'Apakah Anda yakin menghapus Permohonan Eksekusi ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Batal', // Mengganti teks tombol batal
+            customClass: {
+                confirmButton: 'btn btn-success', // Gaya tambahan untuk tombol konfirmasi
+                cancelButton: 'btn btn-light' // Gaya tambahan untuk tombol batal
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect ke URL jika pengguna mengonfirmasi
+                window.location.href = url;
+            } else {
+                // Mencegah tindakan default jika pengguna membatalkan
+                event.preventDefault();
+            }
+        });
+
+        // Mencegah tindakan default dari event klik
+        event.preventDefault();
+    }
+</script>
 @endsection

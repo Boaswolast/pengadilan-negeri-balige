@@ -48,12 +48,10 @@
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a>
-                                            {{-- <form action="{{route('showDeleted', ['id' => $data->id_data_diri])}}" type="button" method="POST" class="dropdown-item text-danger">
+                                            <a href="{{route('showDeletedEksekusiUser', ['id' => $data->id_data_diri])}}" type="button" class="dropdown-item text-danger" onclick="return DeleteDataDiriEksekusi(event)">
                                                 <i class="ph-trash me-2"></i>
-                                                @csrf
-                                                @method('delete')
-                                                <button class="dropdown-item text-danger" style="margin-left: -20px" type="submit">Hapus</button>
-                                            </form>  --}}
+                                                Hapus
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -514,5 +512,35 @@
     });
 </script>
 
+<script>
+    function DeleteDataDiriEksekusi(event) {
+        // Mengambil URL dari tombol
+        const url = event.target.href;
+
+        // Menampilkan pesan konfirmasi Sweet Alert dengan gaya tambahan
+        Swal.fire({
+            title: 'Apakah Anda yakin menghapus Data Diri Pemohon Eksekusi Perkara ini?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hapus',
+            cancelButtonText: 'Batal', // Mengganti teks tombol batal
+            customClass: {
+                confirmButton: 'btn btn-success', // Gaya tambahan untuk tombol konfirmasi
+                cancelButton: 'btn btn-light' // Gaya tambahan untuk tombol batal
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect ke URL jika pengguna mengonfirmasi
+                window.location.href = url;
+            } else {
+                // Mencegah tindakan default jika pengguna membatalkan
+                event.preventDefault();
+            }
+        });
+
+        // Mencegah tindakan default dari event klik
+        event.preventDefault();
+    }
+</script>
 
 @endsection

@@ -217,6 +217,12 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="{{url('/dataUser')}}" class="nav-link">
+								<i class="ph-user-plus"></i>
+								<span>Data User</span>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="{{url('/register')}}" class="nav-link">
 								<i class="ph-user-plus"></i>
 								<span>Daftar Akun</span>

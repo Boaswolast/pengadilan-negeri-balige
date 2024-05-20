@@ -47,6 +47,8 @@ Route::group(['middleware' => ['auth','role:1']], function(){
     Route::get('/halamanUploadUlangPembayaran/{id}', [App\Http\Controllers\UserController::class, 'halamanUploadUlangPembayaran'])->name('halamanUploadUlangPembayaran');
     Route::post('/uploadUlangPembayaran/{id}', [App\Http\Controllers\UserController::class, 'uploadUlangPembayaran'])->name('uploadUlangPembayaran');
     Route::get('/downloadUser/{file}', [App\Http\Controllers\UserController::class, 'download'])->name('downloadUserFile');
+    Route::get('/deletedEksekusiUser/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('deletedEksekusiUser');
+    Route::get('/showDeletedEksekusiUser/{id}', [App\Http\Controllers\UserController::class, 'showDeleted'])->name('showDeletedEksekusiUser');
 });
 
 Route::group(['middleware' => ['auth','role:2']], function(){
@@ -138,6 +140,10 @@ Route::group(['middleware' => ['auth','role:2']], function(){
     Route::post('/tolakAanmaning/{id}', [App\Http\Controllers\EksekusiController::class, 'tolakAanmaning'])->name('tolakAanmaning');
     Route::post('/selesaiKasus/{id}', [App\Http\Controllers\EksekusiController::class, 'selesaiKasus'])->name('selesaiKasus');
     Route::get('/download/{file}', [App\Http\Controllers\EksekusiController::class, 'download'])->name('downloadFile');
+
+    Route::get('/dataUser', [App\Http\Controllers\EksekusiController::class, 'dataUser'])->name('dataUser');
+    Route::get('/nonAktif/{id}', [App\Http\Controllers\EksekusiController::class, 'nonAktif'])->name('nonAktif');
+    Route::get('/aktif/{id}', [App\Http\Controllers\EksekusiController::class, 'aktif'])->name('aktif');
 });
 
 Route::group(['middleware' => ['auth','role:3']], function(){

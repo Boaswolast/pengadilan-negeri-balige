@@ -599,4 +599,49 @@ class EksekusiController extends Controller
 
         return response()->download($filePath);
     }
+
+    public function destroy(string $id)
+    {
+        DB::select('CALL delete_eksekusi(?)', array($id));
+        return redirect()->route('pengadilan',$id)->with('success', 'Data Eksekusi Berhasil Dihapus!');
+    }
+
+    public function dataUser()
+    {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2);
+
+
+        $dataUser = DB::table('users')->get();
+        $count = $dataUser->count();
+        return view('Pengadilan/dataUser', [
+            'dataUser' => $dataUser,
+            'count' => $count,
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
+    }
+
+    public function nonAktif(string $id)
+    {
+        DB::table('users')->where('id', $id)->update(['is_active' => 1]);
+        return redirect()->route('dataUser')->with('success', 'Akun Berhasil Dinonaktifkan!');
+    } 
+    
+    public function aktif(string $id)
+    {
+        DB::table('users')->where('id', $id)->update(['is_active' => 0]);
+        return redirect()->route('dataUser')->with('success', 'Akun Berhasil Diaktifkan!');
+    }  
 }
