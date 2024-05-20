@@ -225,6 +225,7 @@ class UserController extends Controller
                 'putusan_pn' => $dokumenPath2,
                 'putusan_pt' => $dokumenPath3,
                 'putusan_ma' => $dokumenPath4,
+                'is_read_byPN' => 1
             ]);
 
             foreach ($temporarySertifikat as $sertifikat) {
@@ -419,7 +420,8 @@ class UserController extends Controller
 
                 DB::table('eksekusi')->where('pembayaran_id', $id)->update([
                     'proses' => 'Pembayaran',
-                    'aanmaning_id' => $aanmaningId
+                    'aanmaning_id' => $aanmaningId,
+                    'is_read_byPN' => 3
                 ]);
 
                 return redirect()->route('indexUser')->with('success', 'Konfirmasi Terkirim');
@@ -471,6 +473,10 @@ class UserController extends Controller
                     'tgl_pembayaran' => $tgl_pembayaran,
                     'keterangan' => $request->keterangan,
                     'bukti_pembayaran' => $documentPath
+                ]);
+
+                DB::table('eksekusi')->where('pembayaran_id', $id)->update([
+                    'is_read_byPN' => 3
                 ]);
 
                 return redirect()->route('indexUser')->with('success', 'Konfirmasi Terkirim');

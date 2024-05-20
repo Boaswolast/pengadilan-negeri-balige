@@ -218,7 +218,7 @@
 						</li>
 						<li class="nav-item">
 							<a href="{{url('/dataUser')}}" class="nav-link">
-								<i class="ph-user-plus"></i>
+								<i class="ph-users-three"></i>
 								<span>Data User</span>
 							</a>
 						</li>

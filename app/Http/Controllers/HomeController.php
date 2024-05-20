@@ -35,7 +35,6 @@ class HomeController extends Controller
 
     public function index(PengadilanChart $pengadilanChart)
     {
-        // Mengambil data notifikasi
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
         $messages1 = collect($notif1)->pluck('notification')->all();
@@ -44,15 +43,19 @@ class HomeController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
-        if ($totalNotif === 0) {
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
+        if($totalNotif === 0){
             $totalNotif = null;
         }
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $eksekusi = DB::table('eksekusi')->where('is_deleted', 0)->count();
         $pemblokiran = DB::table('pemblokiran_sertifikat')->where('is_deleted', 0)->count();
         $peristiwa = DB::table('peristiwa_penting')->where('is_deleted', 0)->count();
-        $messages = array_merge($messages1, $messages2);
         return view('home', [
             'totalNotif' => $totalNotif, 
             'messages' => $messages,

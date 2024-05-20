@@ -31,11 +31,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $data = DB::select('CALL viewAll_sertifikatTanah()');
         $data = collect($data);
@@ -56,11 +60,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         return view('Pengadilan/editSertifikatTanah', [
             'totalNotif' => $totalNotif, 
@@ -90,11 +98,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
@@ -160,7 +172,6 @@ class PengadilanController extends Controller
 
     public function showTemporarySertifikat()
     {
-        // Mengambil data sementara dari sesi
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
         $messages1 = collect($notif1)->pluck('notification')->all();
@@ -169,11 +180,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $temporarySertifikat = session('temporary_sertifikat', []); 
 
@@ -195,11 +210,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $temporarySertifikat = session('temporary_sertifikat', []);
 
@@ -287,11 +306,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
@@ -373,11 +396,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $dataDiriAll = DB::select('CALL viewAll_sertifikatTanah_dataDiri(?)', array($id));
         $dataGugatan = DB::select('CALL view_sertifikatTanah_gugatan(?)', array($id));
@@ -438,11 +465,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
@@ -472,11 +503,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
@@ -539,11 +574,15 @@ class PengadilanController extends Controller
         $total2 = $notif2->sum('jumlah');
         $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2;
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
         if($totalNotif === 0){
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2);
+        $messages = array_merge($messages1, $messages2, $messages3);
 
         $editPetitum = DB::select('CALL view_sertifikatTanah_petitum(?)', array($id));
         $editPetitum = collect($editPetitum);
