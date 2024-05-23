@@ -99,10 +99,20 @@
                     <div class="mt-5">{!! $data->petitum !!}</div>
                 @endforeach
             </div>
-            <div id="gugatan" class="tab-content">
-                <h3>Gugatan Content</h3>
+            <div id="gugatan" class="tab-content mt-3">
                 @foreach($dataGugatan as $data)
-                    <iframe src="{{ asset('dokumen/Pengadilan/'.$data->dokumen_gugatan) }}" width="100%" height="400px"></iframe>
+                    @php
+                        $fileExtension = pathinfo($data->dokumen_gugatan, PATHINFO_EXTENSION);
+                        $fileUrl = asset('dokumen/Pengadilan/'.$data->dokumen_gugatan);
+                    @endphp
+                    
+                    @if ($fileExtension == 'pdf')
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"></iframe>
+                    @else
+                        <p>File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
+                        <a href="{{ $fileUrl }}" class="btn btn-primary">Unduh file</a>
+                    @endif
+                    {{-- <iframe src="{{ asset('dokumen/Pengadilan/'.$data->dokumen_gugatan) }}" width="100%" height="400px"></iframe> --}}
                     {{-- <a href="{{url('/downloadBPN', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
                     <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
                 @endforeach
@@ -158,7 +168,7 @@
                 <div class="modal-body">
                     <div class="card">
                         <div class="card-body">
-                            <input type="file" name="surat_pemblokiran_bpn" class="file-input">
+                            <input type="file" name="surat_pemblokiran_bpn" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" class="file-input">
                         </div>
                     </div>
                 </div>

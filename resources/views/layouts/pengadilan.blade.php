@@ -103,7 +103,7 @@
 				<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
 					<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">
 						<div class="status-indicator-container">
-							<img src="{{asset('assets/images/demo/users/face11.jpg')}}" class="w-32px h-32px rounded-pill" alt="">
+							<img src="{{asset('assets/images/user.png')}}" class="w-32px h-32px rounded-pill" alt="">
 							<span class="status-indicator bg-success"></span>
 						</div>
 						<span class="d-none d-lg-inline-block mx-lg-2">{{ Auth::user()->name }}</span>
@@ -188,7 +188,7 @@
 							</a>
 						</li>
 						@endif
-						@if (auth()->user()->role==2)
+						@if (in_array(auth()->user()->role, [2, 5, 6, 7, 8]))
 						<div class="line"></div>
 						<li class="nav-item">
 							<a href="{{route('home')}}" class="nav-link">
@@ -196,12 +196,6 @@
 								<span>
 									Dashboard
 								</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="{{ route('eksekusi') }}" class="nav-link">
-								<i class="ph-folder-simple-user"></i>
-								<span>Eksekusi Perkara</span>
 							</a>
 						</li>
 						<li class="nav-item">
@@ -217,17 +211,23 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="{{ route('eksekusi') }}" class="nav-link">
+								<i class="ph-folder-simple-user"></i>
+								<span>Eksekusi Perkara</span>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="{{url('/dataUser')}}" class="nav-link">
 								<i class="ph-users-three"></i>
 								<span>Data User</span>
 							</a>
 						</li>
-						<li class="nav-item">
-							<a href="{{url('/register')}}" class="nav-link">
+						{{-- <li class="nav-item">
+							<a href="{{url('/registerAdmin')}}" class="nav-link">
 								<i class="ph-user-plus"></i>
 								<span>Daftar Akun</span>
 							</a>
-						</li>
+						</li> --}}
 						@endif
 						@if (auth()->user()->role==1)
 						<li class="nav-item">

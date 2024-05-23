@@ -48,12 +48,22 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $messages = [
+            'email.required' => 'Email harus diisi.',
+            'email.email' => 'Email harus berformat email yang valid.',
+            'email.max' => 'Email tidak boleh lebih dari :max karakter.',
+            'email.unique' => 'Email sudah digunakan.',
+            'password.required' => 'Password harus diisi.',
+            'password.string' => 'Password harus berupa teks.',
+            'password.min' => 'Password harus memiliki minimal :min karakter.',
+            'password.confirmed' => 'Konfirmasi password tidak cocok.',
+        ];
+
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'integer'],
-        ]);
+        ], $messages);
     }
 
     /**
@@ -67,7 +77,7 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role' => $data['role'],
+            // 'role' => $data['role'],
             'password' => Hash::make($data['password']),
         ]);
     }

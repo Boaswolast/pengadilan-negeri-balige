@@ -51,7 +51,10 @@ Route::group(['middleware' => ['auth','role:1']], function(){
     Route::get('/showDeletedEksekusiUser/{id}', [App\Http\Controllers\UserController::class, 'showDeleted'])->name('showDeletedEksekusiUser');
 });
 
-Route::group(['middleware' => ['auth','role:2']], function(){
+Route::group(['middleware' => ['auth','role:2, 5, 6, 7, 8']], function(){
+    Route::get('/registerAdmin', [App\Http\Controllers\HomeController::class, 'register'])->name('registerAdmin');
+    Route::post('/fungsiRegisterAdmin', [App\Http\Controllers\Auth\RegisterAdminController::class, 'register'])->name('fungsiRegisterAdmin');
+
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     //data sementara

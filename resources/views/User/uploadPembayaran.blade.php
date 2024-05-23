@@ -38,7 +38,7 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Bukti Pembayaran</label>
                             <div class="col-lg-8">
-                                <input type="file" name="bukti_pembayaran" class="form-control" placeholder="Bukti Pembayaran">
+                                <input type="file" name="bukti_pembayaran" data-show-upload="false" data-show-caption="true" data-show-preview="true" class="form-control" placeholder="Bukti Pembayaran">
                             </div>
                         </div>
 

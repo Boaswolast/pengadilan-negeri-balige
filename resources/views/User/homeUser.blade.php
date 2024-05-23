@@ -173,7 +173,8 @@
       </div>
       <!-- Peta -->
       <div class="map">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.103715002628!2d99.07235291476863!3d2.350384198008445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30495ed3d4c73fb1%3A0xb9cc2d0b9d389e86!2sBalige%2C%20Habinsaran%2C%20Toba%20Samosir%2C%20Sumatera%20Utara%2C%20Indonesia!5e0!3m2!1sen!2s!4v1648531287262!5m2!1sen!2s" width="500" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+          {{-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.103715002628!2d99.07235291476863!3d2.350384198008445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30495ed3d4c73fb1%3A0xb9cc2d0b9d389e86!2sBalige%2C%20Habinsaran%2C%20Toba%20Samosir%2C%20Sumatera%20Utara%2C%20Indonesia!5e0!3m2!1sen!2s!4v1648531287262!5m2!1sen!2s" width="500" height="350" style="border:0;" allowfullscreen="" loading="lazy"></iframe> --}}
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.507080802018!2d99.06109377458652!3d2.334459857621063!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x302e046726dc72a9%3A0xc3d9720ebc8b478!2sPengadilan%20Negeri%20Balige!5e0!3m2!1sid!2sid!4v1716223821022!5m2!1sid!2sid" width="500" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
   </div>
 </footer>

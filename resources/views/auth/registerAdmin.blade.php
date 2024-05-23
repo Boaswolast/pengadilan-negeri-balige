@@ -76,7 +76,7 @@
 </div>
 @endsection --}}
 
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <link rel="icon" href="{{ asset('assets/images/logo_pengadilan.png') }}">
@@ -99,7 +99,9 @@
 
 </head> 
 
-<body>
+<body> --}}
+@extends('layouts.pengadilan')
+@section('content')
 
 	<!-- Page content -->
 	<div class="page-content">
@@ -114,7 +116,7 @@
 				<div class="content d-flex justify-content-center align-items-center">
 
 					<!-- Login form -->
-					<form method="POST" action="{{ route('register') }}">
+					<form method="POST" action="{{ route('fungsiRegisterAdmin') }}">
                         @csrf
 						<div class="card kartu">
 							<div class="card-body">
@@ -122,8 +124,8 @@
 									<div class="d-inline-flex align-items-center justify-content-center mb-4 mt-2">
 										<img src="{{asset('assets/images/logo_pengadilan.png')}}" class="h-48px" alt="">
 									</div>
-									<h5 class="mb-0">Registrasi Akun</h5>
-									<span class="d-block text-muted">Masukkan dan ingat data anda dengan benar</span>
+									<h5 class="mb-0">Tambahkan Akun</h5>
+									<span class="d-block text-muted">Taambahakan Akun Sesuai Dengan Role dan Keinginan Anda</span>
 								</div>
 
                                 <div class="mb-3">
@@ -165,6 +167,10 @@
                                             <option value="2">Pengadilan Negeri Balige</option>
                                             <option value="3">Badan Pertanahan Nasional</option>
                                             <option value="4">Dukcapil</option>
+                                            <option value="5">Ketua Pengadilan</option>
+                                            <option value="6">Wakil Ketua Peangadilan</option>
+                                            <option value="7">Panitra Pengadilan</option>
+                                            <option value="8">Sekretaris Pengadilan</option>
                                         </select>
                                         @error('role')
                                             <span class="invalid-feedback" role="alert">
@@ -215,15 +221,6 @@
 				</div>
 				<!-- /content area -->
 
-
-				<!-- Footer -->
-				<div class="navbar navbar-sm navbar-footer border-top">
-					<div class="container-fluid">
-						<span>Copyright &copy; 2024 PA-III 01. All rights reserved</span>
-					</div>
-				</div>
-				<!-- /footer -->
-
 			</div>
 			<!-- /inner content -->
 
@@ -234,4 +231,5 @@
 	<!-- /page content -->
 
 </body>
-</html>
+@endsection
+{{-- </html> --}}

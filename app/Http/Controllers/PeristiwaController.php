@@ -78,57 +78,114 @@ class PeristiwaController extends Controller
         ]);
     }
 
-     public function addTemporaryPeristiwa(Request $request)
-     {
+    public function addTemporaryPeristiwa(Request $request)
+    {
+        $request->validate([
+            'status_pihak' => 'required',
+            'jenis_pihak' => 'required',
+            'nama' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'tempat_lahir' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'tanggal_lahir' => 'required',
+            'umur' => 'required|integer|min:1',
+            'jenis_kelamin' => 'required',
+            'warga_negara' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'alamat' => 'required',
+            'provinsi' => 'required',
+            'kabupaten' => 'required',
+            'kecamatan' => 'required',
+            'kelurahan' => 'required',
+            'pekerjaan' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'status_kawin' => 'required',
+            'pendidikan' => 'required',
+            'nik' => 'required|numeric|digits:16',
+            'email' => 'required|email',
+            'no_telp' => 'required|numeric|digits_between:11,13',
+            // Validasi lainnya sesuai kebutuhan
+        ],[
+            'status_pihak.required' => 'Kolom Status Pihak harus diisi',
+            'jenis_pihak.required' => 'Kolom Jenis Pihak harus diisi',
+            'nama.required' => 'Kolom Nama harus diisi',
+            'nama.regex' => 'Kolom Nama hanya boleh berisi huruf dan spasi',
+            'tempat_lahir.required' => 'Kolom Tempat Lahir harus diisi',
+            'tempat_lahir.regex' => 'Kolom Tempat Lahir hanya boleh berisi huruf dan spasi',
+            'tanggal_lahir.required' => 'Kolom Tanggal Lahir harus diisi',
+            'umur.required' => 'Kolom Umur harus diisi',
+            'umur.min' => 'Kolom Umur harus diisi dengan angka positif',
+            'jenis_kelamin.required' => 'Kolom Jenis Kelamin harus diisi',
+            'warga_negara.required' => 'Kolom Warga Negara harus diisi',
+            'warga_negara.regex' => 'Kolom Warga Negara hanya boleh berisi huruf dan spasi',
+            'alamat.required' => 'Kolom Alamat harus diisi',
+            'provinsi.required' => 'Kolom Provinsi harus diisi',
+            'kabupaten.required' => 'Kolom Kabupaten harus diisi',
+            'kecamatan.required' => 'Kolom Kecamatan harus diisi',
+            'kelurahan.required' => 'Kolom Kelurahan harus diisi',
+            'pekerjaan.required' => 'Kolom Pekerjaan harus diisi',
+            'pekerjaan.regex' => 'Kolom Pekerjaan hanya boleh berisi huruf dan spasi',
+            'status_kawin.required' => 'Kolom Status Kawin harus diisi',
+            'pendidikan.required' => 'Kolom Pendidikan harus diisi',
+            'nik.required' => 'Kolom NIK harus diisi',
+            'nik.numeric' => 'Kolom NIK harus diisi dengan angka',
+            'nik.digits' => 'Kolom NIK harus diisi dengan 16 angka',
+            'email.required' => 'Kolom email harus diisi',
+            'email.email' => 'Kolom email harus diisi dengan format yang valid',
+            'no_telp.required' => 'Kolom nomor telepon harus diisi',
+            'no_telp.numeric' => 'Kolom nomor telepon harus diisi dengan angka',
+            'no_telp.digits_between' => 'Kolom nomor telepon harus diisi dengan 11 hingga 13 angka',
+        ]);
 
 
-         $status_pihak = $request->input('status_pihak');
-         $jenis_pihak = $request->input('jenis_pihak');
-         $nama = $request->input('nama');
-         $tempat_lahir = $request->input('tempat_lahir');
-         $tanggal_lahir = $request->input('tanggal_lahir');
-         $umur = $request->input('umur');
-         $jenis_kelamin = $request->input('jenis_kelamin');
-         $warga_negara = $request->input('warga_negara');
-         $alamat = $request->input('alamat');
-         $provinsi = $request->input('provinsi');
-         $kabupaten = $request->input('kabupaten');
-         $kecamatan = $request->input('kecamatan');
-         $kelurahan = $request->input('kelurahan');
-         $pekerjaan = $request->input('pekerjaan');
-         $status_kawin = $request->input('status_kawin');
-         $pendidikan = $request->input('pendidikan');
-         $email = $request->input('email');
-         $no_telp = $request->input('no_telp');
-         $nik = $request->input('nik');
- 
-         $temporaryPeristiwa = [
-             'status_pihak' => $status_pihak,
-             'jenis_pihak' => $jenis_pihak,
-             'nama' => $nama,
-             'tempat_lahir' => $tempat_lahir,
-             'tanggal_lahir' => $tanggal_lahir,
-             'umur' => $umur,
-             'jenis_kelamin' => $jenis_kelamin,
-             'warga_negara' => $warga_negara,
-             'alamat' => $alamat,
-             'provinsi' => $provinsi,
-             'kabupaten' => $kabupaten,
-             'kecamatan' => $kecamatan,
-             'kelurahan' => $kelurahan,
-             'pekerjaan' => $pekerjaan,
-             'status_kawin' => $status_kawin,
-             'pendidikan' => $pendidikan,
-             'email' => $email,
-             'no_telp' => $no_telp,
-             'nik' => $nik,
-         ];
-         // Simpan data dalam session atau variabel sementara
-         session()->push('temporary_peristiwa', $temporaryPeristiwa);
- 
-         return redirect()->route('addPeristiwa')->with('success', 'Data Diri Pihak Berhasil Ditambah!');
-        // dd($request->all());
-     }
+        $nik = $request->input('nik');
+        $email = $request->input('email');
+        $no_telp = $request->input('no_telp');
+        $provinsiId = $request->input('provinsi');
+        $kabupatenId = $request->input('kabupaten');
+        $kecamatanId = $request->input('kecamatan');
+        $kelurahanId = $request->input('kelurahan');
+
+        // Ambil data sementara dari session
+        $temporaryPeristiwas = session()->get('temporary_peristiwa', []);
+
+        // Periksa apakah nik, email, atau no_telp sudah ada dalam data sementara
+        foreach ($temporaryPeristiwas as $peristiwa) {
+            if ($peristiwa['nik'] == $nik) {
+                return redirect()->back()->withErrors(['nik' => 'NIK ini sudah digunakan'])->withInput();
+            }
+            if ($peristiwa['email'] == $email) {
+                return redirect()->back()->withErrors(['email' => 'Email ini sudah digunakan'])->withInput();
+            }
+            if ($peristiwa['no_telp'] == $no_telp) {
+                return redirect()->back()->withErrors(['no_telp' => 'Nomor Telepon ini sudah digunakan'])->withInput();
+            }
+        }
+
+        $temporaryPeristiwa = [
+            'status_pihak' => $request->input('status_pihak'),
+            'jenis_pihak' => $request->input('jenis_pihak'),
+            'nama' => $request->input('nama'),
+            'tempat_lahir' => $request->input('tempat_lahir'),
+            'tanggal_lahir' => $request->input('tanggal_lahir'),
+            'umur' => $request->input('umur'),
+            'jenis_kelamin' => $request->input('jenis_kelamin'),
+            'warga_negara' => $request->input('warga_negara'),
+            'alamat' => $request->input('alamat'),
+            'provinsi' => DB::table('provinces')->where('prov_id', $provinsiId)->pluck('prov_name')->first(),
+            'kabupaten' => DB::table('cities')->where('city_id', $kabupatenId)->pluck('city_name')->first(),
+            'kecamatan' => DB::table('districts')->where('dis_id', $kecamatanId)->pluck('dis_name')->first(),
+            'kelurahan' => DB::table('subdistricts')->where('subdis_id', $kelurahanId)->pluck('subdis_name')->first(),
+            'pekerjaan' => $request->input('pekerjaan'),
+            'status_kawin' => $request->input('status_kawin'),
+            'pendidikan' => $request->input('pendidikan'),
+            'email' => $email,
+            'no_telp' => $no_telp,
+            'nik' => $nik,
+        ];
+
+        // Simpan data dalam session
+        session()->push('temporary_peristiwa', $temporaryPeristiwa);
+
+        return redirect()->route('addPeristiwa')->with('success', 'Data Diri Pihak Berhasil Ditambah!');
+    }
+
 
     public function showTemporaryPeristiwa()
     {
@@ -351,58 +408,139 @@ class PeristiwaController extends Controller
 
     public function storePihak(Request $request, string $id)
     {
+        $request->validate([
+            'status_pihak' => 'required',
+            'jenis_pihak' => 'required',
+            'nama' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'tempat_lahir' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'tanggal_lahir' => 'required',
+            'umur' => 'required|integer|min:1',
+            'jenis_kelamin' => 'required',
+            'warga_negara' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'alamat' => 'required',
+            'provinsi' => 'required',
+            'kabupaten' => 'required',
+            'kecamatan' => 'required',
+            'kelurahan' => 'required',
+            'pekerjaan' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'status_kawin' => 'required',
+            'pendidikan' => 'required',
+            'nik' => 'required|numeric|digits:16',
+            'email' => 'required|email',
+            'no_telp' => 'required|numeric|digits_between:11,13',
+            // Validasi lainnya sesuai kebutuhan
+        ],[
+            'status_pihak.required' => 'Kolom Status Pihak harus diisi',
+            'jenis_pihak.required' => 'Kolom Jenis Pihak harus diisi',
+            'nama.required' => 'Kolom Nama harus diisi',
+            'nama.regex' => 'Kolom Nama hanya boleh berisi huruf dan spasi',
+            'tempat_lahir.required' => 'Kolom Tempat Lahir harus diisi',
+            'tempat_lahir.regex' => 'Kolom Tempat Lahir hanya boleh berisi huruf dan spasi',
+            'tanggal_lahir.required' => 'Kolom Tanggal Lahir harus diisi',
+            'umur.required' => 'Kolom Umur harus diisi',
+            'umur.min' => 'Kolom Umur harus diisi dengan angka positif',
+            'jenis_kelamin.required' => 'Kolom Jenis Kelamin harus diisi',
+            'warga_negara.required' => 'Kolom Warga Negara harus diisi',
+            'warga_negara.regex' => 'Kolom Warga Negara hanya boleh berisi huruf dan spasi',
+            'alamat.required' => 'Kolom Alamat harus diisi',
+            'provinsi.required' => 'Kolom Provinsi harus diisi',
+            'kabupaten.required' => 'Kolom Kabupaten harus diisi',
+            'kecamatan.required' => 'Kolom Kecamatan harus diisi',
+            'kelurahan.required' => 'Kolom Kelurahan harus diisi',
+            'pekerjaan.required' => 'Kolom Pekerjaan harus diisi',
+            'pekerjaan.regex' => 'Kolom Pekerjaan hanya boleh berisi huruf dan spasi',
+            'status_kawin.required' => 'Kolom Status Kawin harus diisi',
+            'pendidikan.required' => 'Kolom Pendidikan harus diisi',
+            'nik.required' => 'Kolom NIK harus diisi',
+            'nik.numeric' => 'Kolom NIK harus diisi dengan angka',
+            'nik.digits' => 'Kolom NIK harus diisi dengan 16 angka',
+            'email.required' => 'Kolom email harus diisi',
+            'email.email' => 'Kolom email harus diisi dengan format yang valid',
+            'no_telp.required' => 'Kolom nomor telepon harus diisi',
+            'no_telp.numeric' => 'Kolom nomor telepon harus diisi dengan angka',
+            'no_telp.digits_between' => 'Kolom nomor telepon harus diisi dengan 11 hingga 13 angka',
+        ]);
+
         $provinsiId = $request->input('provinsi');
         $kabupatenId = $request->input('kabupaten');
         $kecamatanId = $request->input('kecamatan');
         $kelurahanId = $request->input('kelurahan');
-        $kodeUnik = DB::table('peristiwa_penting')->where('id_peristiwa', $id)->pluck('kode_unik')->first();
+        $kodeUnik = DB::table('peristiwa_penting')
+            ->where('id_peristiwa', $id)
+            ->pluck('kode_unik')
+            ->first();
 
         $status_pihak = $request->input('status_pihak');
-         $jenis_pihak = $request->input('jenis_pihak');
-         $nama = $request->input('nama');
-         $tempat_lahir = $request->input('tempat_lahir');
-         $tanggal_lahir = $request->input('tanggal_lahir');
-         $umur = $request->input('umur');
-         $jenis_kelamin = $request->input('jenis_kelamin');
-         $warga_negara = $request->input('warga_negara');
-         $alamat = $request->input('alamat');
-         $provinsi = DB::table('provinces')->where('prov_id', $provinsiId)->pluck('prov_name')->first();
-         $kabupaten =  DB::table('cities')->where('city_id', $kabupatenId)->pluck('city_name')->first();
-         $kecamatan =  DB::table('districts')->where('dis_id', $kecamatanId)->pluck('dis_name')->first();
-         $kelurahan =  DB::table('subdistricts')->where('subdis_id', $kelurahanId)->pluck('subdis_name')->first();
-         $pekerjaan = $request->input('pekerjaan');
-         $status_kawin = $request->input('status_kawin');
-         $pendidikan = $request->input('pendidikan');
-         $email = $request->input('email');
-         $no_telp = $request->input('no_telp');
-         $nik = $request->input('nik');
- 
+        $jenis_pihak = $request->input('jenis_pihak');
+        $nama = $request->input('nama');
+        $tempat_lahir = $request->input('tempat_lahir');
+        $tanggal_lahir = $request->input('tanggal_lahir');
+        $umur = $request->input('umur');
+        $jenis_kelamin = $request->input('jenis_kelamin');
+        $warga_negara = $request->input('warga_negara');
+        $alamat = $request->input('alamat');
+        $provinsi = DB::table('provinces')->where('prov_id', $provinsiId)->pluck('prov_name')->first();
+        $kabupaten = DB::table('cities')->where('city_id', $kabupatenId)->pluck('city_name')->first();
+        $kecamatan = DB::table('districts')->where('dis_id', $kecamatanId)->pluck('dis_name')->first();
+        $kelurahan = DB::table('subdistricts')->where('subdis_id', $kelurahanId)->pluck('subdis_name')->first();
+        $pekerjaan = $request->input('pekerjaan');
+        $status_kawin = $request->input('status_kawin');
+        $pendidikan = $request->input('pendidikan');
+        $email = $request->input('email');
+        $no_telp = $request->input('no_telp');
+        $nik = $request->input('nik');
+
+        // Periksa apakah nik, email, atau no_telp sudah ada dalam tabel data_diri_pihak dengan kodeUnik yang sama
+        $existingData = DB::table('data_diri_pihak')
+            ->where('kode_unik', $kodeUnik)
+            ->where(function ($query) use ($nik, $email, $no_telp) {
+                $query->where('nik', $nik)
+                    ->orWhere('email', $email)
+                    ->orWhere('no_telp', $no_telp);
+            })
+            ->first();
+
+        if ($existingData) {
+            $errors = [];
+            if ($existingData->nik == $nik) {
+                $errors['nik'] = 'NIK ini sudah didaftarkan';
+            }
+            if ($existingData->email == $email) {
+                $errors['email'] = 'Email ini sudah didaftarkan';
+            }
+            if ($existingData->no_telp == $no_telp) {
+                $errors['no_telp'] = 'Nomor Telepon ini sudah didaftarkan';
+            }
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
+
         DB::table('data_diri_pihak')->insert([
-             'status_pihak' => $status_pihak,
-             'jenis_pihak' => $jenis_pihak,
-             'nama' => $nama,
-             'tempat_lahir' => $tempat_lahir,
-             'tanggal_lahir' => $tanggal_lahir,
-             'umur' => $umur,
-             'jenis_kelamin' => $jenis_kelamin,
-             'warga_negara' => $warga_negara,
-             'alamat' => $alamat,
-             'provinsi' => $provinsi,
-             'kabupaten' => $kabupaten,
-             'kecamatan' => $kecamatan,
-             'kelurahan' => $kelurahan,
-             'pekerjaan' => $pekerjaan,
-             'status_kawin' => $status_kawin,
-             'pendidikan' => $pendidikan,
-             'email' => $email,
-             'no_telp' => $no_telp,
-             'nik' => $nik,
-             'kode_unik' => $kodeUnik,
-             'created_by' => 'Admin'
-         ]);
- 
-         return redirect()->route('detailPeristiwa',$id)->with('success', 'Task Created Successfully!');
+            'status_pihak' => $status_pihak,
+            'jenis_pihak' => $jenis_pihak,
+            'nama' => $nama,
+            'tempat_lahir' => $tempat_lahir,
+            'tanggal_lahir' => $tanggal_lahir,
+            'umur' => $umur,
+            'jenis_kelamin' => $jenis_kelamin,
+            'warga_negara' => $warga_negara,
+            'alamat' => $alamat,
+            'provinsi' => $provinsi,
+            'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
+            'pekerjaan' => $pekerjaan,
+            'status_kawin' => $status_kawin,
+            'pendidikan' => $pendidikan,
+            'email' => $email,
+            'no_telp' => $no_telp,
+            'nik' => $nik,
+            'kode_unik' => $kodeUnik,
+            'created_by' => 'Admin'
+        ]);
+
+        return redirect()->route('detailPeristiwa', $id)->with('success', 'Data Diri Pihak Berhasil Ditambah!');
     }
+
 
     public function editPihak(string $idDiri, string $id)
     {
@@ -443,57 +581,142 @@ class PeristiwaController extends Controller
             'messages' => $messages]);
     }
 
-    public function updatePihak(string $idDiri, string $id, Request $request){
+    public function updatePihak(string $idDiri, string $id, Request $request)
+    {
+        $request->validate([
+            'status_pihak' => 'required',
+            'jenis_pihak' => 'required',
+            'nama' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'tempat_lahir' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'tanggal_lahir' => 'required',
+            'umur' => 'required|integer|min:1',
+            'jenis_kelamin' => 'required',
+            'warga_negara' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'alamat' => 'required',
+            'provinsi' => 'required',
+            'kabupaten' => 'required',
+            'kecamatan' => 'required',
+            'kelurahan' => 'required',
+            'pekerjaan' => ['required', 'regex:/^[a-zA-Z\s]+$/'],
+            'status_kawin' => 'required',
+            'pendidikan' => 'required',
+            'nik' => 'required|numeric|digits:16',
+            'email' => 'required|email',
+            'no_telp' => 'required|numeric|digits_between:11,13',
+            // Validasi lainnya sesuai kebutuhan
+        ],[
+            'status_pihak.required' => 'Kolom Status Pihak harus diisi',
+            'jenis_pihak.required' => 'Kolom Jenis Pihak harus diisi',
+            'nama.required' => 'Kolom Nama harus diisi',
+            'nama.regex' => 'Kolom Nama hanya boleh berisi huruf dan spasi',
+            'tempat_lahir.required' => 'Kolom Tempat Lahir harus diisi',
+            'tempat_lahir.regex' => 'Kolom Tempat Lahir hanya boleh berisi huruf dan spasi',
+            'tanggal_lahir.required' => 'Kolom Tanggal Lahir harus diisi',
+            'umur.required' => 'Kolom Umur harus diisi',
+            'umur.min' => 'Kolom Umur harus diisi dengan angka positif',
+            'jenis_kelamin.required' => 'Kolom Jenis Kelamin harus diisi',
+            'warga_negara.required' => 'Kolom Warga Negara harus diisi',
+            'warga_negara.regex' => 'Kolom Warga Negara hanya boleh berisi huruf dan spasi',
+            'alamat.required' => 'Kolom Alamat harus diisi',
+            'provinsi.required' => 'Kolom Provinsi harus diisi',
+            'kabupaten.required' => 'Kolom Kabupaten harus diisi',
+            'kecamatan.required' => 'Kolom Kecamatan harus diisi',
+            'kelurahan.required' => 'Kolom Kelurahan harus diisi',
+            'pekerjaan.required' => 'Kolom Pekerjaan harus diisi',
+            'pekerjaan.regex' => 'Kolom Pekerjaan hanya boleh berisi huruf dan spasi',
+            'status_kawin.required' => 'Kolom Status Kawin harus diisi',
+            'pendidikan.required' => 'Kolom Pendidikan harus diisi',
+            'nik.required' => 'Kolom NIK harus diisi',
+            'nik.numeric' => 'Kolom NIK harus diisi dengan angka',
+            'nik.digits' => 'Kolom NIK harus diisi dengan 16 angka',
+            'email.required' => 'Kolom email harus diisi',
+            'email.email' => 'Kolom email harus diisi dengan format yang valid',
+            'no_telp.required' => 'Kolom nomor telepon harus diisi',
+            'no_telp.numeric' => 'Kolom nomor telepon harus diisi dengan angka',
+            'no_telp.digits_between' => 'Kolom nomor telepon harus diisi dengan 11 hingga 13 angka',
+        ]);
+    
         $provinsiId = $request->input('provinsi');
         $kabupatenId = $request->input('kabupaten');
         $kecamatanId = $request->input('kecamatan');
         $kelurahanId = $request->input('kelurahan');
-
+        $kodeUnik = DB::table('peristiwa_penting')
+            ->where('id_peristiwa', $id)
+            ->pluck('kode_unik')
+            ->first();
+    
         $status_pihak = $request->input('status_pihak');
-         $jenis_pihak = $request->input('jenis_pihak');
-         $nama = $request->input('nama');
-         $tempat_lahir = $request->input('tempat_lahir');
-         $tanggal_lahir = $request->input('tanggal_lahir');
-         $umur = $request->input('umur');
-         $jenis_kelamin = $request->input('jenis_kelamin');
-         $warga_negara = $request->input('warga_negara');
-         $alamat = $request->input('alamat');
-         $provinsi = DB::table('provinces')->where('prov_id', $provinsiId)->pluck('prov_name')->first();
-         $kabupaten =  DB::table('cities')->where('city_id', $kabupatenId)->pluck('city_name')->first();
-         $kecamatan =  DB::table('districts')->where('dis_id', $kecamatanId)->pluck('dis_name')->first();
-         $kelurahan =  DB::table('subdistricts')->where('subdis_id', $kelurahanId)->pluck('subdis_name')->first();
-         $pekerjaan = $request->input('pekerjaan');
-         $status_kawin = $request->input('status_kawin');
-         $pendidikan = $request->input('pendidikan');
-         $email = $request->input('email');
-         $no_telp = $request->input('no_telp');
-         $nik = $request->input('nik');
- 
+        $jenis_pihak = $request->input('jenis_pihak');
+        $nama = $request->input('nama');
+        $tempat_lahir = $request->input('tempat_lahir');
+        $tanggal_lahir = $request->input('tanggal_lahir');
+        $umur = $request->input('umur');
+        $jenis_kelamin = $request->input('jenis_kelamin');
+        $warga_negara = $request->input('warga_negara');
+        $alamat = $request->input('alamat');
+        $provinsi = DB::table('provinces')->where('prov_id', $provinsiId)->pluck('prov_name')->first();
+        $kabupaten = DB::table('cities')->where('city_id', $kabupatenId)->pluck('city_name')->first();
+        $kecamatan = DB::table('districts')->where('dis_id', $kecamatanId)->pluck('dis_name')->first();
+        $kelurahan = DB::table('subdistricts')->where('subdis_id', $kelurahanId)->pluck('subdis_name')->first();
+        $pekerjaan = $request->input('pekerjaan');
+        $status_kawin = $request->input('status_kawin');
+        $pendidikan = $request->input('pendidikan');
+        $email = $request->input('email');
+        $no_telp = $request->input('no_telp');
+        $nik = $request->input('nik');
+    
+        // Periksa apakah nik, email, atau no_telp sudah ada dalam tabel data_diri_pihak dengan kodeUnik yang sama, kecuali data dengan id_data_diri yang sedang diupdate
+        $existingData = DB::table('data_diri_pihak')
+            ->where('kode_unik', $kodeUnik)
+            ->where(function ($query) use ($nik, $email, $no_telp, $idDiri) {
+                $query->where('nik', $nik)
+                    ->orWhere('email', $email)
+                    ->orWhere('no_telp', $no_telp);
+            })
+            ->where('id_data_diri', '!=', $idDiri)
+            ->first();
+    
+        if ($existingData) {
+            $errors = [];
+            if ($existingData->nik == $nik) {
+                $errors['nik'] = 'NIK ini sudah didaftarkan';
+            }
+            if ($existingData->email == $email) {
+                $errors['email'] = 'Email ini sudah didaftarkan';
+            }
+            if ($existingData->no_telp == $no_telp) {
+                $errors['no_telp'] = 'Nomor Telepon ini sudah didaftarkan';
+            }
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
+    
         DB::table('data_diri_pihak')
             ->where('id_data_diri', $idDiri)
             ->update([
-             'status_pihak' => $status_pihak,
-             'jenis_pihak' => $jenis_pihak,
-             'nama' => $nama,
-             'tempat_lahir' => $tempat_lahir,
-             'tanggal_lahir' => $tanggal_lahir,
-             'umur' => $umur,
-             'jenis_kelamin' => $jenis_kelamin,
-             'warga_negara' => $warga_negara,
-             'alamat' => $alamat,
-             'provinsi' => $provinsi,
-             'kabupaten' => $kabupaten,
-             'kecamatan' => $kecamatan,
-             'kelurahan' => $kelurahan,
-             'pekerjaan' => $pekerjaan,
-             'status_kawin' => $status_kawin,
-             'pendidikan' => $pendidikan,
-             'email' => $email,
-             'no_telp' => $no_telp,
-             'nik' => $nik
-         ]);
-         return redirect()->route('detailPeristiwa',$id)->with('success', 'Data Diri Pihak Berhasil Diubah!');
+                'status_pihak' => $status_pihak,
+                'jenis_pihak' => $jenis_pihak,
+                'nama' => $nama,
+                'tempat_lahir' => $tempat_lahir,
+                'tanggal_lahir' => $tanggal_lahir,
+                'umur' => $umur,
+                'jenis_kelamin' => $jenis_kelamin,
+                'warga_negara' => $warga_negara,
+                'alamat' => $alamat,
+                'provinsi' => $provinsi,
+                'kabupaten' => $kabupaten,
+                'kecamatan' => $kecamatan,
+                'kelurahan' => $kelurahan,
+                'pekerjaan' => $pekerjaan,
+                'status_kawin' => $status_kawin,
+                'pendidikan' => $pendidikan,
+                'email' => $email,
+                'no_telp' => $no_telp,
+                'nik' => $nik
+            ]);
+    
+        return redirect()->route('detailPeristiwa', $id)->with('success', 'Data Diri Pihak Berhasil Diubah!');
     }
+    
 
     /**
      * Display the specified resource.

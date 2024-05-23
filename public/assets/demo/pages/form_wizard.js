@@ -39,6 +39,15 @@ const FormWizard = function() {
                 $('form').submit();
             }
         });
+        $('.actions a[href="#next"]').css({
+            'background-color': 'green',
+            'color': 'white',
+        });
+
+        $('.actions a[href="#finish"]').css({
+            'background-color': 'green',
+            'color': 'white',
+        });
 
         // // Async content loading
         // $('.steps-async').steps({

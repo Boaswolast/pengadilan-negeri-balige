@@ -9,7 +9,7 @@
     
                 <div class="card">
                     <div class="card-header">
-                        <h6 class="mb-0">Kasus Perkara</h6>
+                        <h5 class="mb-0" style="color: green">Sampaikan Eksekusi Perkara Anda</h5>
                     </div>
         
                     <div class="card-body border-top">
@@ -24,9 +24,6 @@
                                         </div>
                                         <!-- Both borders -->
                                         <div class="card">
-                                            <div class="card-header" style="background-color: green">
-                                                <h5 class="mb-0" style="color: white">Sampaikan Eksekusi Perkara Anda</h5>
-                                            </div>
         
                                             <div class="table-responsive">
                                                 <table class="table table-bordered">

@@ -18,8 +18,7 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="index.html" class="breadcrumb-item"><i class="ph-house"></i></a>
-                <a href="#" class="breadcrumb-item">Home</a>
+                <a href="{{route('home')}}" class="breadcrumb-item"><i class="ph-house"></i></a>
                 <span class="breadcrumb-item active">Dashboard</span>
             </div>
 

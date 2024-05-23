@@ -17,7 +17,7 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-user-square"></i></a>
                 <a href="{{route('peristiwa')}}" class="breadcrumb-item">Peristiwa Penting</a>
                 <span class="breadcrumb-item active">Detail</span>
             </div>
@@ -271,7 +271,17 @@
                     </div>
                 @endif
                 <div class="mt-4">
-                    <iframe src="{{ asset('files/surat-pengantar/'.$d->surat_pengantar) }}" width="100%" height="600px"></iframe>
+                    @php
+                        $fileExtension = pathinfo($d->surat_pengantar, PATHINFO_EXTENSION);
+                        $fileUrl = asset('files/surat-pengantar/'.$d->surat_pengantar);
+                    @endphp
+                    
+                    @if ($fileExtension == 'pdf')
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"></iframe>
+                    @else
+                        <p>File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
+                        <a href="{{ $fileUrl }}" class="btn btn-primary">Unduh file</a>
+                    @endif
                 </div>
                 @endforeach
             </div>

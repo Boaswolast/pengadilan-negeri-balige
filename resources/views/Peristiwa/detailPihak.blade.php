@@ -17,7 +17,7 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">@foreach($data as $d)
-                <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-user-square"></i></a>
                 <a href="{{route('peristiwa')}}" class="breadcrumb-item">Peristiwa Penting</a>
                 <a href="{{route('detailPeristiwa',['id'=>$d->id_peristiwa])}}" class="breadcrumb-item">Detail</a>
                 <span class="breadcrumb-item active">Data Diri</span>

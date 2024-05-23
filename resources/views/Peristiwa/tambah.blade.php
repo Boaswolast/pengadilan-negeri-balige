@@ -18,7 +18,7 @@
         <div class="page-header-content d-lg-flex border-top">
             <div class="d-flex">
                 <div class="breadcrumb py-2">
-                    <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                    <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-user-square"></i></a>
                     <a href="{{route('peristiwa')}}" class="breadcrumb-item">Peristiwa Penting</a>
                     <span class="breadcrumb-item active">Tambah Catatan</span>
                 </div>

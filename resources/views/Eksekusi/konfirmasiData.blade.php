@@ -38,7 +38,7 @@
         <div class="page-header-content d-lg-flex border-top">
             <div class="d-flex">
                 <div class="breadcrumb py-2">
-                    <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                    <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-folder-simple-user"></i></a>
                     <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
                     <span class="breadcrumb-item active">Ubah</span>
                 </div>
@@ -83,14 +83,14 @@
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">File Resume</label>
                                 <div class="col-lg-8">
-                                    <input type="file" name="resume" class="form-control" placeholder="File Resume">
+                                    <input type="file" name="resume" class="form-control" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" placeholder="File Resume">
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">SKUM</label>
                                 <div class="col-lg-8">
-                                    <input type="file" name="skum" class="form-control" placeholder="SKUM">
+                                    <input type="file" name="skum" class="form-control" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" placeholder="SKUM">
                                 </div>
                             </div>
 

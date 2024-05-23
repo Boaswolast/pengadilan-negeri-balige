@@ -81,4 +81,30 @@ class HomeController extends Controller
         // Menggunakan Query Builder untuk menghitung semua hasil dalam tabel
         return DB::table($table)->count();
     }
+
+    public function register()
+    {
+        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+        $total1 = $notif1->sum('jumlah');
+        $messages1 = collect($notif1)->pluck('notification')->all();
+
+        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+        $total2 = $notif2->sum('jumlah');
+        $messages2 = collect($notif2)->pluck('notification')->all(); 
+
+        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+        $total3 = $notif3->sum('jumlah');
+        $messages3 = collect($notif3)->pluck('notification')->all(); 
+
+        $totalNotif = $total1 + $total2 + $total3;
+        if($totalNotif === 0){
+            $totalNotif = null;
+        }
+        $messages = array_merge($messages1, $messages2, $messages3);
+
+        return view('auth/registerAdmin', [
+            'totalNotif' => $totalNotif, 
+            'messages' => $messages
+        ]);
+    }
 }

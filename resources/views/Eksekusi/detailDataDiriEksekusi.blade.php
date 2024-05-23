@@ -17,7 +17,7 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-folder-simple-user"></i></a>
                 <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
                 <a href="javascript:history.back()" class="breadcrumb-item">Detail Eksekusi</a>
                 <span class="breadcrumb-item active">Detail Pihak</span>

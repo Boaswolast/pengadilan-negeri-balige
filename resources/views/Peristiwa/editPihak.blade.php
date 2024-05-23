@@ -18,7 +18,7 @@
         <div class="page-header-content d-lg-flex border-top">
             <div class="d-flex">
                 <div class="breadcrumb py-2">
-                    <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                    <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-user-square"></i></a>
                     <a href="{{route('peristiwa')}}" class="breadcrumb-item">Peristiwa Penting</a>
                     <a href="{{route('detailPeristiwa',$id)}}" class="breadcrumb-item">Detail</a>
                     <span class="breadcrumb-item active">Data Diri</span>
@@ -41,59 +41,77 @@
                 </div>
                 <div class="card-body border-top">
                     @foreach($data as $d)
-                    <form action="{{route('updatePihakPeristiwa',['idDiri' => $d->id_data_diri, $id])}}" method="POST">
+                    <form action="{{route('updatePihakPeristiwa',['idDiri' => $d->id_data_diri, $id])}}" method="POST" novalidate>
                         @csrf
                         @method('PUT')
                         <div class="row mb-3 mt-3">
                             <label class="col-lg-4 col-form-label">Status Pihak:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="status_pihak">
+                                <select class="form-select" name="status_pihak" title="Mohon memilih bagian ini">
                                     <option value="#">Pilih Status Pihak</option>
                                     <option value="Penggugat" {{ $d->status_pihak == 'Penggugat' ? 'selected':''}}>Penggugat</option>
                                     <option value="Tergugat" {{ $d->status_pihak == 'Tergugat'  ? 'selected':''}}>Tergugat</option>
                                     <option value="Intervensi" {{ $d->status_pihak == 'Intervensi' ? 'selected':'' }}>Intervensi</option>
                                     <option value="Turut Tergugat" {{ $d->status_pihak == 'Turut Tergugat' ? 'selected':'' }}>Turut Tergugat</option>
                                 </select>
+                                @error('status_pihak')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row mb-3 mt-3">
                             <label class="col-lg-4 col-form-label">Jenis Pihak:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="jenis_pihak">
+                                <select class="form-select" name="jenis_pihak" title="Mohon memilih bagian ini">
                                     <option value="#">Pilih Pihak</option>
                                     <option value="Perorangan" {{ $d->jenis_pihak == 'Perorangan' ? 'selected':'' }}>Perorangan</option>
                                     <option value="Pemerintah" {{ $d->jenis_pihak == 'Pemerintah'? 'selected':'' }}>Pemerintah</option>
                                     <option value="Badan Hukum" {{ $d->jenis_pihak == 'Badan Hukum' ? 'selected':'' }}>Badan Hukum</option>
                                 </select>
+                                @error('jenis_pihak')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row mb-3 mt-3">
                             <label class="col-lg-4 col-form-label">Nama Lengkap:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap"  value="{{ $d->nama }}">
+                                <input type="text" name="nama" class="form-control" placeholder="Nama Lengkap" pattern="[A-Za-z\s]+" title="Hanya huruf yang diizinkan"  value="{{ $d->nama }}">
+                                @error('nama')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Tempat Lahir:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir"  value="{{ $d->tempat_lahir }}">
+                                <input type="text" name="tempat_lahir" class="form-control" placeholder="Tempat Lahir" title="Mohon mengisi bagian ini" value="{{ $d->tempat_lahir }}">
+                                @error('tempat_lahir')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Tanggal Lahir:</label>
                             <div class="col-lg-8">
-                                <input type="date" name="tanggal_lahir" class="form-control" placeholder="Tanggal Lahir"  value="{{ $d->tanggal_lahir }}">
+                                <input type="date" name="tanggal_lahir" class="form-control" placeholder="Tanggal Lahir" title="Mohon mengisi bagian ini" value="{{ $d->tanggal_lahir }}">
+                                @error('tanggal_lahir')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Umur:</label>
                             <div class="col-lg-3">
-                                <input type="number" name="umur" class="form-control" placeholder="Umur"  value="{{ $d->umur }}">
+                                <input type="number" name="umur" class="form-control" placeholder="Umur" title="Mohon mengisi bagian ini" value="{{ $d->umur }}">
+                                @error('umur')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                             <div class="col-lg-4">
                                 <div class="form-text">Tahun</div>
@@ -103,95 +121,122 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Jenis Kelamin:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="jenis_kelamin">
+                                <select class="form-select" name="jenis_kelamin" title="Mohon memilih bagian ini">
                                     <option value="#">Pilih Jenis Kelamin</option>
                                     <option value="Laki Laki" {{ $d->jenis_kelamin == 'Laki-Laki' ? 'selected':'' }}>Laki-Laki</option>
                                     <option value="Perempuan" {{ $d->jenis_kelamin == 'Perempuan' ? 'selected':'' }}>Perempuan</option>
                                 </select>
+                                @error('jenis_kelamin')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Warga Negara:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="warga_negara" class="form-control" placeholder="Warga Negara"  value="{{ $d->warga_negara }}">
+                                <input type="text" name="warga_negara" class="form-control" placeholder="Warga Negara" title="Mohon mengisi bagian ini" value="{{ $d->warga_negara }}">
+                                @error('warga_negara')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Alamat:</label>
                             <div class="col-lg-8">
-                                <textarea rows="3" name="alamat" cols="3" class="form-control" placeholder="Alamat">{{ $d->alamat }}</textarea>
+                                <textarea rows="3" name="alamat" cols="3" class="form-control" placeholder="Alamat" title="Mohon mengisi bagian ini">{{ $d->alamat }}</textarea>
+                                @error('alamat')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Provinsi:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="provinsi" id="provinsi">
+                                <select class="form-select" name="provinsi" id="provinsi" title="Mohon memilih bagian ini">
                                     <option value="" >Pilih Provinsi</option>
                                     {{-- @foreach($provinsi as $item)
                                         <option value="{{$item->prov_id}}" {{$item->prov_id == $d->prov_id ? 'selected':''}}>{{$item->prov_name}}</option>
                                     @endforeach --}}
                                 </select>
+                                @error('provinsi')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Kabupaten/Kota:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="kabupaten" id= "kabupaten">
+                                <select class="form-select" name="kabupaten" id= "kabupaten" title="Mohon memilih bagian ini">
                                     <option value="#" disabled selected>Pilih Kabupaten/Kota</option>
                                     {{-- @foreach($kabupaten as $item)
                                         <option value="{{$item->city_id}}" {{$item->city_id == $d->city_id ? 'selected':''}}>{{$item->city_name}}</option>
                                     @endforeach --}}
                                 </select>
+                                @error('kabupaten')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Kecamatan:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="kecamatan" id= "kecamatan">
+                                <select class="form-select" name="kecamatan" id= "kecamatan" title="Mohon memilih bagian ini">
                                     <option value="#" disabled selected>Pilih Kecamatan</option>
                                 </select>
+                                @error('kecamatan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Kelurahan:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="kelurahan" id= "kelurahan">
+                                <select class="form-select" name="kelurahan" id= "kelurahan" title="Mohon memilih bagian ini">
                                     <option value="#" disabled selected>Pilih Kelurahan</option>
                                     {{-- @foreach($kelurahan as $item)
                                         <option value="{{$item->id}}">{{$item->subdis_name}}</option>
                                     @endforeach --}}
                                 </select>
+                                @error('kelurahan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Pekerjaan:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="pekerjaan" class="form-control" placeholder="Pekerjaan" value="{{ $d->pekerjaan }}">
+                                <input type="text" name="pekerjaan" class="form-control" placeholder="Pekerjaan" title="Mohon mengisi bagian ini" value="{{ $d->pekerjaan }}">
+                                @error('pekerjaan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Satatus Kawin:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="status_kawin">
+                                <select class="form-select" name="status_kawin" title="Mohon memilih bagian ini">
                                     <option value="#" disabled>Pilih Status Kawin</option>
                                     <option value="Kawin" {{ $d->status_kawin == 'Kawin' ? 'selected':'' }}>Kawin</option>
                                     <option value="Belum Kawin" {{ $d->status_kawin == "Belum Kawin" ? 'selected':'' }}>Belum Kawin</option>
                                 </select>
+                                @error('status_kawin')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Pendidikan:</label>
                             <div class="col-lg-8">
-                                <select class="form-select" name="pendidikan">
+                                <select class="form-select" name="pendidikan" title="Mohon memilih bagian ini">
                                     <option value="" disabled>Pilih Pendidikan</option>
                                     <option value="SD" {{ $d->pendidikan == 'SD' ? 'selected':'' }}>Sekolah Dasar (SD)</option>
                                     <option value="SMP" {{ $d->pendidikan == 'SMP' ? 'selected':'' }}>Sekolah Menengah Pertama (SMP)</option>
@@ -200,6 +245,9 @@
                                     <option value="Magister" {{ $d->pendidikan == 'Magister' ? 'selected':'' }}>Magister (S2)</option>
                                     <option value="Doktoral" {{ $d->pendidikan == 'Doktoral' ? 'selected':'' }}>Doktoral (S3)</option>
                                 </select>
+                                @error('pendidikan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                          <div class="card-header mt-3">
@@ -210,21 +258,30 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Email:</label>
                             <div class="col-lg-8">
-                                <input type="email" name="email" class="form-control" placeholder="Email" value="{{ $d->email }}">
+                                <input type="email" name="email" class="form-control" placeholder="Email" title="Mohon mengisi bagian ini" value="{{ $d->email }}">
+                                @error('email')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">No Telepon:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="no_telp" class="form-control" placeholder="No Telepon" value="{{ $d->no_telp }}">
+                                <input type="text" name="no_telp" class="form-control" placeholder="No Telepon" title="Mohon mengisi bagian ini" value="{{ $d->no_telp }}">
+                                @error('no_telp')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">NIK:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="nik" class="form-control" placeholder="NIK" value="{{ $d->nik }}">
+                                <input type="text" name="nik" class="form-control" placeholder="NIK" title="Mohon mengisi bagian ini" value="{{ $d->nik }}">
+                                @error('nik')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 

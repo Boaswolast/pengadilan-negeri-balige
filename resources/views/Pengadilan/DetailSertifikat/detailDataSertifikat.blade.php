@@ -119,7 +119,18 @@
             </div>
             <div id="gugatan" class="tab-content">
                 @foreach($dataGugatan as $data)
-                    <iframe class="mt-4" src="{{ asset('dokumen/Pengadilan/'.$data->dokumen_gugatan) }}" width="100%" height="400px"></iframe>
+                    @php
+                        $fileExtension = pathinfo($data->dokumen_gugatan, PATHINFO_EXTENSION);
+                        $fileUrl = asset('dokumen/Pengadilan/'.$data->dokumen_gugatan);
+                    @endphp
+                    
+                    @if ($fileExtension == 'pdf')
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"></iframe>
+                    @else
+                        <p>File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
+                        <a href="{{ $fileUrl }}" class="btn btn-primary">Unduh file</a>
+                    @endif
+                    {{-- <iframe class="mt-4" src="{{ asset('dokumen/Pengadilan/'.$data->dokumen_gugatan) }}" width="100%" height="400px"></iframe> --}}
                     {{-- <a href="{{url('/download', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
                     <a href="{{url('/print', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
                 @endforeach

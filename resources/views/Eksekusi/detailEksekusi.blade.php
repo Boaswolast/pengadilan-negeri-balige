@@ -17,7 +17,7 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="{{route('eksekusi')}}" class="breadcrumb-item"><i class="ph-folder-simple-user"></i></a>
                 <a href="{{route('eksekusi')}}" class="breadcrumb-item">Eksekusi Perkara</a>
                 <span class="breadcrumb-item active">Detail</span>
             </div>
@@ -102,7 +102,18 @@
             <div id="permohonan" class="tab-content">
                 @foreach($dataPermohonan as $data)
                     <h3 class="mt-3">Surat Permohonana Eksekusi</h3>
-                    <iframe src="{{ asset('dokumen/User/Permohonan/'.$data->surat_permohonan) }}" width="100%" height="400px"></iframe>
+                    @php
+                        $fileExtension = pathinfo($data->surat_permohonan, PATHINFO_EXTENSION);
+                        $fileUrl = asset('dokumen/User/Permohonan/'.$data->surat_permohonan);
+                    @endphp
+                    
+                    @if ($fileExtension == 'pdf')
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"></iframe>
+                    @else
+                        <p>File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
+                        <a href="{{ $fileUrl }}" class="btn btn-primary">Unduh file</a>
+                    @endif
+                    {{-- <iframe src="{{ asset('dokumen/User/Permohonan/'.$data->surat_permohonan) }}" width="100%" height="400px"></iframe> --}}
                     {{-- <a href="{{url('/downloadBPN', $data->dokumen_gugatan)}}"><button class="btn btn-success">Download</button></a>
                     <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
 

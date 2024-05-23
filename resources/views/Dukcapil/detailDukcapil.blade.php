@@ -136,7 +136,18 @@
             <div id="surat_pengantar" class="tab-content">
                 <h3>Gugatan Content</h3>
                 @foreach($dataPengantar as $data)
-                    <iframe src="{{ asset('files/surat-pengantar/'.$data->surat_pengantar) }}" width="100%" height="600px"></iframe>
+                    @php
+                        $fileExtension = pathinfo($data->surat_pengantar, PATHINFO_EXTENSION);
+                        $fileUrl = asset('files/surat-pengantar/'.$data->surat_pengantar);
+                    @endphp
+                    
+                    @if ($fileExtension == 'pdf')
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"></iframe>
+                    @else
+                        <p>File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
+                        <a href="{{ $fileUrl }}" class="btn btn-primary">Unduh file</a>
+                    @endif
+                    {{-- <iframe src="{{ asset('files/surat-pengantar/'.$data->surat_pengantar) }}" width="100%" height="600px"></iframe> --}}
                 @endforeach
             </div>
             <div id="status" class="tab-content">

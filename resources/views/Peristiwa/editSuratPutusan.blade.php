@@ -20,7 +20,7 @@
             <div class="d-flex">
                 <div class="breadcrumb py-2">
                     
-                    <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                    <a href="{{route('peristiwa')}}" class="breadcrumb-item"><i class="ph-user-square"></i></a>
                     <a href="{{route('peristiwa')}}" class="breadcrumb-item">Peristiwa Penting</a>
                     <a href="{{route('detailPeristiwa', $d->id_peristiwa)}}" class="breadcrumb-item">Detail</a>
                     <span class="breadcrumb-item active">Edit Surat Putusan</span>

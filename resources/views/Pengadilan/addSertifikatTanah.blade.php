@@ -102,7 +102,7 @@
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="dokumen_gugatan" class="file-input" required>
+                                        <input type="file" name="dokumen_gugatan" class="file-input" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
                                     </div>
                                 </div>
                             </fieldset>

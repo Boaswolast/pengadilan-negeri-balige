@@ -18,7 +18,7 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="index.html" class="breadcrumb-item"><i class="ph-newspaper-clipping"></i></a>
+                <a href="peristiwa" class="breadcrumb-item"><i class="ph-user-square"></i></a>
                 <span class="breadcrumb-item active">Peristiwa Penting</span>
             </div>
 

@@ -663,11 +663,27 @@ class EksekusiController extends Controller
         $messages = array_merge($messages1, $messages2, $messages3);
 
 
-        $dataUser = DB::table('users')->get();
-        $count = $dataUser->count();
+        $dataMasyarakat = DB::table('users')->where('role',  1)->get();
+        $dataKetua = DB::table('users')->where('role',  5)->get();
+        $dataWakil = DB::table('users')->where('role',  6)->get();
+        $dataPanitera = DB::table('users')->where('role',  7)->get();
+        $dataSekretaris = DB::table('users')->where('role',  8)->get();
+        $countMasyarakat = $dataMasyarakat->count();
+        $countKetua = $dataKetua->count();
+        $countWakil = $dataWakil->count();
+        $countPanitera = $dataPanitera->count();
+        $countSekretaris = $dataSekretaris->count();
         return view('Pengadilan/dataUser', [
-            'dataUser' => $dataUser,
-            'count' => $count,
+            'dataMasyarakat' => $dataMasyarakat,
+            'dataKetua' => $dataKetua,
+            'dataWakil' => $dataWakil,
+            'dataPanitera' => $dataPanitera,
+            'dataSekretaris' => $dataSekretaris,
+            'countMasyarakat' => $countMasyarakat,
+            'countKetua' => $countKetua,
+            'countWakil' => $countWakil,
+            'countPanitera' => $countPanitera,
+            'countSekretaris' => $countSekretaris,
             'totalNotif' => $totalNotif, 
             'messages' => $messages
         ]);
