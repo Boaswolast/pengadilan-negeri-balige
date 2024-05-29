@@ -443,11 +443,6 @@ class TandaTanganController extends Controller
 
         return redirect()->route('tandatangan')->with('success', 'QRCode berhasil ditambahkan pada dokumen!');
 
-        // Kembalikan path dari PDF yang dihasilkan
-        return response()->json([
-            'message' => 'PDF modified successfully',
-            'path' => url('files/Tanda-Tangan/' . $file),
-        ]);
     }
 
 
