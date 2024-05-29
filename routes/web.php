@@ -144,9 +144,23 @@ Route::group(['middleware' => ['auth','role:2, 5, 6, 7, 8']], function(){
     Route::post('/selesaiKasus/{id}', [App\Http\Controllers\EksekusiController::class, 'selesaiKasus'])->name('selesaiKasus');
     Route::get('/download/{file}', [App\Http\Controllers\EksekusiController::class, 'download'])->name('downloadFile');
 
+});
+
+Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/dataUser', [App\Http\Controllers\EksekusiController::class, 'dataUser'])->name('dataUser');
     Route::get('/nonAktif/{id}', [App\Http\Controllers\EksekusiController::class, 'nonAktif'])->name('nonAktif');
     Route::get('/aktif/{id}', [App\Http\Controllers\EksekusiController::class, 'aktif'])->name('aktif');
+
+    Route::get('/tandatangan', [App\Http\Controllers\TandaTanganController::class, 'index'])->name('tandatangan');
+    Route::get('/tandatangan/detail/{id}', [App\Http\Controllers\TandaTanganController::class, 'detail'])->name('detailTTD');
+    Route::get('/tandatangan/ajukan', [App\Http\Controllers\TandaTanganController::class, 'request'])->name('addTandaTangan');
+    Route::post('/tandatangan/store', [App\Http\Controllers\TandaTanganController::class, 'store'])->name('storeTTD');
+    Route::get('/tandatangan/edit/{id}', [App\Http\Controllers\TandaTanganController::class, 'edit'])->name('editTTD');
+    Route::put('/tandatangan/update/{id}', [App\Http\Controllers\TandaTanganController::class, 'update'])->name('updateTTD');
+    Route::get('/tandatangan/hapus/{id}', [App\Http\Controllers\TandaTanganController::class, 'delete'])->name('deleteTTD');
+
+    Route::get('/pdf-editor/{id}', [App\Http\Controllers\TandaTanganController::class, 'showEditor'])->name('pdfEditor');
+    Route::post('/save-pdf', [App\Http\Controllers\TandaTanganController::class, 'savePDF'])->name('savePDF');
 });
 
 Route::group(['middleware' => ['auth','role:3']], function(){
@@ -168,4 +182,10 @@ Route::group(['middleware' => ['auth','role:4']], function(){
     Route::get('/printCapil/{file}', [App\Http\Controllers\DukcapilController::class, 'print'])->name('printFileCapil');
     Route::get('/diprosesCapil/{id}', [App\Http\Controllers\DukcapilController::class, 'diprosesCapil'])->name('diprosesCapil');
     Route::get('/konfirmasiCapil/{id}', [App\Http\Controllers\DukcapilController::class, 'konfirmasiCapil'])->name('konfirmasiCapil');
+});
+
+Route::group(['middleware' => ['auth', 'role:5, 6, 7, 8']], function () {
+    Route::get('/tanda-tangan', [App\Http\Controllers\TandaTanganController::class, 'indexReq'])->name('TTD');
+    Route::get('/setuju-ttd/{id}', [App\Http\Controllers\TandaTanganController::class, 'setujuTTD'])->name('setujuTTD');
+    Route::get('/tolak-ttd/{id}', [App\Http\Controllers\TandaTanganController::class, 'tolakTTD'])->name('tolakTTD');
 });
