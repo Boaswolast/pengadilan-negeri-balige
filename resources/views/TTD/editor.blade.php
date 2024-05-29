@@ -73,8 +73,9 @@
                 
             </form>
             <center>
-                
-                <p class=""><b>Note:</b> Posisikan QR Code pada lokasi yang diinginkan di dokumen</p></center>
+                <p class=""><b>Note:</b> Posisikan QR Code pada lokasi yang diinginkan di dokumen</p>
+                <p>Dokumen yang sudah disimpan penandatanganan tidak dapat diubah kembali.</p>
+            </center>
             <div id="navigation-controls">
                 <button class="btn btn-outline-success" id="prev-page" type="button">Sebelumnya</button>
                 <span>Page: <span id="page-num"></span> / <span id="page-count"></span></span>
