@@ -92,13 +92,13 @@
 				</a>
 			</div>
 
-            <div class="navbar-brand flex-1 flex-lg-1">
-				<a href="{{route('homeUser')}}" class="d-inline-flex align-items-center headerUser">Beranda</a>
-                <a href="{{route('home')}}" class="d-inline-flex align-items-center headerUser">Peristiwa Penting</a>
-                <a href="{{route('indexUser')}}" class="d-inline-flex align-items-center headerUser">Eksekusi Perkara</a>
-			</div>
+            
 
 			<ul class="nav flex-row justify-content-end order-1 order-lg-2">
+				<div class="navbar-brand flex-1 flex-lg-1">
+				<a href="{{route('homeUser')}}" class="d-inline-flex align-items-center headerUser">Beranda</a>
+                <a href="{{route('indexUser')}}" class="d-inline-flex align-items-center headerUser">Eksekusi Perkara</a>
+			</div>
 				@guest
 					<li class="nav-item nav-item-dropdown-lg dropdown ms-lg-2">
 						<a href="#" class="navbar-nav-link align-items-center rounded-pill p-1" data-bs-toggle="dropdown">

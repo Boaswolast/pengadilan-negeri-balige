@@ -216,6 +216,14 @@
 								<span>Eksekusi Perkara</span>
 							</a>
 						</li>
+						@endif
+						@if (auth()->user()->role==2)
+						<li class="nav-item">
+							<a href="{{ route('tandatangan') }}" class="nav-link">
+								<i class="ph-note-pencil"></i>
+								<span>Tanda Tangan</span>
+							</a>
+						</li>
 						<li class="nav-item">
 							<a href="{{url('/dataUser')}}" class="nav-link">
 								<i class="ph-users-three"></i>
@@ -229,6 +237,14 @@
 							</a>
 						</li> --}}
 						@endif
+						@if (in_array(auth()->user()->role, [5, 6, 7, 8]))
+                            <li class="nav-item">
+							<a href="{{ route('TTD') }}" class="nav-link">
+								<i class="ph-note-pencil"></i>
+								<span>Permohonan Tanda Tangan</span>
+							</a>
+						</li>
+                        @endif
 						@if (auth()->user()->role==1)
 						<li class="nav-item">
 							<a href="{{route('dukcapil')}}" class="nav-link">
