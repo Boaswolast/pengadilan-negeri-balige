@@ -172,12 +172,12 @@ class EksekusiController extends Controller
     
         // Simpan file resume
         $resume = $request->file('resume');
-        $resumeName = $resume->getClientOriginalName();
+        $resumeName = time() . '.' . $resume->getClientOriginalName();
         $resumePath = $resume->move(public_path('dokumen/Eksekusi'), $resumeName);
     
         // Simpan file skum
         $skum = $request->file('skum');
-        $skumName = $skum->getClientOriginalName();
+        $skumName = time() . '.' . $skum->getClientOriginalName();
         $skumPath = $skum->move(public_path('dokumen/Eksekusi'), $skumName);
     
         // Buat entri baru dalam tabel pembayaran
@@ -279,7 +279,7 @@ class EksekusiController extends Controller
             if ($request->hasFile('resume')) {
                 // Simpan file dokumen
                 $document = $request->file('resume');
-                $documentName = $document->getClientOriginalName();
+                $documentName = time() . '.' . $document->getClientOriginalName();
                 $mimeType = $document->getClientMimeType();
                 $documentPath = $document->move(public_path('dokumen/Eksekusi'), $documentName);
 
@@ -379,7 +379,7 @@ class EksekusiController extends Controller
     
         // Simpan file skum
         $suratPemanggilan = $request->file('surat_pemanggilan');
-        $suratPemanggilanName = $suratPemanggilan->getClientOriginalName();
+        $suratPemanggilanName = time() . '.' . $suratPemanggilan->getClientOriginalName();
         $suratPemanggilanPath = $suratPemanggilan->move(public_path('dokumen/Aanmaning'), $suratPemanggilanName);
     
         // Buat entri baru dalam tabel pembayaran
@@ -463,7 +463,7 @@ class EksekusiController extends Controller
     
         // Simpan file skum
         $suratPemanggilan = $request->file('surat_pemanggilan');
-        $suratPemanggilanName = $suratPemanggilan->getClientOriginalName();
+        $suratPemanggilanName = time() . '.' . $suratPemanggilan->getClientOriginalName();
         $suratPemanggilanPath = $suratPemanggilan->move(public_path('dokumen/Aanmaning'), $suratPemanggilanName);
     
         // Buat entri baru dalam tabel pembayaran
@@ -566,7 +566,7 @@ class EksekusiController extends Controller
         }
     
         $suratPenetapan = $request->file('penetapan_eksekusi');
-        $suratPenetapanName = $suratPenetapan->getClientOriginalName();
+        $suratPenetapanName = time() . '.' . $suratPenetapan->getClientOriginalName();
         $suratPenetapanPath = $suratPenetapan->move(public_path('dokumen/Penetapan'), $suratPenetapanName);
     
         // Buat entri baru dalam tabel eksekusi
@@ -634,7 +634,7 @@ class EksekusiController extends Controller
     
         // Simpan file skum
         $suratPenetapan = $request->file('penetapan_eksekusi');
-        $suratPenetapanName = $suratPenetapan->getClientOriginalName();
+        $suratPenetapanName = time() . '.' . $suratPenetapan->getClientOriginalName();
         $suratPenetapanPath = $suratPenetapan->move(public_path('dokumen/Penetapan'), $suratPenetapanName);
     
         // Buat entri baru dalam tabel eksekusi

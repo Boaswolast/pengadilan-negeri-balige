@@ -270,7 +270,7 @@ class UserController extends Controller
     
             //dokumen1
             $dokumen1 = $request->file('surat_permohonan');
-            $dokumenName1 = $dokumen1->getClientOriginalName();
+            $dokumenName1 = time() . '.' . $dokumen1->getClientOriginalName();
             $mimeType1 = $dokumen1->getClientMimeType();
             $dokumenPath1 = $dokumen1->move(public_path('dokumen/User/Permohonan'), $dokumenName1);
             $dokumenPath1 = basename($dokumenPath1);
@@ -279,7 +279,7 @@ class UserController extends Controller
             $dokumenPath2 = null;
             if ($request->hasFile('putusan_pn')) {
                 $dokumen2 = $request->file('putusan_pn');
-                $dokumenName2 = $dokumen2->getClientOriginalName();
+                $dokumenName2 = time() . '.' . $dokumen2->getClientOriginalName();
                 $mimeType2 = $dokumen2->getClientMimeType();
                 $dokumenPath2 = $dokumen2->move(public_path('dokumen/User/PN'), $dokumenName2);
                 $dokumenPath2 = basename($dokumenPath2);
@@ -289,7 +289,7 @@ class UserController extends Controller
             $dokumenPath3 = null;
             if ($request->hasFile('putusan_pt')) {
                 $dokumen3 = $request->file('putusan_pt');
-                $dokumenName3 = $dokumen3->getClientOriginalName();
+                $dokumenName3 = time() . '.' . $dokumen3->getClientOriginalName();
                 $mimeType3 = $dokumen3->getClientMimeType();
                 $dokumenPath3 = $dokumen3->move(public_path('dokumen/User/PT'), $dokumenName3);
                 $dokumenPath3 = basename($dokumenPath3);
@@ -299,7 +299,7 @@ class UserController extends Controller
             $dokumenPath4 = null;
             if ($request->hasFile('putusan_ma')) {
                 $dokumen4 = $request->file('putusan_ma');
-                $dokumenName4 = $dokumen4->getClientOriginalName();
+                $dokumenName4 = time() . '.' . $dokumen4->getClientOriginalName();
                 $mimeType4 = $dokumen4->getClientMimeType();
                 $dokumenPath4 = $dokumen4->move(public_path('dokumen/User/MA'), $dokumenName4);
                 $dokumenPath4 = basename($dokumenPath4);
@@ -638,7 +638,7 @@ class UserController extends Controller
             if ($request->hasFile('bukti_pembayaran')) {
                 // Simpan file dokumen
                 $document = $request->file('bukti_pembayaran');
-                $documentName = $document->getClientOriginalName();
+                $documentName = time() . '.' . $document->getClientOriginalName();
                 $mimeType = $document->getClientMimeType();
                 $documentPath = $document->move(public_path('dokumen/Pembayaran'), $documentName);
 
@@ -700,7 +700,7 @@ class UserController extends Controller
             if ($request->hasFile('bukti_pembayaran')) {
                 // Simpan file dokumen
                 $document = $request->file('bukti_pembayaran');
-                $documentName = $document->getClientOriginalName();
+                $documentName = time() . '.' . $document->getClientOriginalName();
                 $mimeType = $document->getClientMimeType();
                 $documentPath = $document->move(public_path('dokumen/Pembayaran'), $documentName);
 
