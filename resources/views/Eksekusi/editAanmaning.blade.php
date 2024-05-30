@@ -63,14 +63,20 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Tanggal Aanmaning</label>
                             <div class="col-lg-8">
-                                <input type="date" name="tgl_aanmaning" value="{{$item->tgl_aanmaning}}" class="form-control" placeholder="Tannggal Aanmaning" required>
+                                <input type="date" name="tgl_aanmaning" value="{{$item->tgl_aanmaning}}" class="form-control @error('tgl_aanmaning') is-invalid @enderror" placeholder="Tannggal Aanmaning">
+                                @error('tgl_aanmaning')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                     
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Surat Pemanggilan</label>
                             <div class="col-lg-8">
-                                <input type="file" name="surat_pemanggilan" value="{{$item->surat_pemanggilan}}" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" class="form-control" placeholder="File Resume">
+                                <input type="file" name="surat_pemanggilan" value="{{$item->surat_pemanggilan}}" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" class="form-control @error('surat_pemanggilan') is-invalid @enderror" placeholder="File Resume">
+                                @error('surat_pemanggilan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
 

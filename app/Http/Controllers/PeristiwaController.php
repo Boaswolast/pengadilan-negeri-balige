@@ -69,10 +69,12 @@ class PeristiwaController extends Controller
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
         $kecamatan = DB::table('districts')->get();
+        $kelurahan = DB::table('subdistricts')->get();
         return view('Peristiwa/tambahPihakTemporary', [
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
             'totalNotif' => $totalNotif, 
             'messages' => $messages
         ]);
@@ -399,8 +401,14 @@ class PeristiwaController extends Controller
         $messages = array_merge($messages1, $messages2, $messages3);
 
         $provinsi = DB::table('provinces')->get();
+        $kabupaten = DB::table('cities')->get();
+        $kecamatan = DB::table('districts')->get();
+        $kelurahan = DB::table('subdistricts')->get();
         return view('Peristiwa/tambahPihak', [
             'provinsi' => $provinsi, 
+            'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
             'id' => $id,
             'totalNotif' => $totalNotif,
             'messages' => $messages]);
@@ -542,7 +550,7 @@ class PeristiwaController extends Controller
     }
 
 
-    public function editPihak(string $idDiri, string $id)
+    public function editPihak(string $idDiri)
     {
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
         $total1 = $notif1->sum('jumlah');
@@ -562,26 +570,82 @@ class PeristiwaController extends Controller
         }
         $messages = array_merge($messages1, $messages2, $messages3);
 
-        $data = DB::table('data_diri_pihak')
-                ->join('provinces', 'data_diri_pihak.provinsi', '=', 'provinces.prov_name')
-                ->join('cities', 'data_diri_pihak.kabupaten', '=', 'cities.city_name')
-                ->join('districts', 'data_diri_pihak.kecamatan', '=', 'districts.dis_name')
-                ->where('id_data_diri', $idDiri)
-                ->select('data_diri_pihak.*','provinces.prov_id','cities.city_id','districts.dis_id')
-                ->get();
+        $peristiwa = DB::select('CALL view_peristiwaPenting_dataDiri(?)', [$idDiri]);
+        $peristiwa = collect($peristiwa)->first();
+        
+        $namaProvinsi = $peristiwa ? $peristiwa->provinsi : null;
+
+        $selectedProvinsi = null;
+        if ($namaProvinsi) {
+            $provinsiData = DB::table('provinces')->where('prov_name', $namaProvinsi)->first();
+            if ($provinsiData) {
+                $selectedProvinsi = $provinsiData->prov_id;
+            }
+        }
+
+        // Ambil data kabupaten berdasarkan ID provinsi
+        $selectedKabupaten = null;
+        if ($selectedProvinsi) {
+            $kabupatenData = DB::table('cities')->where('prov_id', $selectedProvinsi)->first();
+            if ($kabupatenData) {
+                $selectedKabupaten = $kabupatenData->city_id;
+            }
+        }
+
+        // Ambil data kecamatan berdasarkan ID kabupaten
+        $selectedKecamatan = null;
+        if ($selectedKabupaten) {
+            $kecamatanData = DB::table('districts')->where('city_id', $selectedKabupaten)->first();
+            if ($kecamatanData) {
+                $selectedKecamatan = $kecamatanData->dis_id;
+            }
+        }
+
+        // Ambil data kelurahan berdasarkan ID kecamatan
+        $selectedKelurahan = null;
+        if ($selectedKecamatan) {
+            $kelurahanData = DB::table('subdistricts')->where('dis_id', $selectedKecamatan)->first();
+            if ($kelurahanData) {
+                $selectedKelurahan = $kelurahanData->subdis_id;
+            }
+        }
+
+        // Ambil daftar provinsi
         $provinsi = DB::table('provinces')->get();
-        $kabupaten = DB::table('cities')->get();
-        // return $data;
+
+        // Ambil daftar kabupaten jika ada
+        $kabupaten = [];
+        if ($selectedProvinsi) {
+            $kabupaten = DB::table('cities')->where('prov_id', $selectedProvinsi)->get();
+        }
+
+        // Ambil daftar kecamatan jika ada
+        $kecamatan = [];
+        if ($selectedKabupaten) {
+            $kecamatan = DB::table('districts')->where('city_id', $selectedKabupaten)->get();
+        }
+
+        // Ambil daftar kelurahan jika ada
+        $kelurahan = [];
+        if ($selectedKecamatan) {
+            $kelurahan = DB::table('subdistricts')->where('dis_id', $selectedKecamatan)->get();
+        }
+
         return view('Peristiwa/editPihak', [
-            'provinsi' => $provinsi, 
-            'id' => $id, 
-            'data' => $data, 
+            'd' => $peristiwa,
+            'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
+            'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
+            'selectedProvinsi' => $selectedProvinsi,
+            'selectedKabupaten' => $selectedKabupaten,
+            'selectedKecamatan' => $selectedKecamatan,
+            'selectedKelurahan' => $selectedKelurahan,
             'totalNotif' => $totalNotif, 
             'messages' => $messages]);
     }
 
-    public function updatePihak(string $idDiri, string $id, Request $request)
+    public function updatePihak(string $idDiri, Request $request)
     {
         $request->validate([
             'status_pihak' => 'required',
@@ -641,7 +705,7 @@ class PeristiwaController extends Controller
         $kecamatanId = $request->input('kecamatan');
         $kelurahanId = $request->input('kelurahan');
         $kodeUnik = DB::table('peristiwa_penting')
-            ->where('id_peristiwa', $id)
+            ->where('id_peristiwa', $idDiri)
             ->pluck('kode_unik')
             ->first();
     
@@ -714,7 +778,7 @@ class PeristiwaController extends Controller
                 'nik' => $nik
             ]);
     
-        return redirect()->route('detailPeristiwa', $id)->with('success', 'Data Diri Pihak Berhasil Diubah!');
+        return redirect()->route('detailPeristiwa', $idDiri)->with('success', 'Data Diri Pihak Berhasil Diubah!');
     }
     
 
@@ -794,22 +858,6 @@ class PeristiwaController extends Controller
             'totalNotif' => $totalNotif, 
             'messages' => $messages
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     // EDIT AMAR PUTUSAN

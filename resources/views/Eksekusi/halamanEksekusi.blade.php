@@ -64,14 +64,20 @@
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">Tanggal Eksekusi</label>
                                 <div class="col-lg-8">
-                                    <input type="date" name="tgl_eksekusi" class="form-control" placeholder="Tannggal Eksekusi" required>
+                                    <input type="date" name="tgl_eksekusi" class="form-control @error('tgl_eksekusi') is-invalid @enderror" placeholder="Tannggal Eksekusi" required>
+                                    @error('tgl_eksekusi')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">Penetapan Eksekusi</label>
                                 <div class="col-lg-8">
-                                    <input type="file" name="penetapan_eksekusi" class="form-control" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" placeholder="Penetapan Eksekusi">
+                                    <input type="file" name="penetapan_eksekusi" class="form-control @error('penetapan_eksekusi') is-invalid @enderror" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" placeholder="Penetapan Eksekusi">
+                                    @error('penetapan_eksekusi')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 

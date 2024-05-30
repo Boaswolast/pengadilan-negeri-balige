@@ -63,11 +63,14 @@
                                         <div class="row mb-3 mt-4">
                                             <label class="col-lg-4 col-form-label">Jenis Eksekusi:</label>
                                             <div class="col-lg-8">
-                                                <select class="form-select" name="jenis_eksekusi" required>
+                                                <select class="form-select @error('jenis_eksekusi') is-invalid @enderror" name="jenis_eksekusi" required>
                                                     <option value="">Pilih Jenis Eksekusi</option>
                                                     <option value="Eksekusi Rill/Pengosongan">Eksekusi Rill/Pengosongan</option>
                                                     <option value="Eksekusi Lelang">Eksekusi Lelang</option>
                                                 </select>
+                                                @error('jenis_eksekusi')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                             <div class="mt-4">
                                                 <h6>Hal Yang Harus Dipersiapkan</h6>
@@ -86,28 +89,40 @@
                                         <div class="card">
                                             <h6 class="upload-header">Surat Permohonana</h6>
                                             <div class="card-body">
-                                                <input type="file" name="surat_permohonan" class="file-input" required>
+                                                <input type="file" name="surat_permohonan" class="file-input @error('surat_permohonan') is-invalid @enderror" data-show-upload="false" data-show-caption="true" data-show-preview="true" required>
+                                                @error('surat_permohonan')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="card">
                                             <h6 class="upload-header">Putusan Pengadilan Negeri</h6>
                                             <div class="card-body">
-                                                <input type="file" name="putusan_pn" class="file-input" required>
+                                                <input type="file" name="putusan_pn" class="file-input @error('putusan_pn') is-invalid @enderror" data-show-upload="false" data-show-caption="true" data-show-preview="true" required>
+                                                @error('putusan_pn')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="card">
                                             <h6 class="upload-header">Putusan Pengadilan Tinggi</h6>
                                             <div class="card-body">
-                                                <input type="file" name="putusan_pt" class="file-input" required>
+                                                <input type="file" name="putusan_pt" class="file-input @error('putusan_pt') is-invalid @enderror" data-show-upload="false" data-show-caption="true" data-show-preview="true" required>
+                                                @error('putusan_pt')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="card">
                                             <h6 class="upload-header">Putusan Mahkamah Agung</h6>
                                             <div class="card-body">
-                                                <input type="file" name="putusan_ma" class="file-input" required>
+                                                <input type="file" name="putusan_ma" class="file-input @error('putusan_ma') is-invalid @enderror" data-show-upload="false" data-show-caption="true" data-show-preview="true" required>
+                                                @error('putusan_ma')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                             </div>
                                         </div>
                                     </fieldset>

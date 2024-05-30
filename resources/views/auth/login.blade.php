@@ -44,7 +44,7 @@
 									<div class="d-inline-flex align-items-center justify-content-center mb-4 mt-2">
 										<img src="{{asset('assets/images/logo_pengadilan.png')}}" class="h-48px" alt="">
 									</div>
-									<h5 class="mb-0">Login Keakun Anda</h5>
+									<h5 class="mb-0">Login ke Akun Anda</h5>
 									<span class="d-block text-muted">masukkan data anda dengan benar</span>
 								</div>
 

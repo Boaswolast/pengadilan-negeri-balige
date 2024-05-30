@@ -37,7 +37,7 @@
     <!-- Basic setup -->
     <div class="content">
         {{-- @foreach($editPetitum as $data) --}}
-        <form action="{{route('updateAmarPutusan', $d->id_peristiwa)}}" method="POST">
+        <form action="{{route('updateAmarPutusan', $d->id_peristiwa)}}" method="POST" novalidate>
             @csrf
             @method('PUT')
             <div class="card">
@@ -46,6 +46,9 @@
                 </div>
             </div>
             <input type="hidden" name="amar_putusan" id="petitum-input" required value="{!! $d->amar_putusan !!}">
+            @error('amar_putusan')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
             <div class="text-end">
                 <a href="{{route('detailPeristiwa', $d->id_peristiwa)}}" type="button" class="btn btn-light my-1 me-2" style="width: 120px">Batal</a>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan<i class="ph-paper-plane-tilt ms-2"></i></button>

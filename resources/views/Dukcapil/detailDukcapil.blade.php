@@ -5,7 +5,7 @@
     <div class="page-header-content d-lg-flex">
         <div class="d-flex">
             <h4 class="page-title mb-0">
-                Sertifikat Tanah - <span class="fw-normal">Tambah Kasus</span>
+                Peristiwa Penting - <span class="fw-normal">Detail Permohonan</span>
             </h4>
 
             <a href="#page_header" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -17,9 +17,9 @@
     <div class="page-header-content d-lg-flex border-top">
         <div class="d-flex">
             <div class="breadcrumb py-2">
-                <a href="{{route('home')}}" class="breadcrumb-item"><i class="ph-house"></i></a>
-                <a href="#" class="breadcrumb-item">Sertifikat Tanah</a>
-                <span class="breadcrumb-item active">Tambah Kasus</span>
+                <a href="{{route('dukcapil')}}" class="breadcrumb-item"><i class="ph-handshake"></i></a>
+                <a href="{{route('dukcapil')}}" class="breadcrumb-item">Peristiwa Penting</a>
+                <span class="breadcrumb-item active">Detail Permohonan</span>
             </div>
 
             <a href="#breadcrumb_elements" class="btn btn-light align-self-center collapsed d-lg-none border-transparent rounded-pill p-0 ms-auto" data-bs-toggle="collapse">
@@ -95,14 +95,13 @@
             </div>
             <div id="amar_putusan" class="tab-content">
                 @foreach($dataAmar as $data)
-                    <div class="mt-5">{!! $data->amar_putusan !!}</div>
+                    <div class="mt-4">{!! $data->amar_putusan !!}</div>
                 @endforeach
             </div>
             <div id="surat" class="tab-content">
-                <h3>Gugatan Content</h3>
                 @foreach($dataPutusan as $data)
                 <div>
-                    <h5>Putusan PN</h5>
+                    <h5 class="mt-4">Putusan PN</h5>
                     @if($data->putusan_pn!=null)
                         <div>
                             <iframe src="{{ asset('files/putusanPN/'.$data->putusan_pn) }}" width="100%" height="400px"></iframe>
@@ -134,7 +133,6 @@
                 @endforeach
             </div>
             <div id="surat_pengantar" class="tab-content">
-                <h3>Gugatan Content</h3>
                 @foreach($dataPengantar as $data)
                     @php
                         $fileExtension = pathinfo($data->surat_pengantar, PATHINFO_EXTENSION);
@@ -142,9 +140,9 @@
                     @endphp
                     
                     @if ($fileExtension == 'pdf')
-                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"></iframe>
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px" class="mt-4"></iframe>
                     @else
-                        <p>File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
+                        <p class="mt-4">File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
                         <a href="{{ $fileUrl }}" class="btn btn-primary">Unduh file</a>
                     @endif
                     {{-- <iframe src="{{ asset('files/surat-pengantar/'.$data->surat_pengantar) }}" width="100%" height="600px"></iframe> --}}

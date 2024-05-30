@@ -119,13 +119,20 @@
             </div>
             <div id="gugatan" class="tab-content">
                 @foreach($dataGugatan as $data)
+                @foreach($status as $data)
+                    @if ($data->status_id == 4)
+                    <div class="addGugatan mt-4">
+                        <a href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_default" class="btn btn-primary"><i class="ph-pencil me-2"></i>Edit</a>
+                    </div>
+                    @endif
+                @endforeach
                     @php
                         $fileExtension = pathinfo($data->dokumen_gugatan, PATHINFO_EXTENSION);
                         $fileUrl = asset('dokumen/Pengadilan/'.$data->dokumen_gugatan);
                     @endphp
                     
                     @if ($fileExtension == 'pdf')
-                        <iframe src="{{ $fileUrl }}" width="100%" height="600px"></iframe>
+                        <iframe src="{{ $fileUrl }}" width="100%" height="600px" class="mt-3"></iframe>
                     @else
                         <p>File tidak dapat ditampilkan secara langsung. Silakan unduh untuk melihatnya.</p>
                         <a href="{{ $fileUrl }}" class="btn btn-primary">Unduh file</a>
@@ -160,6 +167,39 @@
                     </table>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal_default" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @foreach($dataPetitum as $id)
+            <form action="{{route('updateSertifikatGugatan', ['id' => $id->id_pemblokiran])}}" method="POST" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
+                <div class="modal-header" style="background-color: green">
+                    <h5 class="modal-title" style="color: white">Unggah Edit Dokumen Gugatan Sertifikat Tanah</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <input type="file" name="dokumen_gugatan" data-show-upload="false" data-show-caption="true" data-show-preview="true" class="file-input @error('tgl_telaah') is-invalid @enderror">
+                            @error('dokumen_gugatan')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+            @endforeach
         </div>
     </div>
 </div>

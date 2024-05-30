@@ -69,28 +69,37 @@
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">Tanggal Telaah</label>
                                 <div class="col-lg-8">
-                                    <input type="date" name="tgl_telaah" class="form-control" placeholder="Tannggal Telaah" required>
+                                    <input type="date" name="tgl_telaah" class="form-control @error('tgl_telaah') is-invalid @enderror" value="{{ old('tgl_telaah')}}" placeholder="Tannggal Telaah">
+                                    @error('tgl_telaah')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">Keterangan</label>
                                 <div class="col-lg-8">
-                                    <textarea rows="3" name="keterangan" cols="3" class="form-control" placeholder="Keterangan"></textarea>
+                                    <textarea rows="3" name="keterangan" cols="3" class="form-control" placeholder="Keterangan">{{ old('keterangan')}}</textarea>
                                 </div>
                             </div>
                         
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">File Resume</label>
                                 <div class="col-lg-8">
-                                    <input type="file" name="resume" class="form-control" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" placeholder="File Resume">
+                                    <input type="file" name="resume" class="form-control @error('resume') is-invalid @enderror" placeholder="File Resume">
+                                    @error('resume')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label class="col-lg-4 col-form-label">SKUM</label>
                                 <div class="col-lg-8">
-                                    <input type="file" name="skum" class="form-control" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" placeholder="SKUM">
+                                    <input type="file" name="skum" class="form-control @error('skum') is-invalid @enderror" placeholder="SKUM">
+                                    @error('skum')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
 

@@ -47,6 +47,9 @@
                 </div>
             </div>
             <input type="hidden" name="petitum" id="petitum-input" required>
+            @error('petitum')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
             <div class="text-end">
                 <button type="submit" class="btn btn-primary">Submit form <i class="ph-paper-plane-tilt ms-2"></i></button>
             </div>

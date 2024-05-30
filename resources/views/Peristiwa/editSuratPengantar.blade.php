@@ -37,7 +37,7 @@
     <!-- Basic setup -->
     <div class="content">
         
-        <form action="{{route('updateSuratPengantar', $d->id_peristiwa)}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('updateSuratPengantar', $d->id_peristiwa)}}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @method('PUT')
             <fieldset>
@@ -59,7 +59,10 @@
                                         <label class="col-form-label col-lg-3">Surat Pengantar (.pdf)</label>
                                         <div class="card">
                                             <div class="card-body">
-                                                <input type="file" name="surat_pengantar" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" required> 
+                                                <input type="file" name="surat_pengantar" class="file-input @error('surat_pengantar') is-invalid @enderror" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" required> 
+                                                @error('status_pihak')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
                                                 {{-- <input type="file" name="surat_pengantar" class="file-input" required> --}}
                                             </div>
                                         </div>
@@ -71,7 +74,10 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-3">Penetapan/Putusan PN (.pdf)</label>
                                         <div class="col-lg-9">
-                                            <input type="file" class="form-control" name="putusanPN" accept=".pdf">
+                                            <input type="file" class="form-control @error('putusanPN') is-invalid @enderror" name="putusanPN" accept=".pdf">
+                                            @error('status_pihak')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 @endif

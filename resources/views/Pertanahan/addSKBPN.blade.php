@@ -42,11 +42,14 @@
             <div class="card-body border-top">
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1">
-                        <form action="{{route('submitBuktiPemblokiran')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('submitBuktiPemblokiran')}}" method="POST" enctype="multipart/form-data" novalidate>
                             @csrf
                             <div class="card">
                                 <div class="card-body">
-                                    <input type="file" name="dokumen_gugatan" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" class="file-input">
+                                    <input type="file" name="surat_pemblokiran_bpn" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" class="file-input @error('surat_pemblokiran_bpn') is-invalid @enderror">
+                                    @error('surat_pemblokiran_bpn')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="text-end mt-4">

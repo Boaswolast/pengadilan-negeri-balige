@@ -182,7 +182,7 @@
                                                 Ubah Status
                                             </a>
                                             {{-- @endforeach --}}
-                                            @elseif($eksekusi->proses == 'Pembayaran')
+                                            {{-- @elseif($eksekusi->proses == 'Pembayaran')
                                                 <a href="#" class="dropdown-item text-primary">
                                                     <i class="ph-trash me-2"></i>
                                                     Ubah Status
@@ -191,7 +191,7 @@
                                                 <a href="#" class="dropdown-item text-primary">
                                                     <i class="ph-trash me-2"></i>
                                                     Ubah Status
-                                                </a>
+                                                </a> --}}
                                             @endif
                                             {{-- <a href="{{route('editSertifikat', ['id' => $sertifikat->id])}}" class="dropdown-item text-secondary">
                                                 <i class="ph-pencil me-2"></i>

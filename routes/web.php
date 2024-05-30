@@ -24,6 +24,10 @@ Auth::routes();
 
 Route::get('/homeUser', [App\Http\Controllers\UserController::class, 'homeUser'])->name('homeUser');
 
+Route::get('/getKabupaten/{provinsi_id}', [App\Http\Controllers\PengadilanController::class,  'getKabupaten']);
+Route::get('/getKecamatan/{kabupaten_id}', [App\Http\Controllers\PengadilanController::class,  'getKecamatan']);
+Route::get('/getKelurahan/{kecamatan_id}', [App\Http\Controllers\PengadilanController::class,  'getKelurahan']);
+
 Route::group(['middleware' => ['auth','role:1']], function(){
     //data semetara
     Route::get('/addDataDiriPihak', [App\Http\Controllers\UserController::class, 'addDataDiriPihak'])->name('addDataDiriPihak');
@@ -47,8 +51,10 @@ Route::group(['middleware' => ['auth','role:1']], function(){
     Route::get('/halamanUploadUlangPembayaran/{id}', [App\Http\Controllers\UserController::class, 'halamanUploadUlangPembayaran'])->name('halamanUploadUlangPembayaran');
     Route::post('/uploadUlangPembayaran/{id}', [App\Http\Controllers\UserController::class, 'uploadUlangPembayaran'])->name('uploadUlangPembayaran');
     Route::get('/downloadUser/{file}', [App\Http\Controllers\UserController::class, 'download'])->name('downloadUserFile');
+    Route::get('/downloadSkum/{file}', [App\Http\Controllers\UserController::class, 'downloadSkum'])->name('downloadUserFileSkum');
     Route::get('/deletedEksekusiUser/{id}', [App\Http\Controllers\UserController::class, 'destroy'])->name('deletedEksekusiUser');
     Route::get('/showDeletedEksekusiUser/{id}', [App\Http\Controllers\UserController::class, 'showDeleted'])->name('showDeletedEksekusiUser');
+
 });
 
 Route::group(['middleware' => ['auth','role:2, 5, 6, 7, 8']], function(){
@@ -72,6 +78,8 @@ Route::group(['middleware' => ['auth','role:2, 5, 6, 7, 8']], function(){
     Route::put('/updateSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'update'])->name('updateSertifikat');
     Route::get('/editSertifikatPetitum/{id}', [App\Http\Controllers\PengadilanController::class, 'editPetitum'])->name('editSertifikatPetitum');
     Route::put('/updateSertifikatPetitum/{id}', [App\Http\Controllers\PengadilanController::class, 'updatePetitum'])->name('updateSertifikatPetitum');
+    Route::get('/editSertifikatGugatan/{id}', [App\Http\Controllers\PengadilanController::class, 'editGugatan'])->name('editSertifikatGugatan');
+    Route::put('/updateSertifikatGugatan/{id}', [App\Http\Controllers\PengadilanController::class, 'updateGugatan'])->name('updateSertifikatGugatan');
 
     Route::get('/detailSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'show'])->name('detailSertifikat');
     Route::get('/detailAllSertifikat/{id}', [App\Http\Controllers\PengadilanController::class, 'showDataAll'])->name('detailAllSertifikat');
@@ -105,8 +113,8 @@ Route::group(['middleware' => ['auth','role:2, 5, 6, 7, 8']], function(){
     Route::get('/get-subdistricts/{kecamatanId}', [App\Http\Controllers\PeristiwaController::class, 'getSubDistricts'])->name('getSubDistricts');
     Route::get('/addPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'createPihak'])->name('addPihakPeristiwa');
     Route::post('/storePihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'storePihak'])->name('storePihakPeristiwa');
-    Route::get('/editPihakPeristiwa/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
-    Route::put('/updatePihakPeristiwa/{idDiri}/{id}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
+    Route::get('/editPihakPeristiwa/{idDiri}', [App\Http\Controllers\PeristiwaController::class, 'editPihak'])->name('editPihakPeristiwa');
+    Route::put('/updatePihakPeristiwa/{idDiri}', [App\Http\Controllers\PeristiwaController::class, 'updatePihak'])->name('updatePihakPeristiwa');
     Route::get('/detailPihakPeristiwa/{id}', [App\Http\Controllers\PeristiwaController::class, 'showPihak'])->name('detailPihakPeristiwa');
     Route::get('/peristiwa/pihak/delete/{id}', [App\Http\Controllers\PeristiwaController::class, 'deletePihak'])->name('deletePihakPeristiwa');
     // amar putusan

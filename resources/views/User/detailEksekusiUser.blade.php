@@ -1,6 +1,7 @@
 @extends('layouts.User')
 @section('content')
 <div class="content body-user">
+    <center><h5 class="mt-3" style="color: white">Detail Permohonan Eksekusi</h5></center>
     <div class="col-lg-12 mt-5">
         <div class="card card-body ">
             <ul class="nav nav-tabs nav-tabs-highlight nav-justified">
@@ -86,13 +87,25 @@
                     <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
 
                     <h3 class="mt-3">Putusan Pengadilan Negeri</h3>
-                    <iframe src="{{ asset('dokumen/User/PN/'.$data->putusan_pn) }}" width="100%" height="400px"></iframe>
+                    @if (!empty($data->putusan_pn))
+                        <iframe src="{{ asset('dokumen/User/PN/'.$data->putusan_pn) }}" width="100%" height="400px"></iframe>
+                    @else
+                        <p>Data Putusan Pengadilan Negeri tidak tersedia.</p>
+                    @endif
 
                     <h3 class="mt-3">Putusan Pengadilan Tinggi</h3>
-                    <iframe src="{{ asset('dokumen/User/PT/'.$data->putusan_pt) }}" width="100%" height="400px"></iframe>
+                    @if (!empty($data->putusan_pt))
+                        <iframe src="{{ asset('dokumen/User/PT/'.$data->putusan_pt) }}" width="100%" height="400px"></iframe>
+                    @else
+                        <p>Data Putusan Pengadilan Tinggi tidak tersedia.</p>
+                    @endif
 
                     <h3 class="mt-3">Putusan Mahkamah Agung</h3>
-                    <iframe src="{{ asset('dokumen/User/MA/'.$data->putusan_ma) }}" width="100%" height="400px"></iframe>
+                    @if (!empty($data->putusan_ma))
+                        <iframe src="{{ asset('dokumen/User/MA/'.$data->putusan_ma) }}" width="100%" height="400px"></iframe>
+                    @else
+                        <p>Data Putusan Mahkamah Agung tidak tersedia.</p>
+                    @endif
                 @endforeach
             </div>
 
@@ -160,6 +173,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="addGugatan mt-4">
+                        <a href="{{url('/downloadSkum', ['file' => $data->skum])}}" type="button" class="btn btn-success">Download SKUM</a>
+                    </div>
                     <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
                     <table class="table">
                         <tbody>
@@ -202,6 +218,9 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="addGugatan mt-4">
+                    <a href="{{url('/downloadSkum', ['file' => $data->skum])}}" type="button" class="btn btn-success">Download SKUM</a>
+                </div>
                 <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
                 <table class="table">
                     <tbody>
@@ -244,6 +263,9 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="addGugatan mt-4">
+                    <a href="{{url('/downloadSkum', ['file' => $data->skum])}}" type="button" class="btn btn-success">Download SKUM</a>
+                </div>
                 <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
                 <table class="table">
                     <tbody>
@@ -282,6 +304,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="addGugatan mt-4">
+                        <a href="{{url('/downloadSkum', ['file' => $data->skum])}}" type="button" class="btn btn-success">Download SKUM</a>
+                    </div>
                     <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
                 @endif      
                 @endforeach

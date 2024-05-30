@@ -224,7 +224,7 @@
 
         // Menampilkan pesan konfirmasi Sweet Alert dengan gaya tambahan
         Swal.fire({
-            title: 'Apakah Anda yakin menghapus Permohonan Pemblokiran Sertifikat Tanah ini?',
+            title: 'Apakah Anda yakin menghapus Permohonan Pencatatan Peristiwa Penting ini?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Hapus',

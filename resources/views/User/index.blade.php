@@ -100,8 +100,9 @@
         });
     </script>
     <!-- Main charts -->
+    <center><h5 class="mt-3" style="color: white">Eksekusi Perkara</h5></center>
     <div class="row">
-        <div class="addGugatan mt-3">
+        <div class="addGugatan mt-1">
             <a href="{{route('user')}}" type="button" class="btn btn-light" style="color: green">Ajukan Eksekusi Baru</a>
         </div>
         <div class="col-xl-12">
@@ -151,16 +152,16 @@
                                                         <i class="ph-eye me-2"></i>
                                                         Detail
                                                     </a>   --}}
-                                                @if($eksekusi->status == 'Menunggu')
+                                                @if($eksekusi->status_telaah == 'Menunggu')
                                                     <a href="{{route('deletedEksekusiUser', ['id' => $eksekusi->id_eksekusi])}}" type="button" class="dropdown-item text-danger" onclick="return DeleteEksekusiUser(event)">
                                                         <i class="ph-trash me-2"></i>
                                                         Hapus
                                                     </a>
-                                                @elseif($eksekusi->status_telaah == 'Diterima')
-                                                    {{-- <a href="#" class="dropdown-item text-info">
-                                                        <i class="ph-trash me-2"></i>
+                                                @elseif($eksekusi->status_pembayaran == 'Menunggu')
+                                                    <a href="{{route('halamanPembayaran', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
+                                                        <i class="ph-money me-2"></i>
                                                         Upload Bukti Pembayaran
-                                                    </a>  --}}
+                                                    </a> 
                                                 {{-- @elseif ($eksekusi->status_pembayaran == 'Sudah Bayar')
                                                     <a href="{{route('detailAllEksekusi', ['id' => $eksekusi->id_eksekusi])}}" class="dropdown-item text-info">
                                                         <i class="ph-eye me-2"></i>

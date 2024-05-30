@@ -174,7 +174,7 @@
                                                 <i class="ph-eye me-2"></i>
                                                 Detail
                                             </a>
-                                            <a href="{{route('editPihakPeristiwa', ['idDiri' => $d->id_data_diri, $id])}}" class="dropdown-item text-secondary">
+                                            <a href="{{route('editPihakPeristiwa', ['idDiri' => $d->id_data_diri])}}" class="dropdown-item text-secondary">
                                                 <i class="ph-pencil me-2"></i>
                                                 Edit
                                             </a>

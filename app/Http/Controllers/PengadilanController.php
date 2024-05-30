@@ -50,31 +50,31 @@ class PengadilanController extends Controller
         ]);
     }
 
-    public function editSertifikat()
-    {
-        $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
-        $total1 = $notif1->sum('jumlah');
-        $messages1 = collect($notif1)->pluck('notification')->all();
+    // public function editSertifikat()
+    // {
+    //     $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
+    //     $total1 = $notif1->sum('jumlah');
+    //     $messages1 = collect($notif1)->pluck('notification')->all();
 
-        $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
-        $total2 = $notif2->sum('jumlah');
-        $messages2 = collect($notif2)->pluck('notification')->all(); 
+    //     $notif2 = collect(DB::select('CALL notifPN_peristiwa()'));
+    //     $total2 = $notif2->sum('jumlah');
+    //     $messages2 = collect($notif2)->pluck('notification')->all(); 
 
-        $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
-        $total3 = $notif3->sum('jumlah');
-        $messages3 = collect($notif3)->pluck('notification')->all(); 
+    //     $notif3 = collect(DB::select('CALL notifPN_eksekusi()'));
+    //     $total3 = $notif3->sum('jumlah');
+    //     $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
-            $totalNotif = null;
-        }
-        $messages = array_merge($messages1, $messages2, $messages3);
+    //     $totalNotif = $total1 + $total2 + $total3;
+    //     if($totalNotif === 0){
+    //         $totalNotif = null;
+    //     }
+    //     $messages = array_merge($messages1, $messages2, $messages3);
 
-        return view('Pengadilan/editSertifikatTanah', [
-            'totalNotif' => $totalNotif, 
-            'messages' => $messages
-        ]);
-    }
+    //     return view('Pengadilan/editSertifikatTanah', [
+    //         'totalNotif' => $totalNotif, 
+    //         'messages' => $messages
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -111,10 +111,12 @@ class PengadilanController extends Controller
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
         $kecamatan = DB::table('districts')->get();
+        $kelurahan = DB::table('subdistricts')->get();
         return view('Pengadilan/addDataDiriSertifikat', [
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
             'totalNotif' => $totalNotif, 
             'messages' => $messages
         ]);
@@ -289,6 +291,10 @@ class PengadilanController extends Controller
         $request->validate([
             'petitum' => 'required',
             'dokumen_gugatan' => 'required|mimes:pdf,doc,docx',
+        ], [
+            'petitum.required' => 'Petitum wajib diisi.',
+            'dokumen_gugatan.required' => 'Dokumen gugatan wajib diunggah.',
+            'dokumen_gugatan.mimes' => 'Dokumen gugatan harus berupa file dengan format: pdf, doc, atau docx.',
         ]);
 
         $temporarySertifikat = session('temporary_sertifikat', []);
@@ -376,9 +382,15 @@ class PengadilanController extends Controller
         $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
         $sertifikat = collect($sertifikat);
         $provinsi = DB::table('provinces')->get();
+        $kabupaten = DB::table('cities')->get();
+        $kecamatan = DB::table('districts')->get();
+        $kelurahan = DB::table('subdistricts')->get();
         return view('Pengadilan/addDataDiriTambahan', [
             'sertifikat_tanah' => $sertifikat,
             'provinsi' => $provinsi, 
+            'kabupaten' => $kabupaten, 
+            'kecamatan' => $kecamatan, 
+            'kelurahan' => $kelurahan, 
             'id' => $id,
             'totalNotif' => $totalNotif, 
             'messages' => $messages
@@ -633,6 +645,24 @@ class PengadilanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    public function getKabupaten($provinsi_id)
+    {
+        $kabupaten = DB::table('cities')->where('prov_id', $provinsi_id)->pluck('city_name', 'city_id');
+        return response()->json($kabupaten);
+    }
+
+    public function getKecamatan($kabupaten_id)
+    {
+        $kecamatan = DB::table('districts')->where('city_id', $kabupaten_id)->pluck('dis_name', 'dis_id');
+        return response()->json($kecamatan);
+    }
+
+    public function getKelurahan($kecamatan_id)
+    {
+        $kelurahan = DB::table('subdistricts')->where('dis_id', $kecamatan_id)->pluck('subdis_name', 'subdis_id');
+        return response()->json($kelurahan);
+    }
+
     public function edit(string $id)
     {
         $notif1 = collect(DB::select('CALL notifPN_sertifikat()'));
@@ -653,24 +683,85 @@ class PengadilanController extends Controller
         }
         $messages = array_merge($messages1, $messages2, $messages3);
 
-        $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', array($id));
-        $sertifikat = collect($sertifikat);
+        // Ambil data sertifikat
+        $sertifikat = DB::select('CALL view_sertifikatTanah_dataDiri(?)', [$id]);
+        $sertifikat = collect($sertifikat)->first();
+
+        // Ambil nama provinsi dari sertifikat jika tersedia
+        $namaProvinsi = $sertifikat ? $sertifikat->provinsi : null;
+
+        // Ambil ID provinsi berdasarkan nama provinsi
+        $selectedProvinsi = null;
+        if ($namaProvinsi) {
+            $provinsiData = DB::table('provinces')->where('prov_name', $namaProvinsi)->first();
+            if ($provinsiData) {
+                $selectedProvinsi = $provinsiData->prov_id;
+            }
+        }
+
+        // Ambil data kabupaten berdasarkan ID provinsi
+        $selectedKabupaten = null;
+        if ($selectedProvinsi) {
+            $kabupatenData = DB::table('cities')->where('prov_id', $selectedProvinsi)->first();
+            if ($kabupatenData) {
+                $selectedKabupaten = $kabupatenData->city_id;
+            }
+        }
+
+        // Ambil data kecamatan berdasarkan ID kabupaten
+        $selectedKecamatan = null;
+        if ($selectedKabupaten) {
+            $kecamatanData = DB::table('districts')->where('city_id', $selectedKabupaten)->first();
+            if ($kecamatanData) {
+                $selectedKecamatan = $kecamatanData->dis_id;
+            }
+        }
+
+        // Ambil data kelurahan berdasarkan ID kecamatan
+        $selectedKelurahan = null;
+        if ($selectedKecamatan) {
+            $kelurahanData = DB::table('subdistricts')->where('dis_id', $selectedKecamatan)->first();
+            if ($kelurahanData) {
+                $selectedKelurahan = $kelurahanData->subdis_id;
+            }
+        }
+
+        // Ambil daftar provinsi
         $provinsi = DB::table('provinces')->get();
-        $kabupaten = DB::table('cities')->get();
-        $kecamatan = DB::table('districts')->get();
-        $kelurahan = DB::table('subdistricts')->get();
+
+        // Ambil daftar kabupaten jika ada
+        $kabupaten = [];
+        if ($selectedProvinsi) {
+            $kabupaten = DB::table('cities')->where('prov_id', $selectedProvinsi)->get();
+        }
+
+        // Ambil daftar kecamatan jika ada
+        $kecamatan = [];
+        if ($selectedKabupaten) {
+            $kecamatan = DB::table('districts')->where('city_id', $selectedKabupaten)->get();
+        }
+
+        // Ambil daftar kelurahan jika ada
+        $kelurahan = [];
+        if ($selectedKecamatan) {
+            $kelurahan = DB::table('subdistricts')->where('dis_id', $selectedKecamatan)->get();
+        }
+
         return view('Pengadilan.editSertifikatTanah', [
-            'sertifikat_tanah' => $sertifikat,
+            'data' => $sertifikat,
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
             'kelurahan' => $kelurahan,
+            'selectedProvinsi' => $selectedProvinsi,
+            'selectedKabupaten' => $selectedKabupaten,
+            'selectedKecamatan' => $selectedKecamatan,
+            'selectedKelurahan' => $selectedKelurahan,
             'totalNotif' => $totalNotif, 
             'messages' => $messages
         ]);
     }
-
-
+    
     /**
      * Update the specified resource in storage.
      */
@@ -736,15 +827,20 @@ class PengadilanController extends Controller
         $kabupatenId = $request->input('kabupaten');
         $kecamatanId = $request->input('kecamatan');
         $kelurahanId = $request->input('kelurahan');
+        $kodeUnik = DB::table('pemblokiran_sertifikat')
+            ->where('id_pemblokiran', $id)
+            ->pluck('kode_unik')
+            ->first();
 
         // Periksa apakah nik, email, atau no_telp sudah ada dalam data lain selain data yang sedang diupdate
         $existingData = DB::table('data_diri_pihak')
-            ->where('id_data_diri', '!=', $id) // Data yang sedang diupdate tidak diikutsertakan dalam pengecekan
-            ->where(function ($query) use ($nik, $email, $no_telp) {
+            ->where('kode_unik', $kodeUnik)
+            ->where(function ($query) use ($nik, $email, $no_telp, $id) {
                 $query->where('nik', $nik)
                     ->orWhere('email', $email)
                     ->orWhere('no_telp', $no_telp);
             })
+            ->where('id_data_diri', '!=', $id)
             ->first();
 
         if ($existingData) {
@@ -830,6 +926,44 @@ class PengadilanController extends Controller
         $petitumSertifikat = DB::table('pemblokiran_sertifikat');
 
         return redirect()->route('detailAllSertifikat', ['id' => $id])->with('success', 'Data Berhasil di Ubah');
+    }
+
+    public function updateGugatan(Request $request, string $id)
+    {
+        $request->validate([
+            'dokumen_gugatan' => 'required|mimes:pdf,doc,docx',
+            // 'keterangan' => 'required',
+        ], [
+            'dokumen_gugatan.required' => 'Dokumen gugatan wajib diunggah.',
+            'dokumen_gugatan.mimes' => 'Dokumen gugatan harus berupa file dengan format: pdf, doc, atau docx.',
+        ]);
+        
+        $post = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->first();
+
+        // dd($post);
+        if ($post) {
+            // Periksa apakah ada file yang diunggah
+            if ($request->hasFile('dokumen_gugatan')) {
+                // Simpan file dokumen
+                $document = $request->file('dokumen_gugatan');
+                $documentName = $document->getClientOriginalName();
+                $mimeType = $document->getClientMimeType();
+                $documentPath = $document->move(public_path('dokumen/Pengadilan'), $documentName);
+
+                $documentPath = basename($documentPath);
+
+                // Update status dan tambahkan path dokumen
+                DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update([
+                    'dokumen_gugatan' => $documentPath,
+                ]);
+
+                return redirect()->route('detailAllSertifikat', ['id' => $id])->with('success', 'Data Berhasil di Ubah');
+            } else {
+                return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
+            }
+        } else {
+            return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
+        }
     }
 
     /**

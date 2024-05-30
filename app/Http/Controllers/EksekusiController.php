@@ -154,7 +154,14 @@ class EksekusiController extends Controller
             'skum' => 'required|mimes:png,jpg,jpeg,pdf',
             'status_telaah' => 'required',
             'tgl_telaah' => 'required',
-            'keterangan' => 'required',
+            'keterangan' => 'nullable',
+        ], [
+            'resume.required' => 'Resume wajib diunggah.',
+            'resume.mimes' => 'Resume harus berupa file dengan format: png, jpg, jpeg, atau pdf.',
+            'skum.required' => 'SKUM wajib diunggah.',
+            'skum.mimes' => 'SKUM harus berupa file dengan format: png, jpg, jpeg, atau pdf.',
+            'status_telaah.required' => 'Status telaah wajib diisi.',
+            'tgl_telaah.required' => 'Tanggal telaah wajib diisi.',
         ]);
         
         $telaah = DB::table('telaah')->where('id_telaah', $id)->first();
@@ -189,6 +196,7 @@ class EksekusiController extends Controller
 
         DB::table('eksekusi')->where('telaah_id', $id)->update([
             'pembayaran_id' => $pembayaranId,
+            'proses' => 'Pembayaran',
         ]);
     
         return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
@@ -251,12 +259,16 @@ class EksekusiController extends Controller
 
     public function TolakData(Request $request, $id)
     {
-        // dd($request);
         $request->validate([
             'resume' => 'required|mimes:doc,docx,pdf',
             'status_telaah' => 'required',
             'tgl_telaah' => 'required',
-            'keterangan' => 'required',
+            'keterangan' => 'nullable',
+        ], [
+            'resume.required' => 'Resume wajib diunggah.',
+            'resume.mimes' => 'Resume harus berupa file dengan format: doc, docx, atau pdf.',
+            'status_telaah.required' => 'Status telaah wajib diisi.',
+            'tgl_telaah.required' => 'Tanggal telaah wajib diisi.',
         ]);
         
         $post = DB::table('telaah')->where('id_telaah', $id)->first();
@@ -301,6 +313,9 @@ class EksekusiController extends Controller
     {
         $request->validate([
             'keterangan' => 'nullable|string|max:255',
+        ], [
+            'keterangan.string' => 'Keterangan harus berupa teks.',
+            'keterangan.max' => 'Keterangan tidak boleh lebih dari 255 karakter.',
         ]);
     
         // Tangkap data dari input form
@@ -348,7 +363,12 @@ class EksekusiController extends Controller
         // dd($request);
         $request->validate([
             'surat_pemanggilan' => 'required|mimes:png,jpg,jpeg,pdf',
-            'tgl_aanmaning' => 'required',
+            'tgl_aanmaning' => 'required|date',
+        ], [
+            'surat_pemanggilan.required' => 'Surat pemanggilan wajib diunggah.',
+            'surat_pemanggilan.mimes' => 'Surat pemanggilan harus berupa file dengan format: png, jpg, jpeg, atau pdf.',
+            'tgl_aanmaning.required' => 'Tanggal aanmaning wajib diisi.',
+            'tgl_aanmaning.date' => 'Tanggal aanmaning harus berupa tanggal yang valid.',
         ]);
         
         $telaah = DB::table('aanmaning')->where('id_aanmaning', $id)->first();
@@ -378,6 +398,11 @@ class EksekusiController extends Controller
         DB::table('eksekusi')->where('aanmaning_id', $id)->update([
             'proses' => 'Aanmaning',
         ]);
+
+        $pembayaran_id = DB::table('eksekusi')->where('aanmaning_id', $id)->value('pembayaran_id');
+
+        DB::table('pembayaran')->where('id_pembayaran', $pembayaran_id)->update([
+            'status_pembayaran' => 'Selesai']);
     
         return redirect()->route('eksekusi')->with('success', 'Konfirmasi Terkirim');
     }
@@ -422,7 +447,12 @@ class EksekusiController extends Controller
         // dd($request);
         $request->validate([
             'surat_pemanggilan' => 'required|mimes:doc,docx,pdf',
-            'tgl_aanmaning' => 'required',
+            'tgl_aanmaning' => 'required|date',
+        ], [
+            'surat_pemanggilan.required' => 'Surat pemanggilan wajib diunggah.',
+            'surat_pemanggilan.mimes' => 'Surat pemanggilan harus berupa file dengan format: doc, docx, atau pdf.',
+            'tgl_aanmaning.required' => 'Tanggal aanmaning wajib diisi.',
+            'tgl_aanmaning.date' => 'Tanggal aanmaning harus berupa tanggal yang valid.',
         ]);
         
         $telaah = DB::table('aanmaning')->where('id_aanmaning', $id)->first();
@@ -521,7 +551,12 @@ class EksekusiController extends Controller
         // dd($request);
         $request->validate([
             'penetapan_eksekusi' => 'required|mimes:doc,docx,pdf',
-            'tgl_eksekusi' => 'required',
+            'tgl_eksekusi' => 'required|date',
+        ], [
+            'penetapan_eksekusi.required' => 'Penetapan eksekusi wajib diunggah.',
+            'penetapan_eksekusi.mimes' => 'Penetapan eksekusi harus berupa file dengan format: doc, docx, atau pdf.',
+            'tgl_eksekusi.required' => 'Tanggal eksekusi wajib diisi.',
+            'tgl_eksekusi.date' => 'Tanggal eksekusi harus berupa tanggal yang valid.',
         ]);
         
         $eksekusi = DB::table('eksekusi')->where('id_eksekusi', $id)->first();
@@ -530,7 +565,6 @@ class EksekusiController extends Controller
             return redirect()->route('eksekusi')->with('error', 'Data eksekusi tidak ditemukan');
         }
     
-        // Simpan file skum
         $suratPenetapan = $request->file('penetapan_eksekusi');
         $suratPenetapanName = $suratPenetapan->getClientOriginalName();
         $suratPenetapanPath = $suratPenetapan->move(public_path('dokumen/Penetapan'), $suratPenetapanName);
@@ -584,7 +618,12 @@ class EksekusiController extends Controller
         // dd($request);
         $request->validate([
             'penetapan_eksekusi' => 'required|mimes:doc,docx,pdf',
-            'tgl_eksekusi' => 'required',
+            'tgl_eksekusi' => 'required|date',
+        ], [
+            'penetapan_eksekusi.required' => 'Penetapan eksekusi wajib diunggah.',
+            'penetapan_eksekusi.mimes' => 'Penetapan eksekusi harus berupa file dengan format: doc, docx, atau pdf.',
+            'tgl_eksekusi.required' => 'Tanggal eksekusi wajib diisi.',
+            'tgl_eksekusi.date' => 'Tanggal eksekusi harus berupa tanggal yang valid.',
         ]);
         
         $eksekusi = DB::table('eksekusi')->where('id_eksekusi', $id)->first();

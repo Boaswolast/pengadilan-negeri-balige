@@ -36,7 +36,7 @@
 
     <!-- Basic setup -->
     <div class="content">
-        <form action="{{route('updateSuratPutusan', $d->id_peristiwa)}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('updateSuratPutusan', $d->id_peristiwa)}}" method="POST" enctype="multipart/form-data" novalidate>
             @csrf
             @method('PUT')
             <fieldset>
@@ -56,7 +56,10 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-3">Penetapan/Putusan PN (.pdf)</label>
                                         <div class="col-lg-9">
-                                            <input type="file" class="form-control" name="putusanPN" accept=".pdf">
+                                            <input type="file" class="form-control @error('putusanPN') is-invalid @enderror" name="putusanPN" accept=".pdf">
+                                            @error('putusanPN')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 @else
@@ -66,7 +69,10 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-3">Penetapan/Putusan PN (.pdf)</label>
                                         <div class="col-lg-9">
-                                            <input type="file" class="form-control" name="putusanPN" accept=".pdf">
+                                            <input type="file" class="form-control @error('putusanPN') is-invalid @enderror" name="putusanPN" accept=".pdf">
+                                            @error('putusanPN')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 @endif
@@ -82,7 +88,10 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-3">Penetapan/Putusan PT (.pdf)</label>
                                         <div class="col-lg-9">
-                                            <input type="file" class="form-control" name="putusanPT" accept=".pdf">
+                                            <input type="file" class="form-control @error('putusanPT') is-invalid @enderror" name="putusanPT" accept=".pdf">
+                                            @error('putusanPT')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 @else
@@ -92,7 +101,10 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-3">Penetapan/Putusan PT (.pdf)</label>
                                         <div class="col-lg-9">
-                                            <input type="file" class="form-control" name="putusanPT" accept=".pdf">
+                                            <input type="file" class="form-control @error('putusanPT') is-invalid @enderror" name="putusanPT" accept=".pdf">
+                                            @error('putusanPT')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 @endif
@@ -108,7 +120,10 @@
                                     <div class="row mb-3">
                                         <label class="col-form-label col-lg-3">Penetapan/Putusan MA RI (.pdf)</label>
                                         <div class="col-lg-9">
-                                            <input type="file" class="form-control" name="putusanMA" accept=".pdf">
+                                            <input type="file" class="form-control @error('putusanMA') is-invalid @enderror" name="putusanMA" accept=".pdf">
+                                            @error('putusanMA')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 @else
@@ -118,7 +133,10 @@
                                     <div class="row mb-4">
                                         <label class="col-form-label col-lg-3">Penetapan/Putusan MA (.pdf)</label>
                                         <div class="col-lg-9">
-                                            <input type="file" class="form-control" name="putusanMA" accept=".pdf">
+                                            <input type="file" class="form-control @error('putusanMA') is-invalid @enderror" name="putusanMA" accept=".pdf">
+                                            @error('putusanMA')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
                                         </div>
                                     </div>
                                 @endif

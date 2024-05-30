@@ -118,13 +118,25 @@
                     <a href="{{url('/printBPN', $data->dokumen_gugatan)}}"><button class="btn btn-primary">View</button></a> --}}
 
                     <h3 class="mt-3">Putusan Pengadilan Negeri</h3>
-                    <iframe src="{{ asset('dokumen/User/PN/'.$data->putusan_pn) }}" width="100%" height="400px"></iframe>
+                    @if (!empty($data->putusan_pn))
+                        <iframe src="{{ asset('dokumen/User/PN/'.$data->putusan_pn) }}" width="100%" height="400px"></iframe>
+                    @else
+                        <p>Data Putusan Pengadilan Negeri tidak tersedia.</p>
+                    @endif
 
                     <h3 class="mt-3">Putusan Pengadilan Tinggi</h3>
-                    <iframe src="{{ asset('dokumen/User/PT/'.$data->putusan_pt) }}" width="100%" height="400px"></iframe>
+                    @if (!empty($data->putusan_pt))
+                        <iframe src="{{ asset('dokumen/User/PT/'.$data->putusan_pt) }}" width="100%" height="400px"></iframe>
+                    @else
+                        <p>Data Putusan Pengadilan Tinggi tidak tersedia.</p>
+                    @endif
 
                     <h3 class="mt-3">Putusan Mahkamah Agung</h3>
-                    <iframe src="{{ asset('dokumen/User/MA/'.$data->putusan_ma) }}" width="100%" height="400px"></iframe>
+                    @if (!empty($data->putusan_ma))
+                        <iframe src="{{ asset('dokumen/User/MA/'.$data->putusan_ma) }}" width="100%" height="400px"></iframe>
+                    @else
+                        <p>Data Putusan Mahkamah Agung tidak tersedia.</p>
+                    @endif
                 @endforeach
             </div>
 
@@ -157,8 +169,12 @@
                     </table>
                     <iframe src="{{ asset('dokumen/Eksekusi/'.$data->resume) }}" width="100%" height="400px" class="mt-3"></iframe>
                 @else
-                <center><h4 class="mt-6">Proses Telaah masih dalam status menunggu. Proses <br>
-                     belum dilakukan pengadilan Negeri</h4></center>
+                <center><h4 class="mt-6">Proses Telaah masih dalam status menunggu. Lakukan <br>
+                     Proses Terhadap Telaah Kasus Ini</h4></center>
+
+                <div class="btnAanmaning mt-4">
+                    <a href="#" class="btn btn-success" type="button" onclick="confirmActionTelaah(event, '{{ $data->id_telaah }}')">Lakukan Aksi</a>
+                </div>
                 @endif      
                 @endforeach
             </div>
@@ -166,7 +182,7 @@
             <div id="pembayaran" class="tab-content">
                 @foreach($dataPembayaran as $data)
 
-                @if ($data->status_pembayaran == 'Diterima')
+                @if ($data->status_pembayaran == 'Diterima' || $data->status_pembayaran == 'Selesai')
                     <table class="table mt-4">
                         <tbody>
                             <tr class="table-success">
@@ -191,6 +207,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <a href="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" class="btn btn-primary">Unduh Skum</a>
                     <iframe src="{{ asset('dokumen/Eksekusi/'.$data->skum) }}" width="100%" height="400px" class="mt-3"></iframe>
                     <table class="table">
                         <tbody>
@@ -301,13 +318,18 @@
             </div>
 
             <div id="aanmaning" class="tab-content">
-                @foreach($dataAanmaning as $data)
-                    @if ($data->status_aanmaning == 'Menunggu')
+                @foreach($dataPembayaran as $data)
+                    @if ($data->status_pembayaran == 'Sudah Bayar')
+                    <center><h4 class="mt-5">Proses Aanmaning masih dalam status Menunggu Proses Pembayaran. </h4></center>
+
+                    @elseif ($data->status_pembayaran == 'Diterima')
                     <center><h4 class="mt-5">Proses Aanmaning masih dalam status Menunggu. Silahkan <br> 
                         tetapkan tanggal Aanmaning dan surat Pemanggilan!</h4></center>
 
                     <center><div class="mt-3">  
-                    <a href="{{route('halamanAanmaning', ['id' => $data->id_aanmaning])}}" type="button" class="btn btn-success">Tetapkan</a>
+                        @foreach($dataAanmaning as $data)
+                            <a href="{{route('halamanAanmaning', ['id' => $data->id_aanmaning])}}" type="button" class="btn btn-success">Tetapkan</a>
+                        @endforeach
                     </div></center>
                     @endif
                 @endforeach
@@ -561,6 +583,39 @@
 </div>
 
 <script>
+    // Define the JavaScript function with telaahId parameter
+    function confirmActionTelaah(event, telaahId) {
+        // Menampilkan pesan konfirmasi Sweet Alert dengan pilihan konfirmasi atau tolak
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Pilih opsi 'Konfirmasi' atau 'Tolak'.",
+            icon: 'warning',
+            showCancelButton: true,
+            showConfirmButton: true,
+            confirmButtonColor: '#4caf50', // Warna hijau untuk tombol konfirmasi
+            cancelButtonColor: '#f44336', // Warna merah untuk tombol tolak
+            confirmButtonText: 'Konfirmasi',
+            cancelButtonText: 'Tolak', // Mengganti teks tombol tolak
+            customClass: {
+                confirmButton: 'btn btn-success', // Gaya tambahan untuk tombol konfirmasi
+                cancelButton: 'btn btn-danger' // Gaya tambahan untuk tombol tolak
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirect ke URL konfirmasi jika pengguna mengonfirmasi
+                window.location.href = "{{ route('halamanKonfirmasiData', ['id' => ':telaahId']) }}".replace(':telaahId', telaahId);
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // Redirect ke URL penolakan jika pengguna menolak
+                window.location.href = "{{ route('halamanTolakData', ['id' => ':telaahId']) }}".replace(':telaahId', telaahId);
+            }
+        });
+
+        // Mencegah tindakan default dari event klik
+        event.preventDefault();
+    }
+</script>
+
+<script>
     function confirmTerima(event) {
         // Mengambil URL dari tombol
         const url = event.target.href;
@@ -751,7 +806,7 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#4caf50',
-            confirmButtonText: 'Diterima',
+            confirmButtonText: 'Ditolak',
             cancelButtonText: 'Batal',
             customClass: {
                 confirmButton: 'btn btn-danger',

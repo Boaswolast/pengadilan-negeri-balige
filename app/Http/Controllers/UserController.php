@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -59,10 +60,12 @@ class UserController extends Controller
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
         $kecamatan = DB::table('districts')->get();
+        $kelurahan = DB::table('subdistricts')->get();
         return view('User/addDataDiriPihak', [
             'provinsi' => $provinsi, 
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
+            'kelurahan' => $kelurahan,
         ]);
     }
 
@@ -224,59 +227,84 @@ class UserController extends Controller
     }
 
     public function storeEksekusi(Request $request){
-        $request->validate([
+        // Custom validation
+        $validator = Validator::make($request->all(), [
             'jenis_eksekusi' => 'required',
             'surat_permohonan' => 'required|mimes:pdf,doc,docx',
-            'putusan_pn' => 'required|mimes:pdf',
-            'putusan_pt' => 'required|mimes:pdf',
-            'putusan_ma' => 'required|mimes:pdf',
+            'putusan_pn' => 'nullable|mimes:pdf',
+            'putusan_pt' => 'nullable|mimes:pdf',
+            'putusan_ma' => 'nullable|mimes:pdf',
+        ], [
+            'jenis_eksekusi.required' => 'Jenis eksekusi wajib diisi.',
+            'surat_permohonan.required' => 'Surat permohonan wajib diunggah.',
+            'surat_permohonan.mimes' => 'Surat permohonan harus berupa file dengan format: pdf, doc, atau docx.',
+            'putusan_pn.mimes' => 'Putusan PN harus berupa file dengan format: pdf.',
+            'putusan_pt.mimes' => 'Putusan PT harus berupa file dengan format: pdf.',
+            'putusan_ma.mimes' => 'Putusan MA harus berupa file dengan format: pdf.',
         ]);
-
+    
+        // Custom rule to check that at least one of the three files is provided
+        $validator->after(function ($validator) use ($request) {
+            if (!$request->hasFile('putusan_pn') && !$request->hasFile('putusan_pt') && !$request->hasFile('putusan_ma')) {
+                $validator->errors()->add('putusan_pn', 'Setidaknya salah satu dari putusan PN, PT, atau MA harus diunggah.');
+            }
+        });
+    
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+    
+        // Rest of your code
         $temporarySertifikat = session('temporary_peristiwa_user', []);
-
+    
         try{
             DB::beginTransaction();
-
+    
             // Buat UUID untuk sertifikat
             $dokumenUuid = Str::uuid();
             $user_id = Auth::id();
-
+    
             $telaah_id = DB::table('telaah')->insertGetId([
                 'status_telaah' => 'Menunggu',
             ]);
-
+    
             //dokumen1
             $dokumen1 = $request->file('surat_permohonan');
             $dokumenName1 = $dokumen1->getClientOriginalName();
             $mimeType1 = $dokumen1->getClientMimeType();
             $dokumenPath1 = $dokumen1->move(public_path('dokumen/User/Permohonan'), $dokumenName1);
-
             $dokumenPath1 = basename($dokumenPath1);
-
+    
             //dokumen2
-            $dokumen2 = $request->file('putusan_pn');
-            $dokumenName2 = $dokumen2->getClientOriginalName();
-            $mimeType2 = $dokumen2->getClientMimeType();
-            $dokumenPath2 = $dokumen2->move(public_path('dokumen/User/PN'), $dokumenName2);
-
-            $dokumenPath2 = basename($dokumenPath2);
-
+            $dokumenPath2 = null;
+            if ($request->hasFile('putusan_pn')) {
+                $dokumen2 = $request->file('putusan_pn');
+                $dokumenName2 = $dokumen2->getClientOriginalName();
+                $mimeType2 = $dokumen2->getClientMimeType();
+                $dokumenPath2 = $dokumen2->move(public_path('dokumen/User/PN'), $dokumenName2);
+                $dokumenPath2 = basename($dokumenPath2);
+            }
+    
             //dokumen3
-            $dokumen3 = $request->file('putusan_pt');
-            $dokumenName3 = $dokumen3->getClientOriginalName();
-            $mimeType3 = $dokumen3->getClientMimeType();
-            $dokumenPath3 = $dokumen3->move(public_path('dokumen/User/PT'), $dokumenName3);
-
-            $dokumenPath3 = basename($dokumenPath3);
-
+            $dokumenPath3 = null;
+            if ($request->hasFile('putusan_pt')) {
+                $dokumen3 = $request->file('putusan_pt');
+                $dokumenName3 = $dokumen3->getClientOriginalName();
+                $mimeType3 = $dokumen3->getClientMimeType();
+                $dokumenPath3 = $dokumen3->move(public_path('dokumen/User/PT'), $dokumenName3);
+                $dokumenPath3 = basename($dokumenPath3);
+            }
+    
             //dokumen4
-            $dokumen4 = $request->file('putusan_ma');
-            $dokumenName4 = $dokumen4->getClientOriginalName();
-            $mimeType4 = $dokumen4->getClientMimeType();
-            $dokumenPath4 = $dokumen4->move(public_path('dokumen/User/MA'), $dokumenName4);
-
-            $dokumenPath4 = basename($dokumenPath4);
-
+            $dokumenPath4 = null;
+            if ($request->hasFile('putusan_ma')) {
+                $dokumen4 = $request->file('putusan_ma');
+                $dokumenName4 = $dokumen4->getClientOriginalName();
+                $mimeType4 = $dokumen4->getClientMimeType();
+                $dokumenPath4 = $dokumen4->move(public_path('dokumen/User/MA'), $dokumenName4);
+                $dokumenPath4 = basename($dokumenPath4);
+            }
+    
             DB::table('eksekusi')->insert([
                 'telaah_id' => $telaah_id,
                 'users_id' => $user_id,
@@ -288,37 +316,37 @@ class UserController extends Controller
                 'putusan_ma' => $dokumenPath4,
                 'is_read_byPN' => 1
             ]);
-
+    
             foreach ($temporarySertifikat as $sertifikat) {
                 DB::table('data_diri_pihak')->insert([
                     'kode_unik' => $dokumenUuid,
-                    'status_pihak' => $sertifikat['status_pihak']?? null,
-                    'jenis_pihak' => $sertifikat['jenis_pihak']?? null,
-                    'nama' => $sertifikat['nama']?? null,
-                    'tempat_lahir' => $sertifikat['tempat_lahir']?? null,
-                    'tanggal_lahir' => $sertifikat['tanggal_lahir']?? null,
-                    'umur' => $sertifikat['umur']?? null,
-                    'jenis_kelamin' => $sertifikat['jenis_kelamin']?? null,
-                    'warga_negara' => $sertifikat['warga_negara']?? null,
-                    'alamat' => $sertifikat['alamat']?? null,
-                    'provinsi' => $sertifikat['provinsi']?? null,
-                    'kabupaten' => $sertifikat['kabupaten']?? null,
-                    'kecamatan' => $sertifikat['kecamatan']?? null,
-                    'kelurahan' => $sertifikat['kelurahan']?? null,
-                    'pekerjaan' => $sertifikat['pekerjaan']?? null,
-                    'status_kawin' => $sertifikat['status_kawin']?? null,
-                    'pendidikan' => $sertifikat['pendidikan']?? null,
-                    'email' => $sertifikat['email']?? null,
-                    'no_telp' => $sertifikat['no_telp']?? null,
-                    'nik' => $sertifikat['nik']?? null,
+                    'status_pihak' => $sertifikat['status_pihak'] ?? null,
+                    'jenis_pihak' => $sertifikat['jenis_pihak'] ?? null,
+                    'nama' => $sertifikat['nama'] ?? null,
+                    'tempat_lahir' => $sertifikat['tempat_lahir'] ?? null,
+                    'tanggal_lahir' => $sertifikat['tanggal_lahir'] ?? null,
+                    'umur' => $sertifikat['umur'] ?? null,
+                    'jenis_kelamin' => $sertifikat['jenis_kelamin'] ?? null,
+                    'warga_negara' => $sertifikat['warga_negara'] ?? null,
+                    'alamat' => $sertifikat['alamat'] ?? null,
+                    'provinsi' => $sertifikat['provinsi'] ?? null,
+                    'kabupaten' => $sertifikat['kabupaten'] ?? null,
+                    'kecamatan' => $sertifikat['kecamatan'] ?? null,
+                    'kelurahan' => $sertifikat['kelurahan'] ?? null,
+                    'pekerjaan' => $sertifikat['pekerjaan'] ?? null,
+                    'status_kawin' => $sertifikat['status_kawin'] ?? null,
+                    'pendidikan' => $sertifikat['pendidikan'] ?? null,
+                    'email' => $sertifikat['email'] ?? null,
+                    'no_telp' => $sertifikat['no_telp'] ?? null,
+                    'nik' => $sertifikat['nik'] ?? null,
                     // Anda dapat menambahkan kolom lainnya sesuai kebutuhan
                 ]);
             }
-
+    
             DB::commit();
-
+    
             session()->forget('temporary_peristiwa_user');
-
+    
             return redirect()->route('indexUser')->with('success', 'Data telah disimpan.');
         }
         catch (\Exception $e) {
@@ -365,21 +393,80 @@ class UserController extends Controller
         ]);
     }
 
+
     public function edit(string $id)
     {
 
-        $eksekusi = DB::select('CALL view_eksekusi_dataDiri(?)', array($id));
-        $eksekusi = collect($eksekusi);
+        $eksekusi = DB::select('CALL view_eksekusi_dataDiri(?)', [$id]);
+        $eksekusi = collect($eksekusi)->first();
+        
+        $namaProvinsi = $eksekusi ? $eksekusi->provinsi : null;
+
+        $selectedProvinsi = null;
+        if ($namaProvinsi) {
+            $provinsiData = DB::table('provinces')->where('prov_name', $namaProvinsi)->first();
+            if ($provinsiData) {
+                $selectedProvinsi = $provinsiData->prov_id;
+            }
+        }
+
+        // Ambil data kabupaten berdasarkan ID provinsi
+        $selectedKabupaten = null;
+        if ($selectedProvinsi) {
+            $kabupatenData = DB::table('cities')->where('prov_id', $selectedProvinsi)->first();
+            if ($kabupatenData) {
+                $selectedKabupaten = $kabupatenData->city_id;
+            }
+        }
+
+        // Ambil data kecamatan berdasarkan ID kabupaten
+        $selectedKecamatan = null;
+        if ($selectedKabupaten) {
+            $kecamatanData = DB::table('districts')->where('city_id', $selectedKabupaten)->first();
+            if ($kecamatanData) {
+                $selectedKecamatan = $kecamatanData->dis_id;
+            }
+        }
+
+        // Ambil data kelurahan berdasarkan ID kecamatan
+        $selectedKelurahan = null;
+        if ($selectedKecamatan) {
+            $kelurahanData = DB::table('subdistricts')->where('dis_id', $selectedKecamatan)->first();
+            if ($kelurahanData) {
+                $selectedKelurahan = $kelurahanData->subdis_id;
+            }
+        }
+
+        // Ambil daftar provinsi
         $provinsi = DB::table('provinces')->get();
-        $kabupaten = DB::table('cities')->get();
-        $kecamatan = DB::table('districts')->get();
-        $kelurahan = DB::table('subdistricts')->get();
+
+        // Ambil daftar kabupaten jika ada
+        $kabupaten = [];
+        if ($selectedProvinsi) {
+            $kabupaten = DB::table('cities')->where('prov_id', $selectedProvinsi)->get();
+        }
+
+        // Ambil daftar kecamatan jika ada
+        $kecamatan = [];
+        if ($selectedKabupaten) {
+            $kecamatan = DB::table('districts')->where('city_id', $selectedKabupaten)->get();
+        }
+
+        // Ambil daftar kelurahan jika ada
+        $kelurahan = [];
+        if ($selectedKecamatan) {
+            $kelurahan = DB::table('subdistricts')->where('dis_id', $selectedKecamatan)->get();
+        }
         return view('User.editDataDiriEksekusiUser', [
-            'editDataDiriEksekusi' => $eksekusi,
+            'data' => $eksekusi,
             'provinsi' => $provinsi,
             'kabupaten' => $kabupaten,
             'kecamatan' => $kecamatan,
             'kelurahan' => $kelurahan,
+            'selectedProvinsi' => $selectedProvinsi,
+            'selectedKabupaten' => $selectedKabupaten,
+            'selectedKecamatan' => $selectedKecamatan,
+            'selectedKelurahan' => $selectedKelurahan,
         ]);
     }
 
@@ -538,7 +625,9 @@ class UserController extends Controller
         // dd($request);
         $request->validate([
             'bukti_pembayaran' => 'required|mimes:png,jpg,jpeg,pdf,doc,docx',
-            'keterangan' => 'required',
+        ], [
+            'bukti_pembayaran.required' => 'Bukti pembayaran wajib diunggah.',
+            'bukti_pembayaran.mimes' => 'Bukti pembayaran harus berupa file dengan format: png, jpg, jpeg, pdf, doc, atau docx.',
         ]);
         
         $post = DB::table('pembayaran')->where('id_pembayaran', $id)->first();
@@ -566,7 +655,7 @@ class UserController extends Controller
                 DB::table('pembayaran')->where('id_pembayaran', $id)->update([
                     'status_pembayaran' => $status_pembayaran,
                     'tgl_pembayaran' => $tgl_pembayaran,
-                    'keterangan' => $request->keterangan,
+                    // 'keterangan' => $request->keterangan,
                     'bukti_pembayaran' => $documentPath
                 ]);
 
@@ -576,12 +665,12 @@ class UserController extends Controller
                     'is_read_byPN' => 3
                 ]);
 
-                return redirect()->route('indexUser')->with('success', 'Konfirmasi Terkirim');
+                return redirect()->route('indexUser')->with('success', 'Bukti Pembayaran Berhasil Dikirimkan');
             } else {
-                return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
+                return redirect()->route('indexUser')->with('error', 'Bukti Pembayaran Batal Dikirimkan');
             }
         } else {
-            return redirect()->route('indexUser')->with('error', 'Terjadi kesalahan');
+            return redirect()->route('indexUser')->with('error', 'Bukti Pembayaran Batal Dikirimkan');
         }
     }
 
@@ -596,10 +685,11 @@ class UserController extends Controller
 
     public function uploadUlangPembayaran(Request $request, $id)
     {
-        // dd($request);
         $request->validate([
             'bukti_pembayaran' => 'required|mimes:png,jpg,jpeg,pdf,doc,docx',
-            'keterangan' => 'required',
+        ], [
+            'bukti_pembayaran.required' => 'Bukti pembayaran wajib diunggah.',
+            'bukti_pembayaran.mimes' => 'Bukti pembayaran harus berupa file dengan format: png, jpg, jpeg, pdf, doc, atau docx.',
         ]);
         
         $post = DB::table('pembayaran')->where('id_pembayaran', $id)->first();
@@ -623,7 +713,7 @@ class UserController extends Controller
                 DB::table('pembayaran')->where('id_pembayaran', $id)->update([
                     'status_pembayaran' => $status_pembayaran,
                     'tgl_pembayaran' => $tgl_pembayaran,
-                    'keterangan' => $request->keterangan,
+                    // 'keterangan' => $request->keterangan,
                     'bukti_pembayaran' => $documentPath
                 ]);
 
@@ -643,6 +733,13 @@ class UserController extends Controller
     public function download(Request $request, $file)
     {
         $filePath = public_path('dokumen/Pembayaran/' . $file);
+
+        return response()->download($filePath);
+    }
+
+    public function downloadSkum(Request $request, $file)
+    {
+        $filePath = public_path('dokumen/Eksekusi/' . $file);
 
         return response()->download($filePath);
     }

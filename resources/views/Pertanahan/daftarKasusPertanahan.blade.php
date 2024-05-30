@@ -131,7 +131,7 @@
     <div class="row">
         <div class="card mt-3">
             <div class="card-header">
-                <h5 class="mb-0">Tabel User</h5>
+                <h5 class="mb-0">Tabel Kasus Pertanahan</h5>
             </div>
 
             <table class="table datatable-basic">

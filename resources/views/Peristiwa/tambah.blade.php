@@ -41,7 +41,7 @@
             <div class="card-body border-top">
                 <div class="row">
                     <div class="col-lg-10 offset-lg-1">
-                        <form class="wizard-form steps-basic" action="{{route('storePeristiwa')}}" method="POST" enctype="multipart/form-data">
+                        <form class="wizard-form steps-basic" action="{{route('storePeristiwa')}}" method="POST" enctype="multipart/form-data" novalidate>
                             @csrf
                             <h6>Data Diri</h6>
                             <fieldset>
@@ -95,6 +95,9 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="amarPutusan" id="petitum-input" required>
+                                @error('amarPutusan')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </fieldset>
 
                             <h6>Upload Surat</h6>
@@ -102,19 +105,28 @@
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan PN (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanPN" accept=".pdf">
+										<input type="file" class="form-control @error('putusanPN') is-invalid @enderror" name="putusanPN" accept=".pdf">
+                                        @error('putusanPN')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
 									</div>
 								</div>
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan PT (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanPT" accept=".pdf">
+										<input type="file" class="form-control @error('putusanPT') is-invalid @enderror" name="putusanPT" accept=".pdf">
+                                        @error('putusanPT')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
 									</div>
 								</div>
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan MA RI (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control" name="putusanMA" accept=".pdf">
+										<input type="file" class="form-control @error('putusanMA') is-invalid @enderror" name="putusanMA" accept=".pdf">
+                                        @error('putusanMA')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
 									</div>
 								</div>
                             </fieldset>
@@ -123,7 +135,10 @@
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="surat_pengantar" class="file-input" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
+                                        <input type="file" name="surat_pengantar" class="file-input @error('surat_pengantar') is-invalid @enderror" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
+                                        @error('surat_pengantar')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                         {{-- <input type="file" name="surat_pengantar" class="file-input" required> --}}
                                     </div>
                                 </div>

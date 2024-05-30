@@ -99,6 +99,9 @@ class PertanahanController extends Controller
     {
         $request->validate([
             'surat_pemblokiran_bpn' => 'required|mimes:pdf,doc,docx',
+        ], [
+            'surat_pemblokiran_bpn.required' => 'Surat pemblokiran BPN wajib diunggah.',
+            'surat_pemblokiran_bpn.mimes' => 'Surat pemblokiran BPN harus berupa file dengan format: pdf, doc, atau docx.',
         ]);
         
         $post = DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->first();
@@ -114,14 +117,14 @@ class PertanahanController extends Controller
                 $documentName = $document->getClientOriginalName();
                 $mimeType = $document->getClientMimeType();
                 $documentPath = $document->move(public_path('dokumen/Pertanahan'), $documentName);
-                $tgl_diproses = now();
+                $tgl_selesai = now();
                 $documentPath = basename($documentPath);
 
                 // Update status dan tambahkan path dokumen
                 DB::table('pemblokiran_sertifikat')->where('id_pemblokiran', $id)->update([
                     'status_id' => 6,
                     'is_read_byPN' => 3,
-                    'tgl_diproses' => $tgl_diproses,
+                    'tgl_selesai' => $tgl_selesai,
                     'surat_pemblokiran_bpn' => $documentPath
                 ]);
 

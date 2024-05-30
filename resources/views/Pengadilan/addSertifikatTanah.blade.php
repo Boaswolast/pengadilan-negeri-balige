@@ -96,13 +96,19 @@
                                     </div>
                                 </div>
                                 <input type="hidden" name="petitum" id="petitum-input" required>
+                                @error('petitum')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
                             </fieldset>
 
                             <h6>Permohonan</h6>
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="dokumen_gugatan" class="file-input" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
+                                        <input type="file" name="dokumen_gugatan" class="file-input @error('dokumen_gugatan') is-invalid @enderror" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
+                                        @error('dokumen_gugatan')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
                             </fieldset>
