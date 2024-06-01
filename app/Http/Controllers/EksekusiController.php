@@ -24,11 +24,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $dataAll = collect(DB::select('CALL viewAll_eksekusi()'));
         $dataAll = collect($dataAll);
@@ -53,11 +57,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $dataDiriAll = DB::select('CALL viewAll_eksekusi_dataDiri(?)', array($id));
         $dataAanmaning = DB::select('CALL view_eksekusi_aanmaning(?)', array($id));
@@ -99,11 +107,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $eksekusi = DB::select('CALL view_eksekusi_dataDiri(?)', array($id));
         $eksekusi = collect($eksekusi);
@@ -128,11 +140,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
 
         $title = 'Delete User!';
@@ -243,11 +259,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $dataAll = DB::table('telaah')->where('id_telaah', $id)->get();
         return view('Eksekusi.tolakData', [
@@ -344,11 +364,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $dataAll = DB::table('eksekusi')->where('aanmaning_id', $id)->get();
         return view('Eksekusi.aanmaning', [
@@ -421,11 +445,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $dataAll = DB::table('eksekusi')->where('aanmaning_id', $id)->first();
         if ($dataAll) {
@@ -532,11 +560,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $dataAll = DB::table('eksekusi')->where('id_eksekusi', $id)->get();
         return view('Eksekusi.halamanEksekusi', [
@@ -599,11 +631,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $dataAll = DB::table('eksekusi')->where('id_eksekusi', $id)->get();
         return view('Eksekusi.halamanEditEksekusi', [
@@ -695,11 +731,15 @@ class EksekusiController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
 
         $dataMasyarakat = DB::table('users')->where('role',  1)->get();

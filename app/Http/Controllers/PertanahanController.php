@@ -114,7 +114,7 @@ class PertanahanController extends Controller
             if ($request->hasFile('surat_pemblokiran_bpn')) {
                 // Simpan file dokumen
                 $document = $request->file('surat_pemblokiran_bpn');
-                $documentName = $document->getClientOriginalName();
+                $documentName = time() . '.' . $document->getClientOriginalName();
                 $mimeType = $document->getClientMimeType();
                 $documentPath = $document->move(public_path('dokumen/Pertanahan'), $documentName);
                 $tgl_selesai = now();

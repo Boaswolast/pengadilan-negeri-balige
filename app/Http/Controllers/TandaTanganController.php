@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use setasign\Fpdi\Fpdi;
+use TCPDF as TCPDF;
 
 class TandaTanganController extends Controller
 {
@@ -25,11 +26,15 @@ class TandaTanganController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all();
 
-        $totalNotif = $total1 + $total2 + $total3;
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
         if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $data = DB::select('CALL viewAll_tandaTangan()');
         $data = collect($data);
@@ -76,11 +81,15 @@ class TandaTanganController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all();
 
-        $totalNotif = $total1 + $total2 + $total3;
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
         if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $data = DB::select('CALL view_tandaTangan(?)', array($id));
         $data = collect($data);
@@ -107,11 +116,15 @@ class TandaTanganController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all();
 
-        $totalNotif = $total1 + $total2 + $total3;
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
         if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $termohon = DB::table('users')
             ->join('role', 'users.role', '=', 'role.id_role')
@@ -196,11 +209,15 @@ class TandaTanganController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all();
 
-        $totalNotif = $total1 + $total2 + $total3;
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
         if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $termohon = DB::table('users')
             ->join('role', 'users.role', '=', 'role.id_role')
@@ -362,11 +379,15 @@ class TandaTanganController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all();
 
-        $totalNotif = $total1 + $total2 + $total3;
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
         if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         // Ambil nama file dari database
         $file = DB::table('tanda_tangan')->where('id_ttd', $id)->value('file_dokumen');
@@ -389,41 +410,36 @@ class TandaTanganController extends Controller
         $request->validate([
             'x' => 'required|numeric',
             'y' => 'required|numeric',
-            'page' => 'required|numeric', // Menambahkan validasi untuk nomor halaman
+            'page' => 'required|numeric', 
             'id' => 'required|numeric'
         ]);
 
         $id = $request->input('id');
         $x = $request->input('x');
         $y = $request->input('y');
-        $pageNum = $request->input('page'); // Mendapatkan nomor halaman dari input
+        $pageNum = $request->input('page'); 
 
         $image = DB::table('tanda_tangan')->where('id_ttd', $id)->value('qr_code');
         $imagePath = public_path('files/qrcodes/' . $image);
 
-        // Ambil nama file dari database
         $file = DB::table('tanda_tangan')->where('id_ttd', $id)->value('file_dokumen');
 
         if (!$file) {
             return response()->json(['error' => 'File not found in database'], 404);
         }
 
-        // Path ke file PDF yang ingin dimodifikasi
         $pathToFile = public_path('files/Tanda-Tangan/' . $file);
 
-        // Membuat instance FPDI
         $pdf = new Fpdi();
 
-        // Tambahkan halaman dari file PDF yang ada
         $pageCount = $pdf->setSourceFile($pathToFile);
         for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
             $templateId = $pdf->importPage($pageNo);
-            $pdf->addPage();
+            $pdf->AddPage();
             $pdf->useTemplate($templateId, ['adjustPageSize' => true]);
 
-            // Menambahkan gambar ke halaman PDF pada posisi yang ditentukan
-            if ($pageNo == $pageNum) { // Menambahkan gambar pada halaman yang sesuai dengan input
-                $pdf->Image($imagePath, $x, $y, 22, 22); // Adjust size as needed
+            if ($pageNo == $pageNum) { 
+                $pdf->Image($imagePath, $x, $y, 22, 22); 
             }
         }
 
@@ -442,9 +458,5 @@ class TandaTanganController extends Controller
             ]);
 
         return redirect()->route('tandatangan')->with('success', 'QRCode berhasil ditambahkan pada dokumen!');
-
     }
-
-
-
 }

@@ -20,7 +20,7 @@ Route::get('/', function () {
     // return view('auth.login');
 });
 
-Auth::routes();
+Auth::routes(['verify'=>true]);
 
 Route::get('/homeUser', [App\Http\Controllers\UserController::class, 'homeUser'])->name('homeUser');
 
@@ -127,6 +127,7 @@ Route::group(['middleware' => ['auth','role:2, 5, 6, 7, 8']], function(){
     Route::get('/peristiwa/surat-pengantar/edit/{id}', [App\Http\Controllers\PeristiwaController::class, 'editSuratPengantar'])->name('editSuratPengantar');
     Route::put('/peristiwa/surat-pengantar/update/{id}', [App\Http\Controllers\PeristiwaController::class, 'updateSuratPengantar'])->name('updateSuratPengantar');
 
+    Route::get('/printTandatangan/{file}', [App\Http\Controllers\PeristiwaController::class, 'tandatanganDokumen'])->name('tandatanganDokumen');
 
     //eksekusi
     Route::get('/eksekusi', [App\Http\Controllers\EksekusiController::class, 'index'])->name('eksekusi');

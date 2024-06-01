@@ -149,36 +149,16 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <table>
-                                            <tr>
-                                                <td style="width: 230px;">Ketua Pengadilan Negeri</td>
-                                                <td style="width: 30px;">:</td>
-                                                <td style="width: 300px;">Dr. Makmur Pakpahan, S.H., M.H.</td>
-                                                <td><button type="button" class="choice-btn btn btn-primary" value="ketua">Request Tanda Tangan</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Wakil Ketua Pengadilan Negeri</td>
-                                                <td>:</td>
-                                                <td>Anita Silitonga S.H.,M.H.</td>
-                                                <td><button type="button" class="choice-btn btn btn-primary" value="wakil">Request Tanda Tangan</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Panitra Pengadilan Negeri</td>
-                                                <td>:</td>
-                                                <td>Leotua Hatoguan Tampubolon, S.H., M.H.</td>
-                                                <td><button type="button" class="choice-btn btn btn-primary" value="panitra">Request Tanda Tangan</button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Sekretaris Pengadilan Negeri</td>
-                                                <td>:</td>
-                                                <td>Daniel Donny Hutapea, S.Kom.</td>
-                                                <td><button type="button" class="choice-btn btn btn-primary" value="sekretaris">Request Tanda Tangan</button></td>
-                                            </tr>
+                                            @foreach($termohon as $d)
+                                                <tr>
+                                                    <td style="width: 230px;">{{ $d->nama_role }}</td>
+                                                    <td style="width: 30px;">:</td>
+                                                    <td style="width: 300px;">{{ $d->name }}</td>
+                                                    <td><button type="button" class="choice-btn btn btn-primary" data-role-name="{{ $d->nama_role }}">Request Tanda Tangan</button></td>
+                                                </tr>
+                                            @endforeach
                                         </table>
-                                        {{-- <form action="/submit-choice" method="post"> --}}
                                         <input type="hidden" name="reqTTD" id="choiceInput">
-                                        {{-- <input type="submit" value="Simpan"> --}}
-                                    {{-- </form> --}}
-                                        {{-- <input type="file" name="dokumen_gugatan" class="file-input" required> --}}
                                     </div>
                                 </div>
                             </fieldset>
@@ -189,6 +169,22 @@
         </div>
     </div>  
     <!-- /basic setup -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const buttons = document.querySelectorAll('.choice-btn');
+            const choiceInput = document.getElementById('choiceInput');
+    
+            buttons.forEach(button => {
+                button.addEventListener('click', function () {
+                    buttons.forEach(btn => btn.classList.remove('btn-success'));
+                    this.classList.add('btn-success');
+                    choiceInput.value = this.getAttribute('data-role-name');
+                });
+            });
+        });
+    </script>
+
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const choiceButtons = document.querySelectorAll('.choice-btn');

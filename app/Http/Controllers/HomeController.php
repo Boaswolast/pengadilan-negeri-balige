@@ -47,11 +47,15 @@ class HomeController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $eksekusi = DB::table('eksekusi')->where('is_deleted', 0)->count();
         $pemblokiran = DB::table('pemblokiran_sertifikat')->where('is_deleted', 0)->count();
@@ -96,11 +100,15 @@ class HomeController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         return view('auth/registerAdmin', [
             'totalNotif' => $totalNotif, 

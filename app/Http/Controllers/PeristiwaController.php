@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class PeristiwaController extends Controller
 {
@@ -27,11 +28,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $data = DB::select('CALL viewAll_peristiwaPenting()');
         $data = collect($data);
@@ -60,11 +65,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
@@ -203,11 +212,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
         // Mengambil data sementara dari sesi
         $temporaryPeristiwa = session('temporary_peristiwa', []); 
 
@@ -229,16 +242,29 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $temporaryPeristiwa = session('temporary_peristiwa', []);
+        $termohon = DB::table('users')
+            ->join('role', 'users.role', '=', 'role.id_role')
+            ->whereIn('users.role', [5, 6, 7, 8])
+            ->select('users.name', 'role.nama_role')
+            ->where('users.is_deleted', 0)
+            ->get();
 
         // Mengirim data sementara ke tampilan
-        return view('Peristiwa/tambah', ['totalNotif' => $totalNotif, 'messages' => $messages])->with('temporaryPeristiwa', $temporaryPeristiwa);
+        return view('Peristiwa/tambah', [
+            'totalNotif' => $totalNotif,
+            'messages' => $messages,
+            'termohon' => $termohon])->with('temporaryPeristiwa', $temporaryPeristiwa);
 
         // $provinsi = DB::table('provinces')->get();
         // $kota = DB::table('cities')->get();
@@ -251,22 +277,27 @@ class PeristiwaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-        'amarPutusan' => 'required',
-        'surat_pengantar' => 'required|mimes:pdf,doc,docx',
-        'putusanPN' => 'nullable|mimes:pdf',
-        'putusanPT' => 'nullable|mimes:pdf',
-        'putusanMA' => 'nullable|mimes:pdf',
-        'reqTTD' => 'required'
-    ],[
-        'amarPutusan.required' => 'Mohon masukkan amar putusan.',
-        'surat_pengantar.required' => 'Surat pengantar harus diunggah.',
-        'surat_pengantar.mimes' => 'Surat pengantar harus berupa file PDF, DOC, atau DOCX.',
-        'putusanPN.mimes' => 'File putusan PN harus berupa file PDF.',
-        'putusanPT.mimes' => 'File putusan PT harus berupa file PDF.',
-        'putusanMA.mimes' => 'File putusan MA harus berupa file PDF.',
-        'reqTTD.required' => 'Permintaan tanda tangan harus dipilih.'
-    ]);
+            'amarPutusan' => 'required',
+            'surat_pengantar' => 'required|mimes:pdf,doc,docx',
+            'putusanPN' => 'nullable|mimes:pdf',
+            'putusanPT' => 'nullable|mimes:pdf',
+            'putusanMA' => 'nullable|mimes:pdf',
+            'reqTTD' => 'required'
+        ],[
+            'amarPutusan.required' => 'Mohon masukkan amar putusan.',
+            'surat_pengantar.required' => 'Surat pengantar harus diunggah.',
+            'surat_pengantar.mimes' => 'Surat pengantar harus berupa file PDF, DOC, atau DOCX.',
+            'putusanPN.mimes' => 'File putusan PN harus berupa file PDF.',
+            'putusanPT.mimes' => 'File putusan PT harus berupa file PDF.',
+            'putusanMA.mimes' => 'File putusan MA harus berupa file PDF.',
+            'reqTTD.required' => 'Permintaan tanda tangan harus dipilih.'
+        ]);
 
+        $reqTTD = DB::table('users')
+            ->join('role', 'users.role', '=', 'role.id_role')
+            ->select('users.name')
+            ->where('nama_role', $request->reqTTD)
+            ->value('name');
 
         $temporaryPeristiwa = session('temporary_peristiwa', []);
 
@@ -306,11 +337,20 @@ class PeristiwaController extends Controller
                 $docMA->move(public_path('files/putusanMA'), $docMAName);
             }
 
+            $reqTTD = str_replace(' ', '', $reqTTD);
             $docSurat = $request->file('surat_pengantar');
-            $docSuratName = time() . '.' . $docSurat->getClientOriginalName();
+            $docSuratName = $docSurat->getClientOriginalName();
+            $sanitizedDocSuratName = preg_replace('/[^a-zA-Z0-9._-]/', '_', pathinfo($docSuratName, PATHINFO_FILENAME));
+            $timestamp = time();
+            $date = date('Ymd_His', $timestamp);
+            $docSuratName = $date . '_' . $sanitizedDocSuratName . '_' . $reqTTD . '.pdf';
             // $mimeType3 = $docSurat->getClientMimeType();
-            $dokumenPathSurat = $docSurat->storeAs($docSuratName);
+            // $dokumenPathSurat = $docSurat->storeAs($docSuratName);
+            $publicPathSurat = public_path('files/surat-pengantar/' . $docSuratName);
+            $publicPathTandaTangan = public_path('files/Tanda-Tangan/' . $docSuratName);
+
             $docSurat->move(public_path('files/surat-pengantar'), $docSuratName);
+            File::copy($publicPathSurat, $publicPathTandaTangan);
 
             DB::table('peristiwa_penting')->insert([
                 'kode_unik' => $dokumenUuid,
@@ -318,8 +358,16 @@ class PeristiwaController extends Controller
                 'putusan_pn' => $docPNName,
                 'putusan_pt' => $docPTName,
                 'putusan_ma' => $docMAName,
-                'surat_pengantar' => $dokumenPathSurat,
-                'tanda_tangan' => $request->requestTTD,
+                'surat_pengantar' => $docSuratName,
+                'tanda_tangan' => $request->reqTTD,
+            ]);
+
+            DB::table('tanda_tangan')->insert([
+                'kode_unik' => $dokumenUuid,
+                'subjek_permohonan' => 'Peristiwa Penting',
+                'termohon' => $request->reqTTD,
+                'status' => 'Menunggu',
+                'file_dokumen' => $docSuratName
             ]);
 
             foreach ($temporaryPeristiwa as $peristiwa) {
@@ -355,9 +403,9 @@ class PeristiwaController extends Controller
         }
         catch (\Exception $e) {
             DB::rollback();
-            // dd($e->getMessage()); 
+            dd($e->getMessage()); 
             // Tangani kesalahan jika terjadi
-            return redirect()->route('peristiwa')->with('error', 'Terjadi kesalahan saat menyimpan data.');
+            // return redirect()->route('peristiwa')->with('error', 'Terjadi kesalahan saat menyimpan data.');
             // dd($e->getMessage());
         }
     }
@@ -394,11 +442,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $provinsi = DB::table('provinces')->get();
         $kabupaten = DB::table('cities')->get();
@@ -564,11 +616,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $peristiwa = DB::select('CALL view_peristiwaPenting_dataDiri(?)', [$idDiri]);
         $peristiwa = collect($peristiwa)->first();
@@ -799,11 +855,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $data = DB::select('CALL viewAll_peristiwaPenting_dataDiri(?)', array($id));
         $dataAmar = DB::select('CALL view_peristiwaPenting_amarPutusan(?)', array($id));
@@ -845,11 +905,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $data = DB::select('CALL view_peristiwaPenting_dataDiri(?)', array($id));
         $data = collect($data);
@@ -916,11 +980,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
         
         $data = DB::select('CALL view_peristiwaPenting_suratPutusan("'.$id.'")');
         return view('Peristiwa/editSuratPutusan', [
@@ -1035,11 +1103,15 @@ class PeristiwaController extends Controller
         $total3 = $notif3->sum('jumlah');
         $messages3 = collect($notif3)->pluck('notification')->all(); 
 
-        $totalNotif = $total1 + $total2 + $total3;
-        if($totalNotif === 0){
+        $notif4 = collect(DB::select('CALL notifPejabat_TTD()'));
+        $total4 = $notif4->sum('jumlah_permohonan');
+        $messages4 = collect($notif4)->pluck('notification')->all();
+
+        $totalNotif = $total1 + $total2 + $total3 + $total4;
+        if ($totalNotif === 0) {
             $totalNotif = null;
         }
-        $messages = array_merge($messages1, $messages2, $messages3);
+        $messages = array_merge($messages1, $messages2, $messages3, $messages4);
 
         $data = DB::select('CALL view_peristiwaPenting_suratPengantar("'.$id.'")');
         return view('Peristiwa/editSuratPengantar', [
@@ -1189,5 +1261,16 @@ class PeristiwaController extends Controller
     {
         DB::select('CALL delete_dataDiri(?)', array($id));
         return redirect()->back()->with('success', 'Data Peristiwa Berhasil Dihapus!');
+    }
+
+    public function tandatanganDokumen($file)
+    {
+        $path = public_path('files/Tanda-Tangan/' . $file);
+
+        if (!file_exists($path)) {
+            abort(404);
+        }
+
+        return response()->file($path);
     }
 }
