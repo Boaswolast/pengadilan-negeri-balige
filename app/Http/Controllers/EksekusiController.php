@@ -179,6 +179,28 @@ class EksekusiController extends Controller
             'status_telaah.required' => 'Status telaah wajib diisi.',
             'tgl_telaah.required' => 'Tanggal telaah wajib diisi.',
         ]);
+
+        $files = [
+            $request->file('resume'),
+            $request->file('skum')
+        ];
+    
+        $fileNames = [];
+        foreach ($files as $file) {
+            if ($file) {
+                $fileName = $file->getClientOriginalName();
+                if (in_array($fileName, $fileNames)) {
+                    return back()->withErrors(['File dengan nama ' . $fileName . ' sudah diunggah.'])->withInput();
+                }
+                $fileNames[] = $fileName;
+            }
+        }
+
+        $reqTTD = DB::table('users')
+            ->join('role', 'users.role', '=', 'role.id_role')
+            ->select('users.name')
+            ->where('nama_role', $request->reqTTD)
+            ->value('name');
         
         $telaah = DB::table('telaah')->where('id_telaah', $id)->first();
 

@@ -247,6 +247,24 @@ class UserController extends Controller
             'putusan_pt.mimes' => 'Putusan PT harus berupa file dengan format: pdf.',
             'putusan_ma.mimes' => 'Putusan MA harus berupa file dengan format: pdf.',
         ]);
+
+        $files = [
+            $request->file('surat_permohonan'),
+            $request->file('putusan_pn'),
+            $request->file('putusan_pt'),
+            $request->file('putusan_ma'),
+        ];
+    
+        $fileNames = [];
+        foreach ($files as $file) {
+            if ($file) {
+                $fileName = $file->getClientOriginalName();
+                if (in_array($fileName, $fileNames)) {
+                    return back()->withErrors(['File dengan nama ' . $fileName . ' sudah diunggah.'])->withInput();
+                }
+                $fileNames[] = $fileName;
+            }
+        }
     
         // Custom rule to check that at least one of the three files is provided
         $validator->after(function ($validator) use ($request) {

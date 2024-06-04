@@ -105,7 +105,7 @@
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan PN (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control @error('putusanPN') is-invalid @enderror" name="putusanPN" accept=".pdf">
+										<input type="file" id="putusanPN" class="form-control @error('putusanPN') is-invalid @enderror" name="putusanPN" accept=".pdf">
                                         @error('putusanPN')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -114,7 +114,7 @@
                                 <div class="row mb-3">
 									<label class="col-form-label col-lg-4">Penetapan/Putusan PT (.pdf)</label>
 									<div class="col-lg-8">
-										<input type="file" class="form-control @error('putusanPT') is-invalid @enderror" name="putusanPT" accept=".pdf">
+										<input type="file" id="putusanPT" class="form-control @error('putusanPT') is-invalid @enderror" name="putusanPT" accept=".pdf">
                                         @error('putusanPT')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -135,7 +135,7 @@
                             <fieldset>
                                 <div class="card">
                                     <div class="card-body">
-                                        <input type="file" name="surat_pengantar" class="file-input @error('surat_pengantar') is-invalid @enderror" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
+                                        <input type="file" id="putusanMA" name="surat_pengantar" class="file-input @error('surat_pengantar') is-invalid @enderror" multiple="multiple" data-show-upload="false" data-show-caption="true" data-show-preview="true" accept=".pdf, .doc, .docx" required>
                                         @error('surat_pengantar')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -169,6 +169,48 @@
         </div>
     </div>  
     <!-- /basic setup -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileInputs = [
+                document.getElementById('putusanPN'),
+                document.getElementById('putusanPT'),
+                document.getElementById('putusanMA')
+            ];
+        
+            fileInputs.forEach(input => {
+                input.addEventListener('change', function () {
+                    checkDuplicateFiles(fileInputs);
+                });
+            });
+        
+            function checkDuplicateFiles(inputs) {
+                const fileNames = new Set();
+                let hasDuplicate = false;
+        
+                inputs.forEach(input => {
+                    const file = input.files[0];
+                    if (file) {
+                        if (fileNames.has(file.name)) {
+                            hasDuplicate = true;
+                            document.getElementById(`error-${input.id}`).textContent = `File dengan nama ${file.name} sudah diunggah.`;
+                        } else {
+                            fileNames.add(file.name);
+                            document.getElementById(`error-${input.id}`).textContent = '';
+                        }
+                    }
+                });
+        
+                return !hasDuplicate;
+            }
+        
+            const form = document.querySelector('form'); // Ganti selector dengan form yang benar
+            form.addEventListener('submit', function(event) {
+                if (!checkDuplicateFiles(fileInputs)) {
+                    event.preventDefault(); // Mencegah pengiriman formulir jika ada duplikasi
+                }
+            });
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

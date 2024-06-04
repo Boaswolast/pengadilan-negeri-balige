@@ -42,7 +42,7 @@ class PeristiwaController extends Controller
         $data = collect($data);
         return view('Peristiwa/index',[
             'data' => $data,
-            'totalNotif' => $totalNotif, 
+            'totalNotif' => $totalNotif,
             'messages' => $messages
         ]);
     }
@@ -292,6 +292,24 @@ class PeristiwaController extends Controller
             'putusanMA.mimes' => 'File putusan MA harus berupa file PDF.',
             'reqTTD.required' => 'Permintaan tanda tangan harus dipilih.'
         ]);
+
+        $files = [
+            $request->file('surat_pengantar'),
+            $request->file('putusanPN'),
+            $request->file('putusanPT'),
+            $request->file('putusanMA')
+        ];
+    
+        $fileNames = [];
+        foreach ($files as $file) {
+            if ($file) {
+                $fileName = $file->getClientOriginalName();
+                if (in_array($fileName, $fileNames)) {
+                    return back()->withErrors(['File dengan nama ' . $fileName . ' sudah diunggah.'])->withInput();
+                }
+                $fileNames[] = $fileName;
+            }
+        }
 
         $reqTTD = DB::table('users')
             ->join('role', 'users.role', '=', 'role.id_role')

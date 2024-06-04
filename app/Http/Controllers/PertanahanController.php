@@ -23,7 +23,7 @@ class PertanahanController extends Controller
     {
         $notif = collect(DB::select('CALL notifBPN()'));
         foreach($notif as $notification){
-            if($notification->jumlah_permohonan === 0){
+            if($notification->jumlah_permohonan == 0){
                 $notification->jumlah_permohonan = null;
             }
         }
@@ -42,7 +42,7 @@ class PertanahanController extends Controller
     {
         $notif = collect(DB::select('CALL notifBPN()'));
         foreach($notif as $notification){
-            if($notification->jumlah_permohonan === 0){
+            if($notification->jumlah_permohonan == 0){
                 $notification->jumlah_permohonan = null;
             }
         }
@@ -67,7 +67,7 @@ class PertanahanController extends Controller
     {
         $notif = collect(DB::select('CALL notifBPN()'));
         foreach($notif as $notification){
-            if($notification->jumlah_permohonan === 0){
+            if($notification->jumlah_permohonan == 0){
                 $notification->jumlah_permohonan = null;
             }
         }
@@ -83,7 +83,7 @@ class PertanahanController extends Controller
     {
         $notif = collect(DB::select('CALL notifBPN()'));
         foreach($notif as $notification){
-            if($notification->jumlah_permohonan === 0){
+            if($notification->jumlah_permohonan == 0){
                 $notification->jumlah_permohonan = null;
             }
         }

@@ -148,7 +148,7 @@
             @if ($data->status_telaah == 'Diterima')
             <div id="pembayaran" class="tab-content mt-4">
                 @foreach($dataPembayaran as $data)
-                @if ($data->status_pembayaran == 'Diterima')
+                @if ($data->status_pembayaran == 'Diterima' || $data->status_pembayaran == 'Selesai')
                     <table class="table">
                         <tbody>
                             <tr class="table-success">

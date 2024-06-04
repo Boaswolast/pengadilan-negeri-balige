@@ -117,7 +117,7 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Tanggal Lahir:</label>
                             <div class="col-lg-8">
-                                <input type="date" name="tanggal_lahir" class="form-control @error('tanggal_lahir') is-invalid @enderror" placeholder="Tanggal Lahir" value="{{ old('tanggal_lahir') }}" required>
+                                <input type="date" id="tanggal_lahir" name="tanggal_lahir" class="form-control @error('tanggal_lahir') is-invalid @enderror" placeholder="Tanggal Lahir" value="{{ old('tanggal_lahir') }}" required>
                                 @error('tanggal_lahir')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -127,7 +127,7 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">Umur:</label>
                             <div class="col-lg-3">
-                                <input type="number" name="umur" class="form-control @error('umur') is-invalid @enderror" placeholder="Umur" value="{{ old('umur') }}" required>
+                                <input type="number" name="umur" id="umur" class="form-control @error('umur') is-invalid @enderror" placeholder="Umur" value="{{ old('umur') }}" required>
                                 @error('umur')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -291,7 +291,8 @@
                         <div class="row mb-3">
                             <label class="col-lg-4 col-form-label">NIK:</label>
                             <div class="col-lg-8">
-                                <input type="text" name="nik" class="form-control @error('nik') is-invalid @enderror" placeholder="NIK" value="{{ old('nik') }}" required>
+                                <input type="text" id="nik" name="nik" class="form-control @error('nik') is-invalid @enderror" placeholder="NIK" value="{{ old('nik') }}" required>
+                                <span id="nik-error" class="text-danger" style="display: none;"></span>
                                 @error('nik')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -328,6 +329,58 @@
         </div>
     </div>
     <!-- /centered card -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#nik').on('input', function() {
+                var nik = $(this).val();
+                var errorMessage = '';
+                
+                // Validasi apakah NIK diisi
+                if (!nik) {
+                    errorMessage = 'Kolom NIK harus diisi';
+                } 
+                // Validasi apakah NIK berupa angka
+                else if (!/^\d+$/.test(nik)) {
+                    errorMessage = 'Kolom NIK harus diisi dengan angka';
+                } 
+                // Validasi apakah NIK terdiri dari 16 angka
+                else if (nik.length !== 16) {
+                    errorMessage = 'Kolom NIK harus diisi dengan 16 angka';
+                }
+    
+                // Tampilkan atau sembunyikan pesan error
+                if (errorMessage) {
+                    $('#nik-error').text(errorMessage);
+                    $('#nik-error').show();
+                } else {
+                    $('#nik-error').hide();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tanggalLahirInput = document.getElementById('tanggal_lahir');
+            const umurInput = document.getElementById('umur');
+        
+            tanggalLahirInput.addEventListener('change', function () {
+                const tanggalLahir = new Date(this.value);
+                const today = new Date();
+                let umur = today.getFullYear() - tanggalLahir.getFullYear();
+                const monthDifference = today.getMonth() - tanggalLahir.getMonth();
+        
+                if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < tanggalLahir.getDate())) {
+                    umur--;
+                }
+        
+                umurInput.value = umur;
+            });
+        });
+    </script>
+    
     <script>
     $(document).ready(function() {
         // Event listener untuk perubahan nilai pada form provinsi

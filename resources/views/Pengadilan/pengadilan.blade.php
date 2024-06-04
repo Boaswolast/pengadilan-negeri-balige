@@ -41,19 +41,18 @@
     
     <script>
         const DatatableBasic = function() {
-    
-    
+        
             //
             // Setup module components
             //
-    
+        
             // Basic Datatable examples
             const _componentDatatableBasic = function() {
                 if (!$().DataTable) {
                     console.warn('Warning - datatables.min.js is not loaded.');
                     return;
                 }
-    
+        
                 // Setting datatable defaults
                 $.extend($.fn.dataTable.defaults, {
                     autoWidth: false,
@@ -73,12 +72,13 @@
                             'next': document.dir == "rtl" ? '&larr;' : '&rarr;',
                             'previous': document.dir == "rtl" ? '&rarr;' : '&larr;'
                         }
-                    }
+                    },
+                    order: [[0, 'desc']] // Assuming the 'created_at' or 'id' column is the first column (index 0)
                 });
-    
+        
                 // Basic datatable
                 $('.datatable-basic').DataTable();
-    
+        
                 // Alternative pagination
                 $('.datatable-pagination').DataTable({
                     pagingType: "simple",
@@ -89,44 +89,44 @@
                         }
                     }
                 });
-    
+        
                 // Datatable with saving state
                 $('.datatable-save-state').DataTable({
                     stateSave: true
                 });
-    
+        
                 // Scrollable datatable
                 const table = $('.datatable-scroll-y').DataTable({
                     autoWidth: true,
                     scrollY: 300
                 });
-    
+        
                 // Resize scrollable table when sidebar width changes
                 $('.sidebar-control').on('click', function() {
                     table.columns.adjust().draw();
                 });
             };
-    
-    
+        
             //
             // Return objects assigned to module
             //
-    
+        
             return {
                 init: function() {
                     _componentDatatableBasic();
                 }
             }
         }();
-    
-    
+        
         // Initialize module
         // ------------------------------
-    
+        
         document.addEventListener('DOMContentLoaded', function() {
             DatatableBasic.init();
         });
     </script>
+        
+        
     <!-- Main charts -->
     <div class="row">
         <div class="addGugatan mt-1">
@@ -134,7 +134,7 @@
         </div>
         <div class="card mt-3">
             <div class="card-header">
-                <h5 class="mb-0">Tabel User</h5>
+                <h5 class="mb-0">Data Kasus Sertifikat</h5>
             </div>
 
             <table class="table datatable-basic">
@@ -153,11 +153,11 @@
                         @foreach ($data as $sertifikat)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td>{{$sertifikat->penggugat}}</td>
-                            <td>{{$sertifikat->tergugat}}</td>
-                            <td>{{$sertifikat->tanggal_gugatan}}</td>
+                            <td>{!! nl2br(e($sertifikat->penggugat)) !!}</td>
+                            <td>{!! nl2br(e($sertifikat->tergugat)) !!}</td>
+                            <td>{!! nl2br(e($sertifikat->tanggal_gugatan)) !!}</td>
                             <td>
-                                {{$sertifikat->status_permohonan}}
+                                {!! nl2br(e($sertifikat->status_permohonan)) !!}
                                 @if ($sertifikat->status_permohonan == 'Terkonfirmasi')
                                     <div>
                                         <a href="{{url('/print', $sertifikat->surat_pemblokiran_bpn)}}">Lihat Bukti</a>

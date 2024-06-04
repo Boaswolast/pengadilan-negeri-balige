@@ -168,7 +168,7 @@
                                             <option value="3">Badan Pertanahan Nasional</option>
                                             <option value="4">Dukcapil</option>
                                             <option value="5">Ketua Pengadilan</option>
-                                            <option value="6">Wakil Ketua Peangadilan</option>
+                                            <option value="6">Wakil Ketua Pengadilan</option>
                                             <option value="7">Panitra Pengadilan</option>
                                             <option value="8">Sekretaris Pengadilan</option>
                                         </select>
